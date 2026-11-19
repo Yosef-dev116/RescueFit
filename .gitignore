@@ -1,0 +1,23 @@
+# Secrets
+.env
+.env*
+!.env.example
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.vercel/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Raw downloads (link-only datasets must not be committed)
+model/raw/
+
+# OS / tools
+.DS_Store
+.context/
