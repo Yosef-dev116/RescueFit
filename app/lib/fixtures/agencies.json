@@ -1,0 +1,68 @@
+[
+  {
+    "id": "upper-room-ch",
+    "name": "Upper Room Food Bank",
+    "town": "Charlottetown",
+    "lat": 46.2382,
+    "lon": -63.1311,
+    "capacity_kg": { "fridge": 300, "freezer": 200, "dry": 1500 },
+    "free_kg": { "fridge": 80, "freezer": 40, "dry": 600 },
+    "meals_per_day": 150,
+    "diet_flags": ["halal-needed"]
+  },
+  {
+    "id": "salvation-army-ch",
+    "name": "Salvation Army Community Kitchen",
+    "town": "Charlottetown",
+    "lat": 46.2345,
+    "lon": -63.1265,
+    "capacity_kg": { "fridge": 180, "freezer": 150, "dry": 900 },
+    "free_kg": { "fridge": 25, "freezer": 90, "dry": 310 },
+    "meals_per_day": 90,
+    "diet_flags": []
+  },
+  {
+    "id": "summerside-fb",
+    "name": "Summerside Food Bank",
+    "town": "Summerside",
+    "lat": 46.3959,
+    "lon": -63.7877,
+    "capacity_kg": { "fridge": 200, "freezer": 160, "dry": 1100 },
+    "free_kg": { "fridge": 120, "freezer": 15, "dry": 450 },
+    "meals_per_day": 70,
+    "diet_flags": []
+  },
+  {
+    "id": "souris-fb",
+    "name": "Souris and Area Food Bank",
+    "town": "Souris",
+    "lat": 46.3545,
+    "lon": -62.2543,
+    "capacity_kg": { "fridge": 90, "freezer": 60, "dry": 400 },
+    "free_kg": { "fridge": 45, "freezer": 30, "dry": 220 },
+    "meals_per_day": 30,
+    "diet_flags": []
+  },
+  {
+    "id": "montague-fb",
+    "name": "Southern Kings and Queens Food Bank",
+    "town": "Montague",
+    "lat": 46.1656,
+    "lon": -62.6494,
+    "capacity_kg": { "fridge": 110, "freezer": 80, "dry": 500 },
+    "free_kg": { "fridge": 60, "freezer": 55, "dry": 300 },
+    "meals_per_day": 40,
+    "diet_flags": ["vegetarian-needed"]
+  },
+  {
+    "id": "oleary-fb",
+    "name": "O'Leary Community Food Bank",
+    "town": "O'Leary",
+    "lat": 46.7072,
+    "lon": -64.2283,
+    "capacity_kg": { "fridge": 80, "freezer": 70, "dry": 350 },
+    "free_kg": { "fridge": 35, "freezer": 45, "dry": 180 },
+    "meals_per_day": 25,
+    "diet_flags": []
+  }
+]

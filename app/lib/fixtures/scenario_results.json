@@ -1,0 +1,17 @@
+{
+  "days": 30,
+  "donors": 81,
+  "agencies": 22,
+  "baseline": { "kg_received": 42000, "kg_wasted_at_agency": 7140, "meals": 64555, "co2e_kg": 17136, "cad": 36414 },
+  "rescuefit": { "kg_received": 42000, "kg_wasted_at_agency": 2520, "meals": 73111, "co2e_kg": 6048, "cad": 12852 },
+  "daily": [
+    { "day": 1, "baseline_waste_kg": 231, "rescuefit_waste_kg": 96 },
+    { "day": 2, "baseline_waste_kg": 248, "rescuefit_waste_kg": 88 },
+    { "day": 3, "baseline_waste_kg": 219, "rescuefit_waste_kg": 79 },
+    { "day": 4, "baseline_waste_kg": 266, "rescuefit_waste_kg": 91 },
+    { "day": 5, "baseline_waste_kg": 254, "rescuefit_waste_kg": 84 }
+  ],
+  "assumptions": [
+    "PLACEHOLDER for dev. Fahd replaces this file with the real simulation output."
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  { "category": "bread", "keywords": ["bread", "bagel", "bun", "roll", "loaf", "baguette", "pita", "tortilla"], "pantry_days": 5, "fridge_days": 10, "freezer_days": 90 },
+  { "category": "pastry", "keywords": ["muffin", "croissant", "danish", "donut", "cake", "cookie", "scone"], "pantry_days": 3, "fridge_days": 7, "freezer_days": 60 },
+  { "category": "produce-leafy", "keywords": ["lettuce", "spinach", "kale", "salad", "arugula", "herbs", "cilantro"], "pantry_days": 1, "fridge_days": 5, "freezer_days": 0 },
+  { "category": "produce-hardy", "keywords": ["carrot", "potato", "onion", "cabbage", "turnip", "beet", "squash", "parsnip"], "pantry_days": 21, "fridge_days": 45, "freezer_days": 300 },
+  { "category": "produce-soft", "keywords": ["tomato", "berry", "strawberry", "banana", "peach", "grape", "apple", "pear", "cucumber", "pepper"], "pantry_days": 3, "fridge_days": 7, "freezer_days": 240 },
+  { "category": "dairy", "keywords": ["milk", "yogurt", "cheese", "cream", "butter", "kefir"], "pantry_days": 0, "fridge_days": 10, "freezer_days": 90 },
+  { "category": "eggs", "keywords": ["egg", "eggs"], "pantry_days": 0, "fridge_days": 21, "freezer_days": 0 },
+  { "category": "meat-fresh", "keywords": ["chicken", "beef", "pork", "turkey", "lamb", "ground", "steak", "bacon", "ham", "sausage"], "pantry_days": 0, "fridge_days": 2, "freezer_days": 180 },
+  { "category": "fish", "keywords": ["fish", "salmon", "cod", "haddock", "lobster", "mussel", "shrimp", "oyster"], "pantry_days": 0, "fridge_days": 2, "freezer_days": 150 },
+  { "category": "prepared-hot", "keywords": ["lasagna", "casserole", "soup", "stew", "chili", "curry", "pasta", "rice", "tray", "sandwich", "wrap", "pizza"], "pantry_days": 0, "fridge_days": 3, "freezer_days": 60 },
+  { "category": "canned", "keywords": ["can", "canned", "tin", "jar", "preserve", "sauce"], "pantry_days": 730, "fridge_days": 730, "freezer_days": 730 },
+  { "category": "dry-goods", "keywords": ["flour", "sugar", "oat", "cereal", "pasta-dry", "lentil", "bean", "rice-dry", "cracker", "chips"], "pantry_days": 365, "fridge_days": 365, "freezer_days": 365 },
+  { "category": "beverage", "keywords": ["juice", "water", "coffee", "tea", "soda", "drink"], "pantry_days": 180, "fridge_days": 180, "freezer_days": 180 },
+  { "category": "other", "keywords": [], "pantry_days": 7, "fridge_days": 7, "freezer_days": 30 }
+]
