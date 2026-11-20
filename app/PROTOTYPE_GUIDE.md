@@ -28,8 +28,8 @@ Two notes before this guide is sent:
 ## 2. What RescueFit does
 
 A charity kitchen gets a pallet of donated food at the back door. Somebody
-has to decide, in a few minutes, what the kitchen can actually store and
-use before it spoils, and where the rest should go.
+has to decide, in a few minutes, what the kitchen can store and use
+before it spoils, and where the rest should go.
 
 Food rescue already solves finding the food. Nobody tells the kitchen
 whether it fits.
@@ -52,9 +52,9 @@ paper.
 
 ## 3. The decision is arithmetic, not a guess
 
-This is the part worth checking. **The accept and redirect decisions
-contain no AI at all.** They are a plain TypeScript function, `lib/fit.ts`,
-with 19 unit tests of its own. The model never decides whether food fits.
+**The accept and redirect decisions contain no AI at all.** They are a
+plain TypeScript function, `lib/fit.ts`, with 19 unit tests of its own. The
+model never decides whether food fits.
 
 Every line is tested against three limits:
 
