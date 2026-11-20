@@ -9,13 +9,19 @@ IMPAC 2026, Holland College, Innovation stream. Team RescueFit.
 
 | What | Where |
 |---|---|
-| Live app | _paste the Vercel URL here after deploying_ |
-| Source code | _paste the GitHub repository URL here_ |
+| Live app | <https://rescuefit-pei.vercel.app> |
+| Source code | <https://github.com/Yosef-dev116/RescueFit> |
 | Demo video | _paste the unlisted video link here_ |
 
-Everything else in this guide is final. These three links are the only
-fields left, because they do not exist until the app is deployed and the
-video is recorded.
+The live app is deployed and public. It needs no login and no API key: it
+runs in demo mode, which is labelled on every page that uses it.
+
+Two notes before this guide is sent:
+
+- The source repository is **private** as of this writing. A judge opening
+  that link gets a 404 until it is made public.
+- The demo video has not been recorded, so that link is the one field
+  still to fill.
 
 ---
 

@@ -1,6 +1,9 @@
 # Deploy RescueFit
 
-The goal is a URL the IMPAC judges can open. This takes about ten minutes.
+**It is already deployed: <https://rescuefit-pei.vercel.app>**
+
+That URL is public, needs no login, and runs in demo mode. The steps below
+are for redeploying, for adding a key, and for whoever picks this up next.
 
 Read this once before you start. Step 2 is the one that fails for everybody.
 
@@ -85,6 +88,15 @@ one or two dollars.
 ```bash
 npx vercel --prod
 ```
+
+The project is named `rescuefit` and the public alias
+`rescuefit-pei.vercel.app` is attached to it as a project domain, so it
+follows production deployments.
+
+One trap worth naming: `rescuefit.vercel.app` is **somebody else's
+project**. It answers 200 and its page title is "RescueFit", so it looks
+right at a glance. Check the title is "RescueFit: does this donation fit
+your kitchen?" before you paste any vercel.app URL into a document.
 
 ## 6. Prove the live path actually works
 
