@@ -11,7 +11,7 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "validate:data": "tsx scripts/validate-data.ts",
-    "smoke:live": "tsx scripts/smoke-live.ts"
+    "smoke:live": "tsx scripts/smoke-live.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.11.0",
