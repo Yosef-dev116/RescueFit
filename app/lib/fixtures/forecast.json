@@ -1,9 +1,0 @@
-[
-  { "date": "2026-11-20", "predicted_kg": 128, "low_kg": 96, "high_kg": 161 },
-  { "date": "2026-11-21", "predicted_kg": 142, "low_kg": 108, "high_kg": 178 },
-  { "date": "2026-11-22", "predicted_kg": 86, "low_kg": 62, "high_kg": 112 },
-  { "date": "2026-11-23", "predicted_kg": 74, "low_kg": 51, "high_kg": 98 },
-  { "date": "2026-11-24", "predicted_kg": 131, "low_kg": 99, "high_kg": 165 },
-  { "date": "2026-11-25", "predicted_kg": 137, "low_kg": 103, "high_kg": 172 },
-  { "date": "2026-11-26", "predicted_kg": 145, "low_kg": 110, "high_kg": 182 }
-]

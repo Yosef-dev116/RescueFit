@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { askClaude, currentMode, readableError } from "@/lib/claude";
 import { clientWarning, loadImpactFactors } from "@/lib/data";
 import { DEMO_PLAN } from "@/lib/demo";
+import { dietRules } from "@/lib/diet-rules";
 import { checkBodySize, checkRateLimit, InputError } from "@/lib/guard";
 import {
   IntakeItemSchema,
@@ -16,8 +17,9 @@ import {
 /**
  * The use-first plan (feature C4).
  *
- * POST the accepted items and the kitchen's meals per day. Get a three-day
- * menu that cooks the soonest expiry first.
+ * POST the accepted items, the kitchen's meals per day, and its diet flags.
+ * Get a three-day menu that cooks the soonest expiry first and keeps to the
+ * kitchen's diet rules.
  *
  * The sort order is decided here, not by the model. The model writes the
  * menu, and it is told the order it has to respect.
@@ -44,6 +46,7 @@ export async function POST(request: Request) {
       items?: unknown;
       meals_per_day?: unknown;
       kitchen?: unknown;
+      diet_flags?: unknown;
     };
 
     if (!Array.isArray(body.items) || body.items.length === 0) {
@@ -79,10 +82,18 @@ export async function POST(request: Request) {
         a.shelf_life_days - b.shelf_life_days || b.est_kg - a.est_kg,
     );
 
+    const diet = dietRules(body.diet_flags);
+
     const factors = loadImpactFactors();
     if (factors.warning) console.warn(`[plan] ${factors.warning}`);
     const generic = clientWarning(factors);
     const warnings = generic ? [generic] : [];
+    if (diet.ignored > 0) {
+      warnings.push(
+        `${diet.ignored} diet flag(s) are not known to this app, so the menu ` +
+          "does not check them. Review the menu against them by hand.",
+      );
+    }
 
     const mode = currentMode();
 
@@ -130,6 +141,14 @@ export async function POST(request: Request) {
         "- waste_warning names the one item most likely to be wasted, and",
         "  what to do about it today.",
         "- Plain kitchen English. No marketing words.",
+        ...(diet.rules.length > 0
+          ? [
+              "",
+              "Diet rules. These apply to every dish, and to anything you add",
+              "beyond the donated items:",
+              ...diet.rules.map((rule) => `- ${rule}`),
+            ]
+          : []),
       ].join("\n"),
       content: [
         {

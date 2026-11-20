@@ -77,7 +77,17 @@
 
   function plan(lots, kitchen, agencies, settings) {
     const needs = serviceNeeds(kitchen);
-    const remainingSpace = {...kitchen.ready_storage};
+    // Kept food holds storage from its arrival day until the service that
+    // uses it, then frees it. So space is tracked per storage type per day.
+    const space = {...kitchen.ready_storage};
+    const occupied = Object.fromEntries(Object.keys(space).map((type) => [type, {}]));
+    const freeOver = (type, from, to, held) => {
+      let free = Infinity;
+      for (let day = from; day <= to; day++) {
+        free = Math.min(free, space[type] - (occupied[type][day] || 0) - (held[day] || 0));
+      }
+      return free;
+    };
     const adjustable = {...kitchen.adjustable_purchases_kg};
     const prep = [...kitchen.prep_kg];
     const origin = agencies.find((a) => a.id === kitchen.origin_id);
@@ -86,7 +96,7 @@
     const priority = lots.slice().sort((a,b) => a.use_by - b.use_by || a.arrival - b.arrival);
     for (const lot of priority) {
       const eligible = lot.reviewed === true && Object.hasOwn(categoryLabels, lot.category)
-        && Object.hasOwn(remainingSpace, lot.storage) && Number.isFinite(lot.offered)
+        && Object.hasOwn(space, lot.storage) && Number.isFinite(lot.offered)
         && lot.offered > 0 && Number.isInteger(lot.arrival) && lot.arrival >= 1
         && Number.isInteger(lot.use_by) && lot.use_by >= lot.arrival
         && (lot.stage!=="collected" || (Number.isFinite(lot.collected) && lot.collected>=0 && lot.collected<=lot.offered));
@@ -96,14 +106,16 @@
         && cell.service.day >= lot.arrival && cell.service.day <= lot.use_by) : [];
       const allocations = [];
       const tempPrep = [...prep];
+      const held = {};
       let kept = 0;
       for (const cell of candidate) {
         const index = cell.service.day - 1;
-        const qty = clampKg(Math.min(cell.open, tempPrep[index],
-          Math.min(available, remainingSpace[lot.storage]) - kept));
+        const qty = clampKg(Math.min(cell.open, tempPrep[index], available - kept,
+          freeOver(lot.storage, lot.arrival, cell.service.day, held)));
         if (qty <= EPS) continue;
         allocations.push({cell, qty});
         tempPrep[index] = mass(tempPrep[index] - qty);
+        for (let day = lot.arrival; day <= cell.service.day; day++) held[day] = mass((held[day] || 0) + qty);
         kept = mass(kept + qty);
       }
       const wholePickup = lot.stage === "offer" && !lot.may_split && kept + EPS < lot.offered;
@@ -115,7 +127,11 @@
         cell.open = mass(cell.open - qty);
         prep[cell.service.day - 1] = mass(prep[cell.service.day - 1] - qty);
       }
-      if (kept > 0) remainingSpace[lot.storage] = mass(remainingSpace[lot.storage] - kept);
+      if (kept > 0) {
+        for (const [day, kg] of Object.entries(held)) {
+          occupied[lot.storage][day] = mass((occupied[lot.storage][day] || 0) + kg);
+        }
+      }
       const surplus = mass(Math.max(0, collected - kept));
       const potential = eligible && lot.stage === "collected" && lot.may_redirect && surplus > EPS && origin
         ? agencies.filter((a) => a.id !== origin.id && !(settings.closed || []).includes(a.id)).map((agency) => {
@@ -144,6 +160,9 @@
         allocation:allocations.map(({cell,qty}) => ({service_id:cell.service.id, day:cell.service.day, name:cell.service.name, qty})),
         unplaced:mass(surplus - (route?.qty || 0))});
     }
+    // Free space on each type's tightest day.
+    const remainingSpace = Object.fromEntries(Object.entries(space).map(([type, kg]) =>
+      [type, mass(kg - Math.max(0, ...Object.values(occupied[type])))]));
     return {rows, needs, remainingSpace, prep};
   }
 

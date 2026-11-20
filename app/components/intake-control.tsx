@@ -125,7 +125,14 @@ export function IntakeControl({ compact = false }: { compact?: boolean }) {
             capture="environment"
             className="sr-only"
             disabled={busy}
-            onChange={(event) => void onFile(event.target.files?.[0])}
+            onChange={(event) => {
+              // Take the file, then clear the input. A browser fires no
+              // change event when the same file is chosen again, so without
+              // this a failed upload of that photo could never be retried.
+              const file = event.target.files?.[0];
+              event.target.value = "";
+              void onFile(file);
+            }}
           />
 
           <button

@@ -5,15 +5,11 @@ import { haversineKm } from "@/lib/fit";
 import { NetworkMap } from "./map";
 
 /*
- * FAHD OWNS THIS PAGE (feature C3).
+ * The network page (feature C3): the agency map and the roster.
  *
- * Yosef wrote this placeholder so the nav never leads to a 404, and so the
- * Leaflet pattern is already proven. See app/network/map.tsx for the
- * dynamic import with ssr: false, which is the part that bites.
- *
- * haversineKm() from lib/fit.ts is exported for your distance column, and
- * it is the same function the redirect decision uses, so the map and the
- * fit page can never disagree about a distance.
+ * The distance column uses haversineKm() from lib/fit.ts, the same function
+ * the redirect decision uses, so this page and the fit check can never
+ * disagree about a distance.
  */
 
 export const metadata = {
@@ -66,7 +62,7 @@ export default function NetworkPage() {
       </div>
 
       <div className="mt-6">
-        <NetworkMap />
+        <NetworkMap agencies={agencies.value} homeId={home.id} />
       </div>
 
       <Box className="mt-4 overflow-hidden">

@@ -74,6 +74,7 @@ export function PlanView({
           items: keptItems,
           meals_per_day: agency.meals_per_day,
           kitchen: agency.name,
+          diet_flags: agency.diet_flags,
         }),
       });
 

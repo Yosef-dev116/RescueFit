@@ -55,6 +55,29 @@ test("whole, partial, blocked and multiple lots preserve fit limits", () => {
   assert.equal(two[0].kept+two[1].kept,6);
 });
 
+test("storage frees after the service that uses the food", () => {
+  // A 6 kg fridge. Day 1 carrots fill it for the day 1 soup. The soup uses
+  // them, so day 2 broccoli has room for the day 2 tray bake.
+  const kitchen = {...fixtures.kitchen, ready_storage:{...fixtures.kitchen.ready_storage, fridge:6}};
+  const carrots = {...sample, id:"C", offered:6, collected:6, arrival:1, use_by:1};
+  const broccoli = {...sample, id:"B", category:"broccoli", offered:3, collected:3, arrival:2, use_by:2};
+  const [first, next] = D.plan([carrots, broccoli], kitchen, fixtures.agencies, defaults).rows;
+  assert.equal(first.kept, 6);
+  assert.equal(next.kept, 3);
+  assert.equal(next.route, null);
+});
+
+test("storage stays held while food waits for a later service", () => {
+  // Carrots arrive day 1 for the day 1 soup and broccoli arrives day 1 for
+  // the day 2 tray bake. Both sit in the 6 kg fridge on day 1.
+  const kitchen = {...fixtures.kitchen, ready_storage:{...fixtures.kitchen.ready_storage, fridge:6}};
+  const carrots = {...sample, id:"C", offered:6, collected:6, arrival:1, use_by:1};
+  const broccoli = {...sample, id:"B", category:"broccoli", offered:3, collected:3, arrival:1, use_by:2};
+  const [first, next] = D.plan([carrots, broccoli], kitchen, fixtures.agencies, defaults).rows;
+  assert.equal(first.kept, 6);
+  assert.equal(next.kept, 0);
+});
+
 test("counted text is held for weight and recognized mass units are normalized", () => {
   const result = D.parseText("12 kg carrots, 4 kg potatoes, 20 rolls\n500 g cheese\n2 lb apples",fixtures.shelf);
   assert.deepEqual(result.map(({category,offered})=>[category,offered]),
@@ -106,8 +129,20 @@ test("the live engine reproduces the published Python run and responds to confir
   assert.equal(result.rescuefit.kg_offered,result.baseline.kg_offered);
 });
 
+// Test the page the app ships, which git tracks. demo/index.html is a
+// local build output that git ignores, so a clean checkout does not have it.
+const SHIPPED = path.join(root,"app/public/rescuefit/index.html");
+
+test("the shipped page is built from the current sources", () => {
+  const html = fs.readFileSync(SHIPPED,"utf8");
+  for (const name of ["simulation.js","decision.js","plots.js","workspace.js","workspace.css"]) {
+    assert.ok(html.includes(fs.readFileSync(path.join(root,"demo",name),"utf8")),
+      `app/public/rescuefit/index.html is older than demo/${name}. Run python3 model/build_demo.py.`);
+  }
+});
+
 test("generated workspace starts and completes the sample path without an external request", () => {
-  const html = fs.readFileSync(path.join(root,"demo/index.html"),"utf8");
+  const html = fs.readFileSync(SHIPPED,"utf8");
   const tabs = ["intake","fit","network","plan","impact","evidence"];
   const scripts = [...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)];
   const listeners={}, nodes={};
