@@ -72,13 +72,6 @@ emit("agencies.json", agencies)
 emit("shelf_life.json", shelf)
 emit("impact_factors.json", factors)
 emit("forecast.json", [])
-emit("demo.json", {"lot_id":"DEMO-001","food":"Carrots","category":"root_veg","storage":"fridge",
-    "offered_kg":12,"collected_kg":12,"kitchen_need_kg":8,"kitchen_on_hand_kg":2,"kitchen_allocated_kg":6,
-    "onward_pending_kg":6,"onward_transferred_kg":0,"shopping_reduction_kg":6,
-    "source_agency_id":"demo-01","suggested_agency_id":"demo-02","status":"pending",
-    "assumptions":["Synthetic already-collected lot. Destination confirmation starts pending.",
-                   "A completed handoff changes custody. Kitchen use is a separate event.",
-                   "The planned reduction assumes the purchase can still be changed."]})
 empty = {"kg_received":0,"kg_wasted_at_agency":0,"meals":0,"co2e_kg":0,"cad":0}
 if args.reset_results or not (OUT / "scenario_results.json").is_file():
     emit("scenario_results.json", {"dataset_status":"placeholder, not simulation output","days":30,"donors":81,

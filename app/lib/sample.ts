@@ -1,6 +1,6 @@
-import { findShelfLife, shelfLifeDays } from "./data";
 import shelfLifeFixture from "./fixtures/shelf_life.json";
 import { DEMO_PHOTO_ITEMS } from "./demo";
+import { normaliseItems } from "./intake";
 import { ShelfLifeTableSchema, type IntakeItem } from "./schemas";
 
 /**
@@ -13,18 +13,5 @@ import { ShelfLifeTableSchema, type IntakeItem } from "./schemas";
 export function sampleConsignment(): IntakeItem[] {
   const table = ShelfLifeTableSchema.parse(shelfLifeFixture);
 
-  return DEMO_PHOTO_ITEMS.map((raw) => {
-    const row = findShelfLife(table, raw.category, raw.name);
-    const storage = raw.storage as IntakeItem["storage"];
-    return {
-      name: raw.name,
-      category: row.category,
-      qty: raw.qty,
-      unit: raw.unit,
-      est_kg: raw.est_kg,
-      storage,
-      shelf_life_days: shelfLifeDays(row, storage),
-      confidence: raw.confidence,
-    };
-  });
+  return normaliseItems(DEMO_PHOTO_ITEMS, table);
 }

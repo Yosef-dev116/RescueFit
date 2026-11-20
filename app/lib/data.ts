@@ -4,19 +4,16 @@ import { z } from "zod";
 
 import {
   AgenciesSchema,
-  ForecastSchema,
   ImpactFactorsSchema,
   ScenarioResultsSchema,
   ShelfLifeTableSchema,
   type Agency,
-  type ForecastDay,
   type ImpactFactors,
   type ScenarioResults,
   type ShelfLife,
 } from "./schemas";
 
 import agenciesFixture from "./fixtures/agencies.json";
-import forecastFixture from "./fixtures/forecast.json";
 import impactFactorsFixture from "./fixtures/impact_factors.json";
 import scenarioResultsFixture from "./fixtures/scenario_results.json";
 import shelfLifeFixture from "./fixtures/shelf_life.json";
@@ -124,10 +121,6 @@ export function loadScenarioResults(): Loaded<ScenarioResults> {
     ScenarioResultsSchema,
     scenarioResultsFixture,
   );
-}
-
-export function loadForecast(): Loaded<ForecastDay[]> {
-  return load("forecast.json", ForecastSchema, forecastFixture);
 }
 
 // ----------------------------------------------------------- shelf life map

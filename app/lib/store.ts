@@ -71,16 +71,6 @@ export function readConsignment(): Consignment | null {
   }
 }
 
-export function clearConsignment(): void {
-  if (typeof window === "undefined") return;
-  try {
-    window.sessionStorage.removeItem(KEY);
-    window.dispatchEvent(new Event(CHANGED));
-  } catch {
-    // Nothing to do. An unreadable store is the same as an empty one.
-  }
-}
-
 // --------------------------------------------------------------- the hook
 
 /*

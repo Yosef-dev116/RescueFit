@@ -106,8 +106,6 @@ export const ForecastSchema = z.array(ForecastDaySchema);
 
 // ------------------------------------------------------------ intake items
 
-export const UNITS = ["each", "kg", "tray", "loaf", "case", "bag", "L"] as const;
-
 /**
  * The item shape the intake API returns. All three people use it.
  */
