@@ -1,26 +1,237 @@
 @import "tailwindcss";
 
+/*
+ * RescueFit: the form-paper world.
+ *
+ * A donation is freight, and freight travels with its paperwork. The whole
+ * surface is a consignment document: manila ground, white form stock for
+ * data, hairline rules, carbon black ink, one signal red for the stamp and
+ * for the item that expires first, and a faded carbon blue as second ink.
+ *
+ * See .impeccable/surfaces/app-page-tsx.md for the direction contract.
+ */
+
+@theme {
+  /* Ground. Manila kraft, not cream: it is greyer and a touch green. */
+  --color-manila: #d9cdb0;
+  --color-manila-dark: #c4b595;
+  --color-manila-deep: #a89874;
+
+  /* Form stock. Not pure white, so the rules can sit on top of it. */
+  --color-stock: #f6f3ea;
+  --color-stock-shade: #e9e4d6;
+
+  /* Carbon black ink, and its lighter impressions. */
+  --color-ink: #1c1a16;
+  --color-ink-soft: #4a463c;
+  --color-ink-faint: #7c7667;
+
+  /* The second ink. A duplicate copy is printed in carbon blue. */
+  --color-carbon: #2f4b6e;
+  --color-carbon-soft: #5b7694;
+
+  /* The stamp. Reserved for the stamp and the soonest expiry. Nothing else. */
+  --color-stamp: #b2291f;
+  --color-stamp-soft: #d6594c;
+
+  /* The one other signal: a cleared, filed line. */
+  --color-filed: #2f5d43;
+
+  --font-placard: var(--font-archivo-black), "Arial Black", sans-serif;
+  --font-body: var(--font-barlow), system-ui, sans-serif;
+  --font-typed: var(--font-courier-prime), "Courier New", monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/*
+ * The physical scene decides this. A volunteer stands at a back door in
+ * daylight, holding a phone in one hand. Paper under daylight is light.
+ * So there is no dark mode here, on purpose.
+ */
+body {
+  background-color: var(--color-manila);
+  /*
+   * Kraft fibre. Two very low-contrast dot fields at different scales, so
+   * the ground reads as stock rather than as a flat fill.
+   */
+  background-image:
+    radial-gradient(
+      circle at 1px 1px,
+      rgba(28, 26, 22, 0.055) 1px,
+      transparent 0
+    ),
+    radial-gradient(
+      circle at 1px 1px,
+      rgba(168, 152, 116, 0.5) 1px,
+      transparent 0
+    );
+  background-size:
+    7px 7px,
+    3px 3px;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Browser surfaces. These parts were not drawn by hand, and they still
+ * carry the design. A default caret or selection is the tell that a page
+ * was assembled rather than built.
+ */
+::selection {
+  background-color: var(--color-stamp);
+  color: var(--color-stock);
+}
+
+:root {
+  caret-color: var(--color-stamp);
+  accent-color: var(--color-carbon);
+  scrollbar-color: var(--color-manila-deep) var(--color-manila-dark);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-manila-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-manila-deep);
+  border: 2px solid var(--color-manila-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-ink-faint);
+}
+
+a {
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: from-font;
+}
+
+/* The focus ring is a stamped box, like every other control here. */
+:focus-visible {
+  outline: 2px solid var(--color-stamp);
+  outline-offset: 2px;
+}
+
+/* Every figure on a form is typed, and typed figures line up in columns. */
+.typed {
+  font-family: var(--font-typed);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.01em;
+}
+
+/* Stamped placard caps. The masthead and the section numbers. */
+.placard {
+  font-family: var(--font-placard);
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.92;
+}
+
+/* A small typed label above a box, the way a form names its fields. */
+.field-label {
+  font-family: var(--font-typed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-carbon);
+}
+
+/*
+ * A ruled form box. The container commitment: every reading on this
+ * surface sits in one of these, and an empty one still shows its rules.
+ */
+.form-box {
+  background-color: var(--color-stock);
+  border: 1px solid var(--color-ink);
+  box-shadow: 2px 3px 0 0 rgba(28, 26, 22, 0.17);
+}
+
+.form-box-quiet {
+  background-color: var(--color-stock);
+  border: 1px solid var(--color-ink-faint);
+}
+
+/*
+ * The empty box shows the form, not a blank. Diagonal ruling is what a
+ * paper form does with a field that has nothing in it.
+ */
+.ruled-empty {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 7px,
+    rgba(124, 118, 103, 0.3) 7px 8px
+  );
+}
+
+/*
+ * A rubber stamp impression. Rotated, with an uneven ink edge, because a
+ * stamp is pressed by a hand and never lands square.
+ */
+.stamp {
+  font-family: var(--font-placard);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 2.5px solid currentColor;
+  padding: 0.18em 0.5em 0.14em;
+  border-radius: 2px;
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+}
+
+/* A perforated tear line closes a section, the way a stub tears off. */
+.perforation {
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-ink-faint) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+/*
+ * The one authored motion moment: a line of the waybill is stamped. The
+ * stamp lands from slightly above and over-presses, the way a hand does.
+ * It starts from an already-visible state, so nothing is hidden by timing.
+ */
+@keyframes press {
+  0% {
+    transform: translateY(-14%) rotate(-7deg) scale(1.16);
+    opacity: 0;
+  }
+  58% {
+    transform: translateY(0) rotate(-2.2deg) scale(0.955);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotate(-2.2deg) scale(1);
+    opacity: 0.88;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.stamp-press {
+  animation: press 440ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-press {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+  }
 }
