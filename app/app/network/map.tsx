@@ -26,6 +26,21 @@ import { EmptyField } from "@/components/document";
  * 3. The OpenStreetMap tile layer needs its attribution, which is a
  *    licence condition, not a courtesy:
  *    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+ *
+ * One more, and it will cost you an hour if you hit it cold. The default
+ * marker icon is missing in react-leaflet, and the popular fix online points
+ * L.Icon.Default at unpkg.com. Do not use it. This app sends a
+ * Content-Security-Policy that allows images from itself and from the
+ * OpenStreetMap tile hosts only, so an unpkg URL is blocked and the marker
+ * stays missing with a different cause. Import the images instead, which
+ * bundles them and serves them from this origin:
+ *
+ *   import markerIcon from "leaflet/dist/images/marker-icon.png";
+ *   import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+ *   import markerShadow from "leaflet/dist/images/marker-shadow.png";
+ *
+ * Raster tiles need no other policy change. A search box or vector tiles
+ * would, because those are fetch() calls and need connect-src.
  */
 
 const AgencyMap = dynamic(() => import("./agency-map-placeholder"), {

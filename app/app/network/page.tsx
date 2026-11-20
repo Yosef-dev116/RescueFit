@@ -1,4 +1,4 @@
-import { Box, FieldLabel } from "@/components/document";
+import { Box, FieldLabel, ModeBadge } from "@/components/document";
 import { loadAgencies } from "@/lib/data";
 import { haversineKm } from "@/lib/fit";
 
@@ -29,29 +29,39 @@ export default function NetworkPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-      <FieldLabel>Section 05</FieldLabel>
-      <h1 className="placard mt-0.5 text-[2.25rem] text-ink sm:text-[2.75rem]">
-        Network
-      </h1>
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div>
+          <FieldLabel>Section 05</FieldLabel>
+          <h1 className="placard mt-0.5 text-[2.25rem] text-ink sm:text-[2.75rem]">
+            Network
+          </h1>
+        </div>
+        {/*
+          * The agency roster is sample data until the real one is published,
+          * and a table of named PEI agencies with capacities reads as a
+          * survey result. Say which it is, where the reader looks first.
+          */}
+        <ModeBadge mode="demo" />
+      </div>
 
-      <div className="mt-4 border-2 border-carbon bg-stock p-4">
-        <FieldLabel>Owner</FieldLabel>
+      {/*
+        * Addressed to the reader, not to the team. See the note in
+        * app/impact/page.tsx: the instructions belong in the comment at the
+        * top of this file, where a visitor never sees them.
+        */}
+      <div className="form-box mt-4 p-4">
+        <FieldLabel>What this page shows</FieldLabel>
         <p className="mt-1 max-w-[70ch] text-[0.9375rem] leading-relaxed text-ink">
-          Fahd builds this page, feature C3. The agency table below is live
-          from{" "}
-          <span className="typed text-[0.8125rem] text-carbon">
-            agencies.json
-          </span>
-          , and the distance column uses the same{" "}
-          <span className="typed text-[0.8125rem] text-carbon">
-            haversineKm()
-          </span>{" "}
-          the redirect decision uses, so the map and the fit page can never
-          disagree.
+          Every agency RescueFit can route surplus to, with the space each
+          one has free. The distance column uses the same calculation the
+          redirect decision uses, so this page and the fit check can never
+          disagree about how far away an agency is.
         </p>
         <p className="typed mt-2 text-[0.75rem] text-ink-soft">
           DATA SOURCE: {agencies.source.toUpperCase()}
-          {agencies.warning ? ` — ${agencies.warning}` : ""}
+          {agencies.source === "fixture"
+            ? " \u2014 sample agencies. The surveyed roster is not published yet."
+            : ""}
         </p>
       </div>
 

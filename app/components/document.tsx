@@ -10,6 +10,72 @@ import type { Mode } from "@/lib/schemas";
  * blank space.
  */
 
+/*
+ * The icon set. Three marks, drawn, sharing one stroke width and one cap
+ * style, so they read as a set and not as whatever the font happened to
+ * carry. They were typographic glyphs before, which left the stroke weight
+ * to the font designer and changed with the face.
+ *
+ * Each one is decorative. Every caller already states the meaning in words
+ * beside it, so they are hidden from a screen reader.
+ */
+
+const STROKE = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.75,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+} as const;
+
+/** The disclosure mark on a line that tears open. */
+export function CaretIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 12 12"
+      width="9"
+      height="9"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      <path d="M4.5 2.5 8.5 6l-4 3.5" {...STROKE} />
+    </svg>
+  );
+}
+
+/** Forward, to the next step of the same job. */
+export function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 16 12"
+      width="13"
+      height="10"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      <path d="M1.5 6h12m-4.5-4.5L13.5 6 9 10.5" {...STROKE} />
+    </svg>
+  );
+}
+
+/** The mode lamp. Filled, because it reads as a lit indicator. */
+export function DotIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 8 8"
+      width="7"
+      height="7"
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+    >
+      <circle cx="4" cy="4" r="3" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function FieldLabel({
   children,
   className = "",
@@ -115,19 +181,26 @@ export function Stamp({
   children,
   tone = "neutral",
   animate = false,
+  /**
+   * Wear this one impression. Pass it only for the event that earns it,
+   * which on the waybill is the single line with the lowest day count.
+   * Two worn stamps on one surface turn wear back into a page filter.
+   */
+  worn = false,
   className = "",
 }: {
   children: ReactNode;
   tone?: StampTone;
   animate?: boolean;
+  worn?: boolean;
   className?: string;
 }) {
   return (
     <span
       className={`stamp inline-block text-[0.6875rem] ${STAMP_TONE[tone]} ${
         animate ? "stamp-press" : ""
-      } ${className}`}
-      style={{ transform: "rotate(-2.2deg)" }}
+      } ${worn ? "stamp-worn" : ""} ${className}`}
+      style={{ transform: `rotate(${worn ? -3.4 : -2.2}deg)` }}
     >
       {children}
     </span>
@@ -144,13 +217,13 @@ export function ModeBadge({ mode }: { mode: Mode }) {
   if (mode === "live") {
     return (
       <span className="typed inline-flex items-center gap-1.5 border border-filed bg-stock px-2 py-1 text-[0.6875rem] text-filed">
-        <span aria-hidden="true">&#9679;</span> LIVE MODEL READING
+        <DotIcon /> LIVE MODEL READING
       </span>
     );
   }
   return (
     <span className="typed inline-flex items-center gap-1.5 border border-stamp bg-stamp px-2 py-1 text-[0.6875rem] text-stock">
-      <span aria-hidden="true">&#9679;</span> DEMO DATA, NOT A REAL READING
+      <DotIcon /> DEMO DATA, NOT A REAL READING
     </span>
   );
 }
@@ -186,12 +259,15 @@ export function StorageGauge({
     <div className="form-box p-3">
       <div className="flex items-baseline justify-between gap-2">
         <FieldLabel>{label}</FieldLabel>
-        <span
-          className={`typed text-[0.8125rem] ${
-            tight ? "text-stamp" : "text-ink"
-          }`}
-        >
-          {leftKg.toFixed(1)}
+        {/*
+          * The headline is the free space as it stands today, because that
+          * is what the section's own prose promises the gauge holds. It used
+          * to be the space left after the pending claim, so a fridge with
+          * 80 kg free read "0.0 / 300 kg" while the line under it said
+          * "claims 80.0 kg". Both figures are named below instead.
+          */}
+        <span className="typed text-[0.8125rem] text-ink">
+          {freeKg.toFixed(1)}
           <span className="text-ink-faint"> / {capacityKg.toFixed(0)} kg</span>
         </span>
       </div>
@@ -199,9 +275,9 @@ export function StorageGauge({
       <div
         className="mt-2 flex h-5 w-full border border-ink bg-stock-shade"
         role="img"
-        aria-label={`${label}: ${leftKg.toFixed(1)} kilograms free of ${capacityKg.toFixed(0)}${
+        aria-label={`${label}: ${freeKg.toFixed(1)} kilograms free of ${capacityKg.toFixed(0)}${
           claimedKg > 0
-            ? `, with ${claimedKg.toFixed(1)} kilograms claimed by this donation`
+            ? `, with ${claimedKg.toFixed(1)} kilograms claimed by this donation, leaving ${leftKg.toFixed(1)} kilograms`
             : ""
         }`}
       >
@@ -221,14 +297,23 @@ export function StorageGauge({
         />
       </div>
 
-      <p
-        className={`typed mt-1.5 text-[0.625rem] ${
-          tight ? "text-stamp" : "text-ink-faint"
-        }`}
-      >
-        {claimedKg > 0
-          ? `free after this donation claims ${claimedKg.toFixed(1)} kg`
-          : "free now, nothing claimed yet"}
+      {/*
+        * The headline above is free space today, so it stays in plain ink:
+        * 80 kg free is a fact, not an alarm. The red belongs to the figure
+        * that is actually bad news, which is what the delivery leaves.
+        */}
+      <p className="typed mt-1.5 text-[0.625rem] text-ink-faint">
+        {claimedKg > 0 ? (
+          <>
+            free now &middot; this donation claims {claimedKg.toFixed(1)} kg,
+            leaving{" "}
+            <span className={tight ? "text-stamp" : "text-ink"}>
+              {leftKg.toFixed(1)} kg
+            </span>
+          </>
+        ) : (
+          "free now, nothing claimed yet"
+        )}
       </p>
     </div>
   );

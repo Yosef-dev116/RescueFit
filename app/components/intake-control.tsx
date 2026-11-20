@@ -115,7 +115,7 @@ export function IntakeControl({ compact = false }: { compact?: boolean }) {
         }`}
       >
         {/* The photo field. */}
-        <div className="bg-stock p-4">
+        <div className="bg-stock p-3">
           <FieldLabel>6a &middot; Photograph of the delivery</FieldLabel>
 
           <input
@@ -132,7 +132,7 @@ export function IntakeControl({ compact = false }: { compact?: boolean }) {
             type="button"
             disabled={busy}
             onClick={() => fileRef.current?.click()}
-            className="mt-2 flex w-full cursor-pointer items-center justify-center gap-2 border-2 border-dashed border-ink-faint bg-stock-shade px-4 py-6 text-center transition-colors hover:border-stamp hover:bg-stock disabled:cursor-not-allowed disabled:opacity-55"
+            className="mt-1.5 flex w-full cursor-pointer items-center justify-center gap-2 border-2 border-dashed border-ink-faint bg-stock-shade px-4 py-3.5 text-center transition-colors hover:border-stamp hover:bg-stock disabled:cursor-not-allowed disabled:opacity-55"
           >
             {preview ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -155,16 +155,16 @@ export function IntakeControl({ compact = false }: { compact?: boolean }) {
         </div>
 
         {/* The message field. */}
-        <div className="bg-stock p-4">
+        <div className="bg-stock p-3">
           <FieldLabel>6b &middot; Or paste the donor&#39;s message</FieldLabel>
 
           <textarea
             value={message}
             disabled={busy}
-            rows={3}
+            rows={2}
             onChange={(event) => setMessage(event.target.value)}
             placeholder="40 sandwiches, 2 trays of lasagna, a case of bananas going brown"
-            className="typed mt-2 w-full resize-y border border-ink bg-stock-shade p-2.5 text-[0.8125rem] text-ink placeholder:text-ink-faint focus:bg-stock focus:outline-none disabled:opacity-55"
+            className="typed mt-1.5 w-full resize-y border border-ink bg-stock-shade p-2 text-[0.8125rem] text-ink placeholder:text-ink-faint focus:bg-stock focus:outline-none disabled:opacity-55"
           />
 
           <div className="mt-2 flex flex-wrap gap-2">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import {
+  ArrowIcon,
   Box,
   FieldLabel,
   ModeBadge,
@@ -197,7 +198,7 @@ export function FitView({
       </div>
 
       {dataWarnings.length > 0 ? (
-        <div className="mt-4 border-l-2 border-carbon bg-stock px-3 py-2">
+        <div className="form-box-quiet mt-4 px-3 py-2">
           <FieldLabel>Data note</FieldLabel>
           <ul className="typed mt-1 space-y-0.5 text-[0.75rem] text-ink-soft">
             {dataWarnings.map((warning) => (
@@ -214,7 +215,7 @@ export function FitView({
           href="/plan"
           className="placard border-2 border-ink bg-stamp px-4 py-2.5 text-[0.9375rem] text-stock no-underline transition-colors hover:bg-ink"
         >
-          Plan the kept food &#8594;
+          Plan the kept food <ArrowIcon className="ml-1.5 inline-block align-[-0.05em]" />
         </Link>
         <Link
           href="/intake"

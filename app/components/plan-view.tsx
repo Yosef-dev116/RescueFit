@@ -303,7 +303,7 @@ export function PlanView({
           ) : null}
 
           {status.warnings.length > 0 ? (
-            <div className="mt-4 border-l-2 border-carbon bg-stock px-3 py-2">
+            <div className="form-box-quiet mt-4 px-3 py-2">
               <FieldLabel>Data note</FieldLabel>
               <ul className="typed mt-1 space-y-0.5 text-[0.75rem] text-ink-soft">
                 {status.warnings.map((warning) => (

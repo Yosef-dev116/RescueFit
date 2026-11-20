@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import type { FitResult } from "@/lib/fit";
-import { Stamp, type StampTone } from "./document";
+import { CaretIcon, Stamp, type StampTone } from "./document";
 
 /*
  * The waybill: the ruled table of lines that is the centre of the document.
@@ -42,10 +42,27 @@ export function Waybill({
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const soonest = results.reduce(
-    (low, result) => Math.min(low, result.item.shelf_life_days),
-    Number.POSITIVE_INFINITY,
-  );
+  /*
+   * Exactly one line carries the red, even when two share the lowest day
+   * count. The world reserves the signal red for "the single item that
+   * expires first", so a tie that paints two lines red halves the only
+   * signal the document has, and stamps "FIRST TO GO" on both at once.
+   *
+   * The tie breaks on the heavier line, then on the order the lines were
+   * read. The heavier line is the one that wastes more if it is missed.
+   */
+  const dyingIndex = results.reduce((worst, result, index) => {
+    if (worst < 0) return index;
+    const best = results[worst].item;
+    const here = result.item;
+    if (here.shelf_life_days !== best.shelf_life_days) {
+      return here.shelf_life_days < best.shelf_life_days ? index : worst;
+    }
+    if (here.est_kg !== best.est_kg) {
+      return here.est_kg > best.est_kg ? index : worst;
+    }
+    return worst;
+  }, -1);
 
   return (
     <div className="form-box overflow-hidden">
@@ -65,7 +82,7 @@ export function Waybill({
       <ul>
         {results.map((result, index) => {
           const decision = DECISION[result.decision];
-          const dying = result.item.shelf_life_days === soonest;
+          const dying = index === dyingIndex;
           const open = openIndex === index;
 
           return (
@@ -79,7 +96,7 @@ export function Waybill({
                 type="button"
                 aria-expanded={open}
                 onClick={() => setOpenIndex(open ? null : index)}
-                className="w-full cursor-pointer px-3 py-2 text-left transition-colors hover:bg-stock-shade"
+                className="w-full cursor-pointer px-3 py-1.5 text-left transition-colors hover:bg-stock-shade"
               >
                 <div className="grid grid-cols-[1.75rem_minmax(0,1fr)_7.5rem] items-center gap-2 md:grid-cols-[1.75rem_minmax(0,2.4fr)_4.5rem_4.5rem_4.5rem_5rem_7.5rem]">
                   <span
@@ -140,17 +157,18 @@ export function Waybill({
                     <Stamp
                       tone={decision.tone}
                       animate={animate}
+                      worn={dying}
                       className={animate ? "" : undefined}
                     >
                       {decision.label}
                     </Stamp>
                     <span
                       aria-hidden="true"
-                      className={`typed text-[0.625rem] text-ink-faint transition-transform ${
+                      className={`inline-flex text-ink-faint transition-transform ${
                         open ? "rotate-90" : ""
                       }`}
                     >
-                      &#9656;
+                      <CaretIcon />
                     </span>
                   </span>
                 </div>
@@ -194,7 +212,7 @@ export function Waybill({
                   </div>
 
                   {result.redirect_to ? (
-                    <p className="mt-3 border-l-2 border-stamp bg-stock py-2 pl-3 text-[0.875rem] text-ink">
+                    <p className="form-box-quiet mt-3 px-3 py-2 text-[0.875rem] text-ink">
                       <span className="field-label mb-0.5 block">
                         Routed to
                       </span>
