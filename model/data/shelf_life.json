@@ -1,0 +1,207 @@
+[
+  {
+    "category": "bread",
+    "keywords": [
+      "bread",
+      "bagel",
+      "roll",
+      "bun"
+    ],
+    "pantry_days": 4,
+    "fridge_days": 4,
+    "freezer_days": 45,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "root_veg",
+    "keywords": [
+      "carrot",
+      "beet",
+      "turnip"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 7,
+    "freezer_days": 90,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "leafy_veg",
+    "keywords": [
+      "lettuce",
+      "spinach",
+      "kale"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 3,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "fruit",
+    "keywords": [
+      "apple",
+      "pear",
+      "orange"
+    ],
+    "pantry_days": 3,
+    "fridge_days": 7,
+    "freezer_days": 90,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "berries",
+    "keywords": [
+      "berry",
+      "strawberry",
+      "blueberry"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 2,
+    "freezer_days": 90,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "potatoes",
+    "keywords": [
+      "potato"
+    ],
+    "pantry_days": 10,
+    "fridge_days": 0,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "tomatoes",
+    "keywords": [
+      "tomato"
+    ],
+    "pantry_days": 3,
+    "fridge_days": 0,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "broccoli",
+    "keywords": [
+      "broccoli",
+      "cauliflower"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 3,
+    "freezer_days": 75,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "milk",
+    "keywords": [
+      "milk"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 4,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "yogurt",
+    "keywords": [
+      "yogurt",
+      "yoghurt"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 5,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "cheese",
+    "keywords": [
+      "cheese"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 7,
+    "freezer_days": 60,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "eggs",
+    "keywords": [
+      "egg"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 7,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "canned_beans",
+    "keywords": [
+      "canned beans",
+      "chickpeas",
+      "lentils"
+    ],
+    "pantry_days": 60,
+    "fridge_days": 0,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "dry_grains",
+    "keywords": [
+      "rice",
+      "pasta",
+      "oats"
+    ],
+    "pantry_days": 90,
+    "fridge_days": 0,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "frozen_veg",
+    "keywords": [
+      "frozen peas",
+      "frozen vegetables"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 0,
+    "freezer_days": 90,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "frozen_meat",
+    "keywords": [
+      "frozen chicken",
+      "frozen meat"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 0,
+    "freezer_days": 60,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "bakery",
+    "keywords": [
+      "muffin",
+      "pastry",
+      "croissant",
+      "cookie"
+    ],
+    "pantry_days": 2,
+    "fridge_days": 0,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  },
+  {
+    "category": "prepared",
+    "keywords": [
+      "lasagna",
+      "sandwich",
+      "prepared meal",
+      "casserole"
+    ],
+    "pantry_days": 0,
+    "fridge_days": 1,
+    "freezer_days": 0,
+    "dataset_status": "Synthetic remaining-use window for the scenario model"
+  }
+]

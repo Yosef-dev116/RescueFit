@@ -1,0 +1,508 @@
+[
+  {
+    "id": "demo-01",
+    "name": "Demo kitchen 01",
+    "town": "Charlottetown",
+    "lat": 46.238,
+    "lon": -63.132,
+    "capacity_kg": {
+      "fridge": 33,
+      "freezer": 42,
+      "dry": 56
+    },
+    "free_kg": {
+      "fridge": 18.2,
+      "freezer": 23.1,
+      "dry": 30.8
+    },
+    "meals_per_day": 33,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-02",
+    "name": "Demo kitchen 02",
+    "town": "Stratford",
+    "lat": 46.219,
+    "lon": -63.09,
+    "capacity_kg": {
+      "fridge": 36,
+      "freezer": 46,
+      "dry": 62
+    },
+    "free_kg": {
+      "fridge": 19.8,
+      "freezer": 25.3,
+      "dry": 34.1
+    },
+    "meals_per_day": 36,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-03",
+    "name": "Demo kitchen 03",
+    "town": "Cornwall",
+    "lat": 46.233,
+    "lon": -63.218,
+    "capacity_kg": {
+      "fridge": 39,
+      "freezer": 50,
+      "dry": 68
+    },
+    "free_kg": {
+      "fridge": 21.5,
+      "freezer": 27.5,
+      "dry": 37.4
+    },
+    "meals_per_day": 39,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-04",
+    "name": "Demo kitchen 04",
+    "town": "Summerside",
+    "lat": 46.395,
+    "lon": -63.79,
+    "capacity_kg": {
+      "fridge": 42,
+      "freezer": 54,
+      "dry": 74
+    },
+    "free_kg": {
+      "fridge": 23.1,
+      "freezer": 29.7,
+      "dry": 40.7
+    },
+    "meals_per_day": 42,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-05",
+    "name": "Demo kitchen 05",
+    "town": "Kensington",
+    "lat": 46.44,
+    "lon": -63.64,
+    "capacity_kg": {
+      "fridge": 45,
+      "freezer": 58,
+      "dry": 80
+    },
+    "free_kg": {
+      "fridge": 24.8,
+      "freezer": 31.9,
+      "dry": 44.0
+    },
+    "meals_per_day": 45,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-06",
+    "name": "Demo kitchen 06",
+    "town": "Montague",
+    "lat": 46.166,
+    "lon": -62.648,
+    "capacity_kg": {
+      "fridge": 48,
+      "freezer": 62,
+      "dry": 86
+    },
+    "free_kg": {
+      "fridge": 26.4,
+      "freezer": 34.1,
+      "dry": 47.3
+    },
+    "meals_per_day": 48,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-07",
+    "name": "Demo kitchen 07",
+    "town": "Souris",
+    "lat": 46.355,
+    "lon": -62.252,
+    "capacity_kg": {
+      "fridge": 51,
+      "freezer": 66,
+      "dry": 92
+    },
+    "free_kg": {
+      "fridge": 28.1,
+      "freezer": 36.3,
+      "dry": 50.6
+    },
+    "meals_per_day": 51,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-08",
+    "name": "Demo kitchen 08",
+    "town": "Alberton",
+    "lat": 46.815,
+    "lon": -64.067,
+    "capacity_kg": {
+      "fridge": 54,
+      "freezer": 70,
+      "dry": 98
+    },
+    "free_kg": {
+      "fridge": 29.7,
+      "freezer": 38.5,
+      "dry": 53.9
+    },
+    "meals_per_day": 54,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-09",
+    "name": "Demo kitchen 09",
+    "town": "Tignish",
+    "lat": 46.949,
+    "lon": -64.034,
+    "capacity_kg": {
+      "fridge": 57,
+      "freezer": 74,
+      "dry": 104
+    },
+    "free_kg": {
+      "fridge": 31.4,
+      "freezer": 40.7,
+      "dry": 57.2
+    },
+    "meals_per_day": 57,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-10",
+    "name": "Demo kitchen 10",
+    "town": "O'Leary",
+    "lat": 46.707,
+    "lon": -64.229,
+    "capacity_kg": {
+      "fridge": 30,
+      "freezer": 38,
+      "dry": 50
+    },
+    "free_kg": {
+      "fridge": 16.5,
+      "freezer": 20.9,
+      "dry": 27.5
+    },
+    "meals_per_day": 30,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-11",
+    "name": "Demo kitchen 11",
+    "town": "Hunter River",
+    "lat": 46.356,
+    "lon": -63.353,
+    "capacity_kg": {
+      "fridge": 33,
+      "freezer": 42,
+      "dry": 56
+    },
+    "free_kg": {
+      "fridge": 18.2,
+      "freezer": 23.1,
+      "dry": 30.8
+    },
+    "meals_per_day": 33,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-12",
+    "name": "Demo kitchen 12",
+    "town": "Cavendish",
+    "lat": 46.491,
+    "lon": -63.379,
+    "capacity_kg": {
+      "fridge": 36,
+      "freezer": 46,
+      "dry": 62
+    },
+    "free_kg": {
+      "fridge": 19.8,
+      "freezer": 25.3,
+      "dry": 34.1
+    },
+    "meals_per_day": 36,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-13",
+    "name": "Demo kitchen 13",
+    "town": "North Rustico",
+    "lat": 46.458,
+    "lon": -63.309,
+    "capacity_kg": {
+      "fridge": 39,
+      "freezer": 50,
+      "dry": 68
+    },
+    "free_kg": {
+      "fridge": 21.5,
+      "freezer": 27.5,
+      "dry": 37.4
+    },
+    "meals_per_day": 39,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-14",
+    "name": "Demo kitchen 14",
+    "town": "Borden-Carleton",
+    "lat": 46.252,
+    "lon": -63.692,
+    "capacity_kg": {
+      "fridge": 42,
+      "freezer": 54,
+      "dry": 74
+    },
+    "free_kg": {
+      "fridge": 23.1,
+      "freezer": 29.7,
+      "dry": 40.7
+    },
+    "meals_per_day": 42,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-15",
+    "name": "Demo kitchen 15",
+    "town": "Kinkora",
+    "lat": 46.327,
+    "lon": -63.595,
+    "capacity_kg": {
+      "fridge": 45,
+      "freezer": 58,
+      "dry": 80
+    },
+    "free_kg": {
+      "fridge": 24.8,
+      "freezer": 31.9,
+      "dry": 44.0
+    },
+    "meals_per_day": 45,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-16",
+    "name": "Demo kitchen 16",
+    "town": "Tyne Valley",
+    "lat": 46.574,
+    "lon": -64.024,
+    "capacity_kg": {
+      "fridge": 48,
+      "freezer": 62,
+      "dry": 86
+    },
+    "free_kg": {
+      "fridge": 26.4,
+      "freezer": 34.1,
+      "dry": 47.3
+    },
+    "meals_per_day": 48,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-17",
+    "name": "Demo kitchen 17",
+    "town": "Miscouche",
+    "lat": 46.436,
+    "lon": -63.863,
+    "capacity_kg": {
+      "fridge": 51,
+      "freezer": 66,
+      "dry": 92
+    },
+    "free_kg": {
+      "fridge": 28.1,
+      "freezer": 36.3,
+      "dry": 50.6
+    },
+    "meals_per_day": 51,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-18",
+    "name": "Demo kitchen 18",
+    "town": "Georgetown",
+    "lat": 46.186,
+    "lon": -62.533,
+    "capacity_kg": {
+      "fridge": 54,
+      "freezer": 70,
+      "dry": 98
+    },
+    "free_kg": {
+      "fridge": 29.7,
+      "freezer": 38.5,
+      "dry": 53.9
+    },
+    "meals_per_day": 54,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-19",
+    "name": "Demo kitchen 19",
+    "town": "Murray Harbour",
+    "lat": 46.007,
+    "lon": -62.481,
+    "capacity_kg": {
+      "fridge": 57,
+      "freezer": 74,
+      "dry": 104
+    },
+    "free_kg": {
+      "fridge": 31.4,
+      "freezer": 40.7,
+      "dry": 57.2
+    },
+    "meals_per_day": 57,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-20",
+    "name": "Demo kitchen 20",
+    "town": "Cardigan",
+    "lat": 46.23,
+    "lon": -62.624,
+    "capacity_kg": {
+      "fridge": 30,
+      "freezer": 38,
+      "dry": 50
+    },
+    "free_kg": {
+      "fridge": 16.5,
+      "freezer": 20.9,
+      "dry": 27.5
+    },
+    "meals_per_day": 30,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-21",
+    "name": "Demo kitchen 21",
+    "town": "Morell",
+    "lat": 46.415,
+    "lon": -62.709,
+    "capacity_kg": {
+      "fridge": 33,
+      "freezer": 42,
+      "dry": 56
+    },
+    "free_kg": {
+      "fridge": 18.2,
+      "freezer": 23.1,
+      "dry": 30.8
+    },
+    "meals_per_day": 33,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  },
+  {
+    "id": "demo-22",
+    "name": "Demo kitchen 22",
+    "town": "St. Peters Bay",
+    "lat": 46.415,
+    "lon": -62.584,
+    "capacity_kg": {
+      "fridge": 36,
+      "freezer": 46,
+      "dry": 62
+    },
+    "free_kg": {
+      "fridge": 19.8,
+      "freezer": 25.3,
+      "dry": 34.1
+    },
+    "meals_per_day": 36,
+    "diet_flags": [],
+    "dataset_status": "synthetic",
+    "coordinates_status": "approximate town center, not a facility address",
+    "capacity_status": "assumed",
+    "recipient_status": "not verified; demo only"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "kg_per_meal": 0.54,
+  "categories": {
+    "bread": { "co2e_per_kg": 1.6, "cad_per_kg": 4.2 },
+    "pastry": { "co2e_per_kg": 2.1, "cad_per_kg": 8.5 },
+    "produce-leafy": { "co2e_per_kg": 0.9, "cad_per_kg": 7.8 },
+    "produce-hardy": { "co2e_per_kg": 0.4, "cad_per_kg": 2.6 },
+    "produce-soft": { "co2e_per_kg": 1.1, "cad_per_kg": 6.4 },
+    "dairy": { "co2e_per_kg": 3.2, "cad_per_kg": 6.1 },
+    "eggs": { "co2e_per_kg": 4.7, "cad_per_kg": 7.3 },
+    "meat-fresh": { "co2e_per_kg": 15.5, "cad_per_kg": 14.2 },
+    "fish": { "co2e_per_kg": 5.4, "cad_per_kg": 18.9 },
+    "prepared-hot": { "co2e_per_kg": 4.3, "cad_per_kg": 9.6 },
+    "canned": { "co2e_per_kg": 1.8, "cad_per_kg": 4.9 },
+    "dry-goods": { "co2e_per_kg": 1.4, "cad_per_kg": 3.8 },
+    "beverage": { "co2e_per_kg": 0.8, "cad_per_kg": 2.2 },
+    "other": { "co2e_per_kg": 2.5, "cad_per_kg": 5.5 }
+  },
+  "sources": {
+    "co2e": "PLACEHOLDER for dev. Fahd replaces with SU-EATABLE LIFE values",
+    "cad": "PLACEHOLDER for dev. Fahd replaces with StatCan 18-10-0245-01",
+    "meal": "PLACEHOLDER for dev. Fahd cites the kg per meal source",
+    "note": "These are Yosef's dev fixtures. Do not quote them in the report."
+  }
+}

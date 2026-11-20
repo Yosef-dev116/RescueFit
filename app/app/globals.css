@@ -1,0 +1,283 @@
+@import "tailwindcss";
+
+/*
+ * RescueFit: the form-paper world.
+ *
+ * A donation is freight, and freight travels with its paperwork. The whole
+ * surface is a consignment document: manila ground, white form stock for
+ * data, hairline rules, carbon black ink, one signal red for the stamp and
+ * for the item that expires first, and a faded carbon blue as second ink.
+ *
+ * DESIGN.md at the root of this app records the tokens, the type roles,
+ * and the rules for extending any of it.
+ */
+
+@theme {
+  /* Ground. Manila kraft, not cream: it is greyer and a touch green. */
+  --color-manila: #d9cdb0;
+  --color-manila-dark: #c4b595;
+  --color-manila-deep: #a89874;
+
+  /* Form stock. Not pure white, so the rules can sit on top of it. */
+  --color-stock: #f6f3ea;
+  --color-stock-shade: #e9e4d6;
+
+  /* Carbon black ink, and its lighter impressions. */
+  --color-ink: #1c1a16;
+  --color-ink-soft: #4a463c;
+  --color-ink-faint: #7c7667;
+
+  /* The second ink. A duplicate copy is printed in carbon blue. */
+  --color-carbon: #2f4b6e;
+  --color-carbon-soft: #5b7694;
+
+  /* The stamp. Reserved for the stamp and the soonest expiry. Nothing else. */
+  --color-stamp: #b2291f;
+  --color-stamp-soft: #d6594c;
+
+  /* The one other signal: a cleared, filed line. */
+  --color-filed: #2f5d43;
+
+  --font-placard: var(--font-archivo-black), "Arial Black", sans-serif;
+  --font-body: var(--font-barlow), system-ui, sans-serif;
+  --font-typed: var(--font-courier-prime), "Courier New", monospace;
+}
+
+:root {
+  color-scheme: light;
+}
+
+/*
+ * The physical scene decides this. A volunteer stands at a back door in
+ * daylight, holding a phone in one hand. Paper under daylight is light.
+ * So there is no dark mode here, on purpose.
+ */
+body {
+  background-color: var(--color-manila);
+  /*
+   * Kraft fibre. Two very low-contrast dot fields at different scales, so
+   * the ground reads as stock rather than as a flat fill.
+   */
+  background-image:
+    radial-gradient(
+      circle at 1px 1px,
+      rgba(28, 26, 22, 0.055) 1px,
+      transparent 0
+    ),
+    radial-gradient(
+      circle at 1px 1px,
+      rgba(168, 152, 116, 0.5) 1px,
+      transparent 0
+    );
+  background-size:
+    7px 7px,
+    3px 3px;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Browser surfaces. These parts were not drawn by hand, and they still
+ * carry the design. A default caret or selection is the tell that a page
+ * was assembled rather than built.
+ */
+::selection {
+  background-color: var(--color-stamp);
+  color: var(--color-stock);
+}
+
+:root {
+  caret-color: var(--color-stamp);
+  accent-color: var(--color-carbon);
+  scrollbar-color: var(--color-manila-deep) var(--color-manila-dark);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-manila-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-manila-deep);
+  border: 2px solid var(--color-manila-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-ink-faint);
+}
+
+a {
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: from-font;
+}
+
+/* The focus ring is a stamped box, like every other control here. */
+:focus-visible {
+  outline: 2px solid var(--color-stamp);
+  outline-offset: 2px;
+}
+
+/* Every figure on a form is typed, and typed figures line up in columns. */
+.typed {
+  font-family: var(--font-typed);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.01em;
+}
+
+/* Stamped placard caps. The masthead and the section numbers. */
+.placard {
+  font-family: var(--font-placard);
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.92;
+}
+
+/* A small typed label above a box, the way a form names its fields. */
+.field-label {
+  font-family: var(--font-typed);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-carbon);
+}
+
+/*
+ * A ruled form box. The container commitment: every reading on this
+ * surface sits in one of these, and an empty one still shows its rules.
+ */
+.form-box {
+  background-color: var(--color-stock);
+  border: 1px solid var(--color-ink);
+  /*
+   * Paper resting on paper. The offset stays, because the sheet sits a
+   * little down and to the right of the ground. The blur is what makes it
+   * a shadow: a zero-blur offset block is a neobrutalist device, and this
+   * world is a document, not a poster.
+   */
+  box-shadow: 1px 2px 4px -1px rgba(28, 26, 22, 0.2);
+}
+
+.form-box-quiet {
+  background-color: var(--color-stock);
+  border: 1px solid var(--color-ink-faint);
+}
+
+/*
+ * The empty box shows the form, not a blank. Diagonal ruling is what a
+ * paper form does with a field that has nothing in it.
+ */
+.ruled-empty {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 7px,
+    rgba(124, 118, 103, 0.3) 7px 8px
+  );
+}
+
+/*
+ * A rubber stamp impression. Rotated, because a stamp is pressed by a hand
+ * and never lands square. The edge is clean here on purpose: wear belongs
+ * to the event, not to every stamp on the page. See .stamp-worn.
+ */
+.stamp {
+  font-family: var(--font-placard);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 2.5px solid currentColor;
+  padding: 0.18em 0.5em 0.14em;
+  border-radius: 2px;
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+}
+
+/*
+ * The worn impression, for the one line whose day count is lowest.
+ *
+ * This is the third raise kept literally: wear is bound to the event and is
+ * never a page filter. Exactly one stamp on the surface carries it, so the
+ * wear reads as "this one was pressed hard, today", not as a texture the
+ * designer liked.
+ *
+ * The mask is fractal noise, which breaks the border and the glyph edges
+ * the way ink does when the pad is dry in places. The drop-shadow is the
+ * opposite fault in the same press: a little spread where it over-inked.
+ *
+ * The alpha row of the colour matrix sets how hard the wear bites. It maps
+ * the noise to alpha 1.06 down to 0.74, so the thinnest part of the mark
+ * still prints at about three quarters strength. The grain is coarse on
+ * purpose: fine speckle reads as a failing printer, while a few soft
+ * patches read as a pad pressed unevenly by a hand. Push the first number
+ * past about -0.6 and the stamp stops being legible, which trades the
+ * decision the volunteer has to read for a texture. Legibility wins.
+ */
+.stamp-worn {
+  --stamp-grain: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.16' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.32 1.06'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--stamp-grain);
+  mask-image: var(--stamp-grain);
+  -webkit-mask-size: 90px 34px;
+  mask-size: 90px 34px;
+  /* A hard press spreads ink outward, so the worn mark sits heavier. */
+  filter: drop-shadow(0 0 0.5px currentColor);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The press lands, then the ink settles. */
+  .stamp-worn.stamp-press {
+    animation-duration: 0.42s;
+  }
+}
+
+/* A perforated tear line closes a section, the way a stub tears off. */
+.perforation {
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-ink-faint) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+/*
+ * The one authored motion moment: a line of the waybill is stamped. The
+ * stamp lands from slightly above and over-presses, the way a hand does.
+ * It starts from an already-visible state, so nothing is hidden by timing.
+ */
+@keyframes press {
+  0% {
+    transform: translateY(-14%) rotate(-7deg) scale(1.16);
+    opacity: 0;
+  }
+  58% {
+    transform: translateY(0) rotate(-2.2deg) scale(0.955);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotate(-2.2deg) scale(1);
+    opacity: 0.88;
+  }
+}
+
+.stamp-press {
+  animation: press 440ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-press {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "dataset_status": "Sourced meal-equivalent convention and illustrative retail values",
+  "kg_per_meal": 0.544310844,
+  "categories": {
+    "bread": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "root_veg": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "leafy_veg": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "fruit": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "berries": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "potatoes": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "tomatoes": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "broccoli": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "milk": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "yogurt": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "cheese": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "eggs": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "canned_beans": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "dry_grains": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "frozen_veg": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "frozen_meat": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "bakery": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    },
+    "prepared": {
+      "co2e_per_kg": null,
+      "cad_per_kg": null
+    }
+  },
+  "local_purchase_example": {
+    "price_per_kg": 2.5,
+    "handling_cost": 2,
+    "status": "Illustrative kitchen inputs; CAD"
+  },
+  "sources": {
+    "co2e": "PEI counterfactual and transport inputs unavailable",
+    "cad": "Use documented adjustable kitchen purchase prices and marginal costs",
+    "meal": "Feeding America reporting convention, 1.2 lb per meal-equivalent",
+    "meal_url": "https://www.feedingamerica.org/ways-to-give/faq/about-our-claims"
+  }
+}

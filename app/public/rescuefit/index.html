@@ -1,0 +1,1734 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="RescueFit PEI receiving kitchen and food recovery scenario demonstration.">
+  <title>RescueFit · Receiving workspace</title>
+  <style>:root {
+  color-scheme: light;
+  --paper: #f3f5ed;
+  --white: #fffefa;
+  --ink: #162c23;
+  --muted: #4b6557;
+  --line: #dce4d7;
+  --rail: #102d24;
+  --green: #1d5e46;
+  --mint: #d7efda;
+  --lime: #def09a;
+  --amber: #a2512c;
+  --sand: #f6e7d2;
+  --blue: #235b77;
+  --sky: #dfedf1;
+  --shadow: 0 12px 22px rgba(21, 52, 37, .055);
+  font: 15px/1.5 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+p { margin: 0; }
+a { color: var(--green); text-underline-offset: 3px; }
+h1, h2, h3 { margin: 0; letter-spacing: -.035em; line-height: 1.12; }
+h1 { font-size: clamp(2.15rem, 4vw, 3.65rem); font-weight: 780; }
+h2 { font-size: 1.34rem; }
+h3 { font-size: 1.02rem; }
+button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible,
+summary:focus-visible, a:focus-visible { outline: 3px solid #3b835b; outline-offset: 3px; }
+button:disabled { cursor: default; opacity: .52; }
+input, select, textarea { min-width: 0; border: 1px solid #acbfb0; border-radius: 9px; color: var(--ink); background: #fffefa; padding: 9px 11px; }
+input[type=number] { font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; accent-color: var(--green); padding: 0; }
+input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--green); flex: 0 0 auto; }
+textarea { display: block; width: 100%; resize: vertical; min-height: 87px; }
+input[aria-invalid=true], select[aria-invalid=true] { border-color: var(--amber); outline-color: var(--amber); }
+canvas { display: block; width: 100%; }
+progress { height: 8px; width: 100%; accent-color: var(--green); }
+.skip-link { position: fixed; z-index: 50; top: 10px; left: 10px; transform: translateY(-150%); background: white; padding: 12px; }
+.skip-link:focus { transform: translateY(0); }
+.shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; }
+.rail { background: var(--rail); color: #edf4de; padding: 27px 17px 20px; position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column; gap: 31px; }
+.brand { display: flex; gap: 10px; align-items: center; padding: 0 4px; min-width: 0; }
+.brand strong { display: block; font-size: 1.37rem; line-height: 1.05; letter-spacing: -.06em; }
+.brand div > span, .rail-bottom span:last-child { display: block; font-size: .73rem; color: #c2d4c8; }
+.brand-box { flex: 0 0 auto; width: 38px; height: 38px; border-radius: 12px; background: var(--lime); display: grid; align-content: center; justify-items: center; gap: 4px; transform: rotate(-5deg); }
+.brand-box i { display: block; width: 18px; height: 2px; border-radius: 6px; background: var(--rail); transform: skewX(-18deg); }
+.brand-box i:nth-child(2) { width: 13px; }
+.brand-box i:nth-child(3) { width: 8px; }
+nav { display: grid; gap: 5px; }
+.nav-btn { color: #e0ebdc; text-align: left; border: 1px solid transparent; background: transparent; border-radius: 10px; min-height: 42px; padding: 8px 10px; display: flex; gap: 10px; align-items: center; font-size: .87rem; font-weight: 650; white-space: nowrap; }
+.nav-btn:hover { background: #204436; }
+.nav-btn[aria-current=page] { color: #173126; background: var(--lime); box-shadow: 0 2px 12px #0002; }
+.nav-rule { border: 0; border-top: 1px solid #36584b; margin: 10px 4px; }
+.nav-glyph { display: inline-grid; place-items: center; width: 23px; height: 23px; border-radius: 6px; color: inherit; background: #c8e6cf1d; font-size: .86rem; flex: 0 0 23px; }
+.nav-btn[aria-current=page] .nav-glyph { background: #244d3420; }
+.rail-bottom { margin-top: auto; border-top: 1px solid #36584b; padding: 16px 4px 0; display: flex; align-items: flex-start; gap: 9px; font-size: .8rem; }
+.rail-dot, .status-tag i { width: 7px; height: 7px; display: inline-block; background: #a9ca5c; border-radius: 50%; margin-top: 6px; }
+.rail-bottom strong { display: block; }
+.main-column { min-width: 0; }
+.topbar { background: #f9faf5; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; min-height: 71px; gap: 10px; padding: 10px clamp(16px, 3vw, 43px); }
+.top-label { display: block; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-weight: 750; font-size: .67rem; }
+.topbar strong { font-size: .92rem; }
+.top-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+.status-tag { border: 1px solid #d6e4c4; border-radius: 30px; background: #eaf2df; color: #315039; padding: 4px 8px; font-size: .75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.status-tag i { margin: 0; background: #45784a; }
+main { max-width: 1480px; margin: 0 auto; padding: 25px clamp(15px, 3vw, 43px) 22px; min-height: 75vh; }
+main:focus { outline: none; }
+.mast { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; justify-content: space-between; gap: 28px; background: linear-gradient(110deg, #12372b 18%, #0b3629 62%, #1d4b38); border-radius: 20px; min-height: 172px; color: #f5fbec; padding: 25px 27px; box-shadow: var(--shadow); }
+.mast::after { content: ""; pointer-events: none; position: absolute; inset: 0; background: radial-gradient(circle at 84% 110%, #a9cc6f21 0, transparent 50%); }
+.mast > * { z-index: 1; }
+.mast .eyebrow { color: #cbe794; }
+.mast p { max-width: 63ch; color: #d5e8d9; margin-top: 9px; }
+.mast h1 { margin: 4px 0 0; }
+.eyebrow { display: block; color: var(--green); font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+.lot-ticket { min-width: 192px; max-width: 245px; color: #25402e; background: #e7efcb; border: 1px solid #b8d291; padding: 12px 17px; border-radius: 12px; box-shadow: 0 6px 16px #00161040; transform: rotate(2.5deg); }
+.lot-ticket > small { display: block; letter-spacing: .09em; text-transform: uppercase; font-weight: 800; color: #3f5841; }
+.lot-ticket strong { display: block; font-size: 2rem; line-height: 1.16; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.lot-ticket .ticket-bars { height: 15px; width: 91px; margin-top: 8px; background: repeating-linear-gradient(90deg, #345142 0 2px, transparent 2px 4px, #345142 4px 7px, transparent 7px 10px, #345142 10px 11px, transparent 11px 14px); }
+.subheading { color: var(--muted); margin: 7px 0 0; font-size: .91rem; }
+.workflow { display: flex; gap: 7px; margin: 15px 0; align-items: center; flex-wrap: wrap; }
+.step { border: 1px solid var(--line); color: var(--muted); background: #fafbf6; font-size: .78rem; font-weight: 680; padding: 5px 10px; border-radius: 20px; }
+.step[aria-current=step] { background: var(--mint); color: var(--rail); border-color: #bcd8c3; }
+.step.done { color: #205a40; }
+.step-arrow { color: #61746a; font-size: .75rem; }
+.dashboard { display: grid; gap: 15px; margin-top: 15px; }
+.two { grid-template-columns: minmax(0,1.53fr) minmax(260px,1fr); align-items: start; }
+.two.equal { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.stack { min-width: 0; display: grid; gap: 15px; align-content: start; }
+.card { min-width: 0; background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 17px 19px; box-shadow: var(--shadow); }
+.card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 9px; margin-bottom: 13px; }
+.card-head .subheading { margin-top: 4px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--green); border-radius: 9px; min-height: 41px; background: var(--green); color: #fff; padding: 8px 12px; font-weight: 720; font-size: .85rem; line-height: 1.2; text-decoration: none; }
+.btn:hover:not(:disabled) { background: #133e30; }
+.btn.quiet { background: #fffefa; border-color: #a6bba8; color: #23513b; }
+.btn.quiet:hover:not(:disabled) { background: #eaf2e5; }
+.btn.amber { background: #fff5e7; color: #793d1c; border-color: #d5a87d; }
+.btn.amber:hover:not(:disabled) { background: #f5e1c9; }
+.btn.small { min-height: 32px; padding: 5px 9px; font-size: .77rem; }
+.actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+.muted { color: var(--muted); }
+.tiny { font-size: .78rem; }
+.field-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+.field-grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.field { display: grid; gap: 4px; font-size: .8rem; font-weight: 700; min-width: 0; }
+.field > span { color: #304d3d; }
+.field small, .form-hint { color: var(--muted); font-size: .76rem; font-weight: 500; }
+.field input, .field select { width: 100%; font-size: .89rem; font-weight: 560; }
+.checkbox { display: flex; align-items: flex-start; gap: 7px; font-size: .82rem; font-weight: 670; color: #324f41; }
+.checkbox input { margin: 2px 0 0; }
+.checklist { display: grid; margin-top: 11px; gap: 6px; }
+.ticket-list { display: grid; gap: 9px; }
+.intake-row { border-radius: 12px; border: 1px solid var(--line); background: #fafbf6; padding: 11px 11px 12px; }
+.intake-row summary { display: flex; gap: 10px; align-items: center; justify-content: space-between; cursor: pointer; font-weight: 720; list-style: none; }
+.intake-row summary::after { content: "＋"; color: var(--green); font-size: .9rem; }
+.intake-row[open] summary::after { content: "−"; }
+.intake-row[open] summary { margin-bottom: 12px; }
+.row-meta { color: var(--muted); font-size: .75rem; font-weight: 540; }
+.file-pane { border: 1px dashed #95b19d; border-radius: 11px; padding: 11px; margin-top: 12px; background: #f5f9f1; }
+.file-pane input[type=file] { padding: 5px; width: 100%; font-size: .79rem; }
+.photo-preview { display: block; max-width: 100%; max-height: 170px; margin-top: 10px; border-radius: 9px; }
+.stat-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+.stat-list div { padding: 8px; background: #eff5e9; border-radius: 9px; }
+.stat-list small, .metric small { display: block; color: var(--muted); font-size: .76rem; }
+.stat-list strong { font-size: 1.12rem; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.chip { display: inline-block; max-width: 100%; padding: 3px 8px; border-radius: 20px; background: var(--mint); color: #215137; font-size: .74rem; white-space: nowrap; font-weight: 760; }
+.chip.amber { background: var(--sand); color: #7c421f; }
+.chip.blue { background: var(--sky); color: #25536b; }
+.inline-alert { padding: 9px 11px; border: 1px solid #e2c0a0; border-radius: 9px; background: #fff6ea; color: #733b1e; font-size: .82rem; margin: 8px 0; }
+.inline-good { padding: 9px 11px; border: 1px solid #c2d9c1; border-radius: 9px; background: #edf6e9; color: #2c5538; font-size: .82rem; margin: 8px 0; }
+.list { padding: 0; margin: 8px 0 0; list-style: none; }
+.list li { display: flex; justify-content: space-between; align-items: baseline; gap: 7px; border-top: 1px solid var(--line); padding: 8px 0; font-size: .86rem; }
+.formula { margin: 6px 0; color: var(--green); font-weight: 750; font-size: 1rem; }
+.lot-picker { max-width: 100%; width: min(400px,100%); }
+.batch-grid { display: grid; gap: 12px; }
+.metrics { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin: 14px 0 0; }
+.metric { background: var(--white); box-shadow: var(--shadow); border: 1px solid var(--line); border-radius: 13px; min-width: 0; padding: 12px 13px; }
+.metric strong { font-size: clamp(1.25rem,2.5vw,1.82rem); display: block; letter-spacing: -.052em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.metric.primary { background: #e4f0cc; border-color: #c6dca4; }
+.metric small { line-height: 1.2; }
+.metric .detail { font-size: .75rem; margin-top: 4px; color: #3c5d4b; }
+.lot-ledger { background: #183b30; color: #f4f9ea; }
+.lot-ledger .subheading { color: #d7e6da; }
+.bar { display: flex; overflow: hidden; height: 13px; background: #dce6db; border-radius: 10px; }
+.bar.lot-bar { height: 19px; margin: 10px 0; background: #35564a; }
+.segment { height: 100%; min-width: 0; transition: width .3s ease; }
+.seg-kitchen, .seg-remain { background: #84ad77; }
+.seg-pending { background: repeating-linear-gradient(135deg,#dfc39c 0 5px,#ba814e 5px 10px); }
+.seg-transferred { background: #6cc8bb; }
+.seg-used { background: #236948; }
+.lot-ledger .seg-used { background: #d7ee89; }
+.seg-discarded, .seg-waste { background: #b36340; }
+.seg-unplaced, .seg-unallocated { background: #c8b294; }
+.ledger-items { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .8rem; }
+.ledger-items span, .chart-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; flex: 0 0 10px; }
+.balance { font-weight: 700; font-size: .8rem; color: #e0efcb; }
+.map-frame { background: #e4eff0; border: 1px solid #c2d8d8; border-radius: 12px; overflow: hidden; }
+#map-canvas { height: clamp(210px,29vw,360px); }
+.route-card { display: block; border: 1px solid #bfd0bf; background: #fcfdf8; width: 100%; text-align: left; border-radius: 10px; padding: 9px 10px; color: var(--ink); }
+.route-card[aria-pressed=true] { background: #ebf5e9; border-color: #3b835b; }
+.route-card strong, .route-card small { display: block; }
+.route-list { display: grid; gap: 6px; max-height: 280px; overflow-y: auto; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: .84rem; }
+th, td { text-align: left; vertical-align: top; padding: 8px 8px 8px 0; border-bottom: 1px solid var(--line); }
+thead th { color: #365344; font-weight: 780; font-size: .75rem; }
+tbody th { font-weight: 700; }
+.number { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.service-line { padding: 7px 9px; border-radius: 8px; border: 1px solid var(--line); margin-top: 6px; }
+.service-line strong { display: block; font-size: .88rem; }
+.service-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+.day-panel { background: #f4f7ef; border: 1px solid var(--line); border-radius: 11px; padding: 9px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 4px 13px; color: #385547; margin: 8px 0; font-size: .78rem; }
+.chart-key { width: 14px; height: 3px; border-radius: 3px; display: inline-block; }
+#trend-canvas { height: 218px; }
+.timeline { padding: 9px 11px; background: #f3f7ef; border: 1px solid var(--line); border-radius: 10px; margin-top: 9px; }
+.timeline strong { font-size: .87rem; }
+.scenario-bar { display: grid; gap: 5px; padding: 7px 0; }
+.scenario-bar small { display: block; color: var(--muted); }
+.simulation-progress { min-height: 30px; margin-top: 8px; }
+.segmented { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.segmented button { font-size: .78rem; color: var(--green); padding: 5px 8px; min-height: 32px; border: 1px solid #bccfbd; border-radius: 8px; background: #fffefa; font-weight: 700; }
+.segmented button[aria-pressed=true] { color: #123828; background: var(--mint); border-color: #97b9a0; }
+.source-bars { display: grid; gap: 8px; margin: 12px 0; }
+.source-bar { display: grid; grid-template-columns: minmax(130px,1.2fr) minmax(55px,1fr) 48px; align-items: center; gap: 5px; font-size: .81rem; }
+.source-bar > strong { font-variant-numeric: tabular-nums; text-align: right; }
+.source-bar .bar { height: 7px; }
+.footer { display: flex; justify-content: space-between; gap: 8px; padding: 9px clamp(15px, 3vw, 43px) 18px; font-size: .75rem; color: var(--muted); }
+.notice { position: fixed; z-index: 20; bottom: 16px; right: 16px; max-width: min(400px,calc(100vw - 32px)); padding: 0; }
+.notice:not(:empty) { border-radius: 10px; background: #19382d; color: #fff; padding: 11px 14px; box-shadow: 0 8px 24px #16392830; }
+.no-script { margin: 12px; }
+.sr-only { width: 1px; height: 1px; position: absolute; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+details > summary { color: var(--green); font-size: .88rem; font-weight: 730; cursor: pointer; }
+@media (max-width: 1100px) {
+  .shell { grid-template-columns: 182px minmax(0,1fr); }
+  .rail { padding-inline: 12px; }
+  .brand-box { width: 33px; height: 33px; }
+  .brand div > span { font-size: .65rem; }
+  .nav-btn { font-size: .82rem; }
+  .metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 880px) {
+  .shell { display: block; }
+  .rail { height: auto; position: static; display: block; padding: 11px 14px 8px; }
+  .brand { padding-left: 1px; }
+  nav { display: flex; overflow-x: auto; margin-top: 8px; gap: 5px; scrollbar-width: thin; }
+  .nav-rule, .rail-bottom { display: none; }
+  .nav-btn { min-height: 36px; padding: 5px 8px; gap: 4px; }
+  .nav-glyph { width: 18px; height: 18px; flex-basis: 18px; }
+}
+@media (max-width: 680px) {
+  main { padding-top: 14px; }
+  .mast { grid-template-columns: 1fr; min-height: unset; padding: 17px; gap: 14px; border-radius: 14px; }
+  .lot-ticket { min-width: min(192px,100%); padding: 7px 10px; width: fit-content; transform: none; }
+  .lot-ticket strong { font-size: 1.35rem; }
+  .ticket-bars { display: none; }
+  .card { padding: 13px; }
+  .two, .two.equal, .service-grid { grid-template-columns: minmax(0,1fr); }
+  .field-grid.three { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .footer { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to workspace</a>
+  <div class="shell">
+    <aside class="rail">
+      <div class="brand"><span class="brand-box" aria-hidden="true"><i></i><i></i><i></i></span><div><strong>RescueFit</strong><span>PEI receiving workspace</span></div></div>
+      <nav id="navigation" aria-label="Workspace"></nav>
+      <div class="rail-bottom"><span class="rail-dot"></span><div><strong>IMPAC 2026</strong><span>Innovation Stream</span></div></div>
+    </aside>
+    <div class="main-column">
+      <header class="topbar">
+        <div><span class="top-label">Receiving kitchen</span><strong id="facility">Harbour Community Kitchen</strong></div>
+        <div class="top-actions"><span class="status-tag"><i></i>Demo data</span><button class="btn quiet" data-action="reset" type="button">Reset example</button></div>
+      </header>
+      <main id="main" tabindex="-1"></main>
+      <footer class="footer"><span>RescueFit · IMPAC Innovation Stream</span><span>Scenario data and decisions are simulated.</span></footer>
+    </div>
+  </div>
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+  <noscript><p class="no-script">Enable JavaScript to run the receiving workspace and simulation.</p></noscript>
+  <script id="fixtures" type="application/json">{"kitchen":{"name":"Harbour Community Kitchen","status":"synthetic","origin_id":"demo-01","ready_storage":{"fridge":18.2,"freezer":23.1,"dry":30.8},"starting_stock":{"root_veg":2,"potatoes":2,"bread":2,"dry_grains":1,"canned_beans":2,"broccoli":1},"adjustable_purchases_kg":{"root_veg":6,"potatoes":8,"bread":2,"dry_grains":3,"canned_beans":6,"broccoli":3,"fruit":6},"prep_kg":[14,13,12],"services":[{"id":"soup","day":1,"name":"Carrot and lentil soup","portions":60,"ingredients":{"root_veg":8,"canned_beans":3}},{"id":"rolls","day":1,"name":"Soup service rolls","portions":60,"ingredients":{"bread":4}},{"id":"tray","day":2,"name":"Potato and broccoli tray bake","portions":55,"ingredients":{"potatoes":10,"broccoli":4}},{"id":"bowls","day":3,"name":"Bean and grain bowls","portions":50,"ingredients":{"canned_beans":5,"dry_grains":4}},{"id":"fruit","day":3,"name":"Fruit side","portions":50,"ingredients":{"fruit":6}}],"sample_price_per_kg":{"root_veg":2.5,"potatoes":2,"bread":4,"dry_grains":3,"canned_beans":3,"broccoli":5,"fruit":3.5},"sample":{"id":"DEMO-001","name":"Carrots","category":"root_veg","offered":12,"collected":12,"storage":"fridge","arrival":1,"use_by":2,"reviewed":true,"may_split":true,"may_redirect":true,"price":2.5,"handling_cost":2,"stage":"collected"}},"config":{"days":30,"donors":81,"seeds":100,"seed_start":2026,"offer_scale":1,"use_share":0.3,"confirmation":0.55,"radius_km":35,"use_uncertainty":0.3,"mix":"pei","min_offer_kg":2,"max_offer_kg":25,"min_donor_active":0.08,"max_donor_active":0.3},"agencies":[{"id":"demo-01","name":"Demo kitchen 01","town":"Charlottetown","lat":46.238,"lon":-63.132,"capacity_kg":{"fridge":33,"freezer":42,"dry":56},"free_kg":{"fridge":18.2,"freezer":23.1,"dry":30.8},"meals_per_day":33,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-02","name":"Demo kitchen 02","town":"Stratford","lat":46.219,"lon":-63.09,"capacity_kg":{"fridge":36,"freezer":46,"dry":62},"free_kg":{"fridge":19.8,"freezer":25.3,"dry":34.1},"meals_per_day":36,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-03","name":"Demo kitchen 03","town":"Cornwall","lat":46.233,"lon":-63.218,"capacity_kg":{"fridge":39,"freezer":50,"dry":68},"free_kg":{"fridge":21.5,"freezer":27.5,"dry":37.4},"meals_per_day":39,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-04","name":"Demo kitchen 04","town":"Summerside","lat":46.395,"lon":-63.79,"capacity_kg":{"fridge":42,"freezer":54,"dry":74},"free_kg":{"fridge":23.1,"freezer":29.7,"dry":40.7},"meals_per_day":42,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-05","name":"Demo kitchen 05","town":"Kensington","lat":46.44,"lon":-63.64,"capacity_kg":{"fridge":45,"freezer":58,"dry":80},"free_kg":{"fridge":24.8,"freezer":31.9,"dry":44.0},"meals_per_day":45,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-06","name":"Demo kitchen 06","town":"Montague","lat":46.166,"lon":-62.648,"capacity_kg":{"fridge":48,"freezer":62,"dry":86},"free_kg":{"fridge":26.4,"freezer":34.1,"dry":47.3},"meals_per_day":48,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-07","name":"Demo kitchen 07","town":"Souris","lat":46.355,"lon":-62.252,"capacity_kg":{"fridge":51,"freezer":66,"dry":92},"free_kg":{"fridge":28.1,"freezer":36.3,"dry":50.6},"meals_per_day":51,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-08","name":"Demo kitchen 08","town":"Alberton","lat":46.815,"lon":-64.067,"capacity_kg":{"fridge":54,"freezer":70,"dry":98},"free_kg":{"fridge":29.7,"freezer":38.5,"dry":53.9},"meals_per_day":54,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-09","name":"Demo kitchen 09","town":"Tignish","lat":46.949,"lon":-64.034,"capacity_kg":{"fridge":57,"freezer":74,"dry":104},"free_kg":{"fridge":31.4,"freezer":40.7,"dry":57.2},"meals_per_day":57,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-10","name":"Demo kitchen 10","town":"O'Leary","lat":46.707,"lon":-64.229,"capacity_kg":{"fridge":30,"freezer":38,"dry":50},"free_kg":{"fridge":16.5,"freezer":20.9,"dry":27.5},"meals_per_day":30,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-11","name":"Demo kitchen 11","town":"Hunter River","lat":46.356,"lon":-63.353,"capacity_kg":{"fridge":33,"freezer":42,"dry":56},"free_kg":{"fridge":18.2,"freezer":23.1,"dry":30.8},"meals_per_day":33,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-12","name":"Demo kitchen 12","town":"Cavendish","lat":46.491,"lon":-63.379,"capacity_kg":{"fridge":36,"freezer":46,"dry":62},"free_kg":{"fridge":19.8,"freezer":25.3,"dry":34.1},"meals_per_day":36,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-13","name":"Demo kitchen 13","town":"North Rustico","lat":46.458,"lon":-63.309,"capacity_kg":{"fridge":39,"freezer":50,"dry":68},"free_kg":{"fridge":21.5,"freezer":27.5,"dry":37.4},"meals_per_day":39,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-14","name":"Demo kitchen 14","town":"Borden-Carleton","lat":46.252,"lon":-63.692,"capacity_kg":{"fridge":42,"freezer":54,"dry":74},"free_kg":{"fridge":23.1,"freezer":29.7,"dry":40.7},"meals_per_day":42,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-15","name":"Demo kitchen 15","town":"Kinkora","lat":46.327,"lon":-63.595,"capacity_kg":{"fridge":45,"freezer":58,"dry":80},"free_kg":{"fridge":24.8,"freezer":31.9,"dry":44.0},"meals_per_day":45,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-16","name":"Demo kitchen 16","town":"Tyne Valley","lat":46.574,"lon":-64.024,"capacity_kg":{"fridge":48,"freezer":62,"dry":86},"free_kg":{"fridge":26.4,"freezer":34.1,"dry":47.3},"meals_per_day":48,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-17","name":"Demo kitchen 17","town":"Miscouche","lat":46.436,"lon":-63.863,"capacity_kg":{"fridge":51,"freezer":66,"dry":92},"free_kg":{"fridge":28.1,"freezer":36.3,"dry":50.6},"meals_per_day":51,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-18","name":"Demo kitchen 18","town":"Georgetown","lat":46.186,"lon":-62.533,"capacity_kg":{"fridge":54,"freezer":70,"dry":98},"free_kg":{"fridge":29.7,"freezer":38.5,"dry":53.9},"meals_per_day":54,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-19","name":"Demo kitchen 19","town":"Murray Harbour","lat":46.007,"lon":-62.481,"capacity_kg":{"fridge":57,"freezer":74,"dry":104},"free_kg":{"fridge":31.4,"freezer":40.7,"dry":57.2},"meals_per_day":57,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-20","name":"Demo kitchen 20","town":"Cardigan","lat":46.23,"lon":-62.624,"capacity_kg":{"fridge":30,"freezer":38,"dry":50},"free_kg":{"fridge":16.5,"freezer":20.9,"dry":27.5},"meals_per_day":30,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-21","name":"Demo kitchen 21","town":"Morell","lat":46.415,"lon":-62.709,"capacity_kg":{"fridge":33,"freezer":42,"dry":56},"free_kg":{"fridge":18.2,"freezer":23.1,"dry":30.8},"meals_per_day":33,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"},{"id":"demo-22","name":"Demo kitchen 22","town":"St. Peters Bay","lat":46.415,"lon":-62.584,"capacity_kg":{"fridge":36,"freezer":46,"dry":62},"free_kg":{"fridge":19.8,"freezer":25.3,"dry":34.1},"meals_per_day":36,"diet_flags":[],"dataset_status":"synthetic","coordinates_status":"approximate town center, not a facility address","capacity_status":"assumed","recipient_status":"not verified; demo only"}],"evidence":{"source":"Second Harvest, PEI Food Recovery Network Final Report","url":"https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_10500298/File/Environment%20and%20Sustainability/Food/ES%2023-08%20Attachment%20-%20PEI%20Food%20Recovery%20Network%20Final.pdf","register_row":90,"kpi_locator":"Table 1, page 1","mix_locator":"Chart 1, page 3","mix_start":"2021-11-01","mix_end":"2023-01-13","new_donors":81,"new_nonprofits":22,"reported_meals_lower_bound":147000,"mix_basis":"Reported percentage of rescued pounds. Listed shares are rounded. Transferring the supported mix to offered kg is a scenario assumption.","groups":[{"label":"Bread and grains","percent":41,"categories":["bread","dry_grains"],"within_group_weights":[0.86,0.14]},{"label":"Produce","percent":34,"categories":["root_veg","leafy_veg","fruit","berries","potatoes","tomatoes","broccoli","frozen_veg"],"within_group_weights":[0.18,0.11,0.2,0.07,0.16,0.09,0.1,0.09]},{"label":"Desserts, baked goods and snacks","percent":15,"categories":["bakery"],"within_group_weights":[1]},{"label":"Dairy","percent":3,"categories":["milk","yogurt","cheese"],"within_group_weights":[0.34,0.33,0.33]},{"label":"Meat and protein","percent":3,"categories":["frozen_meat","eggs","canned_beans"],"within_group_weights":[0.55,0.15,0.3]},{"label":"Prepared meals","percent":2,"categories":["prepared"],"within_group_weights":[1]},{"label":"Juice and water","percent":0.97,"categories":[],"within_group_weights":[]},{"label":"Other beverages","percent":0.25,"categories":[],"within_group_weights":[]},{"label":"Condiments","percent":0.61,"categories":[],"within_group_weights":[]},{"label":"Baby formula and meal replacements","percent":0.04,"categories":[],"within_group_weights":[]}],"caveat":"Counts describe historical signups. They size the synthetic network. The report does not provide recipient capacity, offer timestamps, confirmations, or post-receipt food use."},"shelf":[{"category":"bread","keywords":["bread","bagel","roll","bun"],"pantry_days":4,"fridge_days":4,"freezer_days":45,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"root_veg","keywords":["carrot","beet","turnip"],"pantry_days":0,"fridge_days":7,"freezer_days":90,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"leafy_veg","keywords":["lettuce","spinach","kale"],"pantry_days":0,"fridge_days":3,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"fruit","keywords":["apple","pear","orange"],"pantry_days":3,"fridge_days":7,"freezer_days":90,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"berries","keywords":["berry","strawberry","blueberry"],"pantry_days":0,"fridge_days":2,"freezer_days":90,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"potatoes","keywords":["potato"],"pantry_days":10,"fridge_days":0,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"tomatoes","keywords":["tomato"],"pantry_days":3,"fridge_days":0,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"broccoli","keywords":["broccoli","cauliflower"],"pantry_days":0,"fridge_days":3,"freezer_days":75,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"milk","keywords":["milk"],"pantry_days":0,"fridge_days":4,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"yogurt","keywords":["yogurt","yoghurt"],"pantry_days":0,"fridge_days":5,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"cheese","keywords":["cheese"],"pantry_days":0,"fridge_days":7,"freezer_days":60,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"eggs","keywords":["egg"],"pantry_days":0,"fridge_days":7,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"canned_beans","keywords":["canned beans","chickpeas","lentils"],"pantry_days":60,"fridge_days":0,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"dry_grains","keywords":["rice","pasta","oats"],"pantry_days":90,"fridge_days":0,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"frozen_veg","keywords":["frozen peas","frozen vegetables"],"pantry_days":0,"fridge_days":0,"freezer_days":90,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"frozen_meat","keywords":["frozen chicken","frozen meat"],"pantry_days":0,"fridge_days":0,"freezer_days":60,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"bakery","keywords":["muffin","pastry","croissant","cookie"],"pantry_days":2,"fridge_days":0,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"},{"category":"prepared","keywords":["lasagna","sandwich","prepared meal","casserole"],"pantry_days":0,"fridge_days":1,"freezer_days":0,"dataset_status":"Synthetic remaining-use window for the scenario model"}],"factors":{"dataset_status":"Sourced meal-equivalent convention and illustrative retail values","kg_per_meal":0.544310844,"categories":{"bread":{"co2e_per_kg":null,"cad_per_kg":null},"root_veg":{"co2e_per_kg":null,"cad_per_kg":null},"leafy_veg":{"co2e_per_kg":null,"cad_per_kg":null},"fruit":{"co2e_per_kg":null,"cad_per_kg":null},"berries":{"co2e_per_kg":null,"cad_per_kg":null},"potatoes":{"co2e_per_kg":null,"cad_per_kg":null},"tomatoes":{"co2e_per_kg":null,"cad_per_kg":null},"broccoli":{"co2e_per_kg":null,"cad_per_kg":null},"milk":{"co2e_per_kg":null,"cad_per_kg":null},"yogurt":{"co2e_per_kg":null,"cad_per_kg":null},"cheese":{"co2e_per_kg":null,"cad_per_kg":null},"eggs":{"co2e_per_kg":null,"cad_per_kg":null},"canned_beans":{"co2e_per_kg":null,"cad_per_kg":null},"dry_grains":{"co2e_per_kg":null,"cad_per_kg":null},"frozen_veg":{"co2e_per_kg":null,"cad_per_kg":null},"frozen_meat":{"co2e_per_kg":null,"cad_per_kg":null},"bakery":{"co2e_per_kg":null,"cad_per_kg":null},"prepared":{"co2e_per_kg":null,"cad_per_kg":null}},"local_purchase_example":{"price_per_kg":2.5,"handling_cost":2,"status":"Illustrative kitchen inputs; CAD"},"sources":{"co2e":"PEI counterfactual and transport inputs unavailable","cad":"Use documented adjustable kitchen purchase prices and marginal costs","meal":"Feeding America reporting convention, 1.2 lb per meal-equivalent","meal_url":"https://www.feedingamerica.org/ways-to-give/faq/about-our-claims"}},"reference":{"days":30,"donors":81,"agencies":22,"seeds":100,"seed_start":2026,"model_version":2,"settings":{"days":30,"donors":81,"seeds":100,"seed_start":2026,"offer_scale":1,"use_share":0.3,"confirmation":0.55,"radius_km":35,"use_uncertainty":0.3,"mix":"pei","min_offer_kg":2,"max_offer_kg":25,"min_donor_active":0.08,"max_donor_active":0.3},"kg_per_meal":0.544310844,"data_status":"synthetic_scenario_not_measured","baseline":{"kg_offered":6197.5606,"kg_received":4841.0523,"kg_wasted_at_agency":811.6897,"kg_used":3480.8754,"kg_unallocated":1356.5083,"kg_remaining":548.4872,"kg_redirected":0.0,"meals":6395.0139,"co2e_kg":0.0,"cad":0.0,"kg_with_co2e_factor":0.0,"kg_with_cad_factor":0.0,"transfers":0.0,"redirect_kg_km":0.0},"fit_only":{"kg_offered":6197.5606,"kg_received":4038.4162,"kg_wasted_at_agency":67.2463,"kg_used":3475.9534,"kg_unallocated":2159.1444,"kg_remaining":495.2165,"kg_redirected":0.0,"meals":6385.9713,"co2e_kg":0.0,"cad":0.0,"kg_with_co2e_factor":0.0,"kg_with_cad_factor":0.0,"transfers":0.0,"redirect_kg_km":0.0},"rescuefit":{"kg_offered":6197.5606,"kg_received":4562.2884,"kg_wasted_at_agency":90.0934,"kg_used":3829.9224,"kg_unallocated":1635.2722,"kg_remaining":642.2727,"kg_redirected":883.1161,"meals":7036.2779,"co2e_kg":0.0,"cad":0.0,"kg_with_co2e_factor":0.0,"kg_with_cad_factor":0.0,"transfers":136.68,"redirect_kg_km":10863.6595},"accept_all_stress_test":{"kg_offered":6197.5606,"kg_received":6197.5606,"kg_wasted_at_agency":2168.198,"kg_used":3480.8754,"kg_unallocated":0.0,"kg_remaining":548.4872,"kg_redirected":0.0,"meals":6395.0139,"co2e_kg":0.0,"cad":0.0,"kg_with_co2e_factor":0.0,"kg_with_cad_factor":0.0,"transfers":0.0,"redirect_kg_km":0.0},"daily":[{"day":1,"offered_kg":200.4119,"baseline_waste_kg":0.0,"baseline_used_kg":70.867,"baseline_unallocated_kg":6.8867,"baseline_remaining_kg":122.6582,"baseline_redirected_kg":0.0,"fit_only_waste_kg":0.0,"fit_only_used_kg":70.8289,"fit_only_unallocated_kg":24.6246,"fit_only_remaining_kg":104.9584,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":0.0,"rescuefit_used_kg":75.8113,"rescuefit_unallocated_kg":12.7566,"rescuefit_remaining_kg":111.8441,"rescuefit_redirected_kg":12.8725,"accept_all_stress_test_waste_kg":6.8867,"accept_all_stress_test_used_kg":70.867,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":122.6582,"accept_all_stress_test_redirected_kg":0.0},{"day":2,"offered_kg":216.263,"baseline_waste_kg":1.338,"baseline_used_kg":97.3612,"baseline_unallocated_kg":19.15,"baseline_remaining_kg":221.0719,"baseline_redirected_kg":0.0,"fit_only_waste_kg":0.0707,"fit_only_used_kg":97.0387,"fit_only_unallocated_kg":48.0945,"fit_only_remaining_kg":176.0174,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":0.076,"rescuefit_used_kg":105.0919,"rescuefit_unallocated_kg":29.7528,"rescuefit_remaining_kg":193.1864,"rescuefit_redirected_kg":21.2408,"accept_all_stress_test_waste_kg":20.488,"accept_all_stress_test_used_kg":97.3612,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":221.0719,"accept_all_stress_test_redirected_kg":0.0},{"day":3,"offered_kg":221.2339,"baseline_waste_kg":11.834,"baseline_used_kg":106.2395,"baseline_unallocated_kg":32.0874,"baseline_remaining_kg":292.145,"baseline_redirected_kg":0.0,"fit_only_waste_kg":0.9719,"fit_only_used_kg":105.9068,"fit_only_unallocated_kg":60.5579,"fit_only_remaining_kg":229.8148,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":1.1013,"rescuefit_used_kg":113.89,"rescuefit_unallocated_kg":40.4659,"rescuefit_remaining_kg":258.9631,"rescuefit_redirected_kg":25.7333,"accept_all_stress_test_waste_kg":43.9214,"accept_all_stress_test_used_kg":106.2395,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":292.145,"accept_all_stress_test_redirected_kg":0.0},{"day":4,"offered_kg":206.8097,"baseline_waste_kg":18.3824,"baseline_used_kg":110.4063,"baseline_unallocated_kg":35.9477,"baseline_remaining_kg":334.2182,"baseline_redirected_kg":0.0,"fit_only_waste_kg":1.5781,"fit_only_used_kg":109.9504,"fit_only_unallocated_kg":64.0102,"fit_only_remaining_kg":261.0858,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":1.7727,"rescuefit_used_kg":119.7366,"rescuefit_unallocated_kg":45.7151,"rescuefit_remaining_kg":298.5484,"rescuefit_redirected_kg":25.4271,"accept_all_stress_test_waste_kg":54.3302,"accept_all_stress_test_used_kg":110.4063,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":334.2182,"accept_all_stress_test_redirected_kg":0.0},{"day":5,"offered_kg":196.6383,"baseline_waste_kg":25.3242,"baseline_used_kg":113.5115,"baseline_unallocated_kg":34.847,"baseline_remaining_kg":357.1737,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.443,"fit_only_used_kg":113.2906,"fit_only_unallocated_kg":63.2793,"fit_only_remaining_kg":278.7111,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":2.8104,"rescuefit_used_kg":122.9586,"rescuefit_unallocated_kg":44.9037,"rescuefit_remaining_kg":324.514,"rescuefit_redirected_kg":25.854,"accept_all_stress_test_waste_kg":60.1712,"accept_all_stress_test_used_kg":113.5115,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":357.1737,"accept_all_stress_test_redirected_kg":0.0},{"day":6,"offered_kg":208.6481,"baseline_waste_kg":30.8001,"baseline_used_kg":113.9885,"baseline_unallocated_kg":37.8853,"baseline_remaining_kg":383.148,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.4763,"fit_only_used_kg":113.6876,"fit_only_unallocated_kg":70.8491,"fit_only_remaining_kg":300.3462,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.1298,"rescuefit_used_kg":124.3595,"rescuefit_unallocated_kg":52.553,"rescuefit_remaining_kg":353.1198,"rescuefit_redirected_kg":28.781,"accept_all_stress_test_waste_kg":68.6854,"accept_all_stress_test_used_kg":113.9885,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":383.148,"accept_all_stress_test_redirected_kg":0.0},{"day":7,"offered_kg":206.9024,"baseline_waste_kg":31.4862,"baseline_used_kg":116.1368,"baseline_unallocated_kg":41.8454,"baseline_remaining_kg":400.582,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.669,"fit_only_used_kg":116.0664,"fit_only_unallocated_kg":71.4035,"fit_only_remaining_kg":317.1096,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.3062,"rescuefit_used_kg":126.2304,"rescuefit_unallocated_kg":53.6173,"rescuefit_remaining_kg":376.8684,"rescuefit_redirected_kg":28.554,"accept_all_stress_test_waste_kg":73.3315,"accept_all_stress_test_used_kg":116.1368,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":400.582,"accept_all_stress_test_redirected_kg":0.0},{"day":8,"offered_kg":207.3668,"baseline_waste_kg":34.3038,"baseline_used_kg":117.5256,"baseline_unallocated_kg":41.4062,"baseline_remaining_kg":414.7132,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.8897,"fit_only_used_kg":117.4728,"fit_only_unallocated_kg":67.6059,"fit_only_remaining_kg":336.508,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.6422,"rescuefit_used_kg":128.4159,"rescuefit_unallocated_kg":52.6722,"rescuefit_remaining_kg":399.5049,"rescuefit_redirected_kg":25.952,"accept_all_stress_test_waste_kg":75.71,"accept_all_stress_test_used_kg":117.5256,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":414.7132,"accept_all_stress_test_redirected_kg":0.0},{"day":9,"offered_kg":207.4056,"baseline_waste_kg":32.0766,"baseline_used_kg":117.7986,"baseline_unallocated_kg":45.5336,"baseline_remaining_kg":426.71,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.6388,"fit_only_used_kg":117.3965,"fit_only_unallocated_kg":73.2977,"fit_only_remaining_kg":350.5806,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.3163,"rescuefit_used_kg":128.6163,"rescuefit_unallocated_kg":52.7994,"rescuefit_remaining_kg":422.1786,"rescuefit_redirected_kg":30.6204,"accept_all_stress_test_waste_kg":77.6102,"accept_all_stress_test_used_kg":117.7986,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":426.71,"accept_all_stress_test_redirected_kg":0.0},{"day":10,"offered_kg":199.2464,"baseline_waste_kg":34.9792,"baseline_used_kg":115.7982,"baseline_unallocated_kg":42.1843,"baseline_remaining_kg":432.9946,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.3159,"fit_only_used_kg":115.6591,"fit_only_unallocated_kg":69.407,"fit_only_remaining_kg":362.445,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.2919,"rescuefit_used_kg":127.546,"rescuefit_unallocated_kg":52.1175,"rescuefit_remaining_kg":438.4695,"rescuefit_redirected_kg":29.828,"accept_all_stress_test_waste_kg":77.1635,"accept_all_stress_test_used_kg":115.7982,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":432.9946,"accept_all_stress_test_redirected_kg":0.0},{"day":11,"offered_kg":206.9835,"baseline_waste_kg":29.79,"baseline_used_kg":118.6396,"baseline_unallocated_kg":41.2631,"baseline_remaining_kg":450.2855,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.6206,"fit_only_used_kg":118.6255,"fit_only_unallocated_kg":70.7306,"fit_only_remaining_kg":377.4518,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.5389,"rescuefit_used_kg":130.7411,"rescuefit_unallocated_kg":54.8767,"rescuefit_remaining_kg":456.2964,"rescuefit_redirected_kg":28.6695,"accept_all_stress_test_waste_kg":71.053,"accept_all_stress_test_used_kg":118.6396,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":450.2855,"accept_all_stress_test_redirected_kg":0.0},{"day":12,"offered_kg":202.594,"baseline_waste_kg":30.5422,"baseline_used_kg":118.4079,"baseline_unallocated_kg":45.8946,"baseline_remaining_kg":458.0347,"baseline_redirected_kg":0.0,"fit_only_waste_kg":1.9328,"fit_only_used_kg":118.1931,"fit_only_unallocated_kg":77.7337,"fit_only_remaining_kg":382.1862,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.084,"rescuefit_used_kg":130.836,"rescuefit_unallocated_kg":58.4718,"rescuefit_remaining_kg":466.4986,"rescuefit_redirected_kg":31.9595,"accept_all_stress_test_waste_kg":76.4368,"accept_all_stress_test_used_kg":118.4079,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":458.0347,"accept_all_stress_test_redirected_kg":0.0},{"day":13,"offered_kg":209.1189,"baseline_waste_kg":32.7003,"baseline_used_kg":118.7096,"baseline_unallocated_kg":47.884,"baseline_remaining_kg":467.8597,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.8956,"fit_only_used_kg":118.6048,"fit_only_unallocated_kg":77.1552,"fit_only_remaining_kg":392.6495,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.696,"rescuefit_used_kg":131.5583,"rescuefit_unallocated_kg":61.2992,"rescuefit_remaining_kg":479.064,"rescuefit_redirected_kg":29.077,"accept_all_stress_test_waste_kg":80.5843,"accept_all_stress_test_used_kg":118.7096,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":467.8597,"accept_all_stress_test_redirected_kg":0.0},{"day":14,"offered_kg":201.5693,"baseline_waste_kg":33.4923,"baseline_used_kg":119.7478,"baseline_unallocated_kg":45.6075,"baseline_remaining_kg":470.5814,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.9263,"fit_only_used_kg":119.5953,"fit_only_unallocated_kg":72.3155,"fit_only_remaining_kg":399.3817,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.6532,"rescuefit_used_kg":130.4011,"rescuefit_unallocated_kg":55.2679,"rescuefit_remaining_kg":491.3111,"rescuefit_redirected_kg":30.7312,"accept_all_stress_test_waste_kg":79.0998,"accept_all_stress_test_used_kg":119.7478,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":470.5814,"accept_all_stress_test_redirected_kg":0.0},{"day":15,"offered_kg":198.3027,"baseline_waste_kg":35.3624,"baseline_used_kg":120.2128,"baseline_unallocated_kg":43.6771,"baseline_remaining_kg":469.6318,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.5568,"fit_only_used_kg":120.0704,"fit_only_unallocated_kg":72.35,"fit_only_remaining_kg":402.7072,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.4587,"rescuefit_used_kg":131.7776,"rescuefit_unallocated_kg":57.2582,"rescuefit_remaining_kg":497.1193,"rescuefit_redirected_kg":27.428,"accept_all_stress_test_waste_kg":79.0395,"accept_all_stress_test_used_kg":120.2128,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":469.6318,"accept_all_stress_test_redirected_kg":0.0},{"day":16,"offered_kg":209.8966,"baseline_waste_kg":31.3231,"baseline_used_kg":120.8395,"baseline_unallocated_kg":47.717,"baseline_remaining_kg":479.6488,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.8697,"fit_only_used_kg":120.4242,"fit_only_unallocated_kg":78.175,"fit_only_remaining_kg":411.1349,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":4.1067,"rescuefit_used_kg":131.8143,"rescuefit_unallocated_kg":60.4974,"rescuefit_remaining_kg":510.5975,"rescuefit_redirected_kg":31.9724,"accept_all_stress_test_waste_kg":79.0401,"accept_all_stress_test_used_kg":120.8395,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":479.6488,"accept_all_stress_test_redirected_kg":0.0},{"day":17,"offered_kg":194.1108,"baseline_waste_kg":31.2926,"baseline_used_kg":120.2028,"baseline_unallocated_kg":45.9263,"baseline_remaining_kg":476.3378,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.5029,"fit_only_used_kg":119.7944,"fit_only_unallocated_kg":68.5341,"fit_only_remaining_kg":414.4144,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.6371,"rescuefit_used_kg":133.3032,"rescuefit_unallocated_kg":51.4037,"rescuefit_remaining_kg":516.3644,"rescuefit_redirected_kg":28.8373,"accept_all_stress_test_waste_kg":77.219,"accept_all_stress_test_used_kg":120.2028,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":476.3378,"accept_all_stress_test_redirected_kg":0.0},{"day":18,"offered_kg":216.6526,"baseline_waste_kg":32.3248,"baseline_used_kg":120.3636,"baseline_unallocated_kg":49.6464,"baseline_remaining_kg":490.6556,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.5876,"fit_only_used_kg":120.2936,"fit_only_unallocated_kg":76.8923,"fit_only_remaining_kg":431.2935,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.3224,"rescuefit_used_kg":133.2574,"rescuefit_unallocated_kg":59.366,"rescuefit_remaining_kg":537.0711,"rescuefit_redirected_kg":31.8327,"accept_all_stress_test_waste_kg":81.9713,"accept_all_stress_test_used_kg":120.3636,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":490.6556,"accept_all_stress_test_redirected_kg":0.0},{"day":19,"offered_kg":204.4542,"baseline_waste_kg":27.0639,"baseline_used_kg":119.332,"baseline_unallocated_kg":52.1328,"baseline_remaining_kg":496.5812,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.2902,"fit_only_used_kg":119.2857,"fit_only_unallocated_kg":76.9431,"fit_only_remaining_kg":437.2287,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.0667,"rescuefit_used_kg":131.7502,"rescuefit_unallocated_kg":60.2144,"rescuefit_remaining_kg":546.494,"rescuefit_redirected_kg":30.1321,"accept_all_stress_test_waste_kg":79.1966,"accept_all_stress_test_used_kg":119.332,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":496.5812,"accept_all_stress_test_redirected_kg":0.0},{"day":20,"offered_kg":208.2845,"baseline_waste_kg":29.3689,"baseline_used_kg":120.0933,"baseline_unallocated_kg":54.0896,"baseline_remaining_kg":501.3138,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.5074,"fit_only_used_kg":119.8822,"fit_only_unallocated_kg":80.5538,"fit_only_remaining_kg":442.5697,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.6761,"rescuefit_used_kg":133.7246,"rescuefit_unallocated_kg":63.5328,"rescuefit_remaining_kg":553.845,"rescuefit_redirected_kg":32.5543,"accept_all_stress_test_waste_kg":83.4586,"accept_all_stress_test_used_kg":120.0933,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":501.3138,"accept_all_stress_test_redirected_kg":0.0},{"day":21,"offered_kg":203.3418,"baseline_waste_kg":29.6513,"baseline_used_kg":120.1424,"baseline_unallocated_kg":51.9852,"baseline_remaining_kg":502.8767,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.3378,"fit_only_used_kg":120.068,"fit_only_unallocated_kg":77.8182,"fit_only_remaining_kg":445.6875,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.169,"rescuefit_used_kg":133.278,"rescuefit_unallocated_kg":62.3425,"rescuefit_remaining_kg":558.3973,"rescuefit_redirected_kg":29.8854,"accept_all_stress_test_waste_kg":81.6365,"accept_all_stress_test_used_kg":120.1424,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":502.8767,"accept_all_stress_test_redirected_kg":0.0},{"day":22,"offered_kg":207.2224,"baseline_waste_kg":27.716,"baseline_used_kg":117.8565,"baseline_unallocated_kg":58.1142,"baseline_remaining_kg":506.4124,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.3799,"fit_only_used_kg":117.8442,"fit_only_unallocated_kg":84.3435,"fit_only_remaining_kg":448.3422,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.4935,"rescuefit_used_kg":131.9603,"rescuefit_unallocated_kg":62.4275,"rescuefit_remaining_kg":567.7383,"rescuefit_redirected_kg":35.4825,"accept_all_stress_test_waste_kg":85.8302,"accept_all_stress_test_used_kg":117.8565,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":506.4124,"accept_all_stress_test_redirected_kg":0.0},{"day":23,"offered_kg":207.1872,"baseline_waste_kg":29.327,"baseline_used_kg":118.3972,"baseline_unallocated_kg":53.1692,"baseline_remaining_kg":512.7062,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.1921,"fit_only_used_kg":118.2047,"fit_only_unallocated_kg":79.9809,"fit_only_remaining_kg":455.1517,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.2795,"rescuefit_used_kg":131.7583,"rescuefit_unallocated_kg":58.9852,"rescuefit_remaining_kg":580.9024,"rescuefit_redirected_kg":33.4142,"accept_all_stress_test_waste_kg":82.4962,"accept_all_stress_test_used_kg":118.3972,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":512.7062,"accept_all_stress_test_redirected_kg":0.0},{"day":24,"offered_kg":204.5133,"baseline_waste_kg":28.8614,"baseline_used_kg":119.8252,"baseline_unallocated_kg":51.2957,"baseline_remaining_kg":517.2372,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.6673,"fit_only_used_kg":119.9262,"fit_only_unallocated_kg":78.7378,"fit_only_remaining_kg":458.3337,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.504,"rescuefit_used_kg":133.3766,"rescuefit_unallocated_kg":61.1529,"rescuefit_remaining_kg":587.3822,"rescuefit_redirected_kg":31.3055,"accept_all_stress_test_waste_kg":80.1571,"accept_all_stress_test_used_kg":119.8252,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":517.2372,"accept_all_stress_test_redirected_kg":0.0},{"day":25,"offered_kg":212.1684,"baseline_waste_kg":27.5345,"baseline_used_kg":120.9417,"baseline_unallocated_kg":57.1362,"baseline_remaining_kg":523.7932,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.2952,"fit_only_used_kg":121.0781,"fit_only_unallocated_kg":80.4359,"fit_only_remaining_kg":466.693,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":2.9965,"rescuefit_used_kg":134.7365,"rescuefit_unallocated_kg":61.7457,"rescuefit_remaining_kg":600.0719,"rescuefit_redirected_kg":32.9617,"accept_all_stress_test_waste_kg":84.6707,"accept_all_stress_test_used_kg":120.9417,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":523.7932,"accept_all_stress_test_redirected_kg":0.0},{"day":26,"offered_kg":210.3083,"baseline_waste_kg":31.9763,"baseline_used_kg":120.5814,"baseline_unallocated_kg":59.3893,"baseline_remaining_kg":522.1544,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.4695,"fit_only_used_kg":120.4931,"fit_only_unallocated_kg":82.2724,"fit_only_remaining_kg":471.7662,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.377,"rescuefit_used_kg":134.1112,"rescuefit_unallocated_kg":64.9597,"rescuefit_remaining_kg":607.9323,"rescuefit_redirected_kg":31.5675,"accept_all_stress_test_waste_kg":91.3656,"accept_all_stress_test_used_kg":120.5814,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":522.1544,"accept_all_stress_test_redirected_kg":0.0},{"day":27,"offered_kg":205.2378,"baseline_waste_kg":28.3074,"baseline_used_kg":122.6796,"baseline_unallocated_kg":52.6417,"baseline_remaining_kg":523.7636,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.4928,"fit_only_used_kg":122.5013,"fit_only_unallocated_kg":77.2827,"fit_only_remaining_kg":474.7272,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.1844,"rescuefit_used_kg":135.3345,"rescuefit_unallocated_kg":59.1673,"rescuefit_remaining_kg":615.4839,"rescuefit_redirected_kg":33.0557,"accept_all_stress_test_waste_kg":80.949,"accept_all_stress_test_used_kg":122.6796,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":523.7636,"accept_all_stress_test_redirected_kg":0.0},{"day":28,"offered_kg":211.1632,"baseline_waste_kg":25.4633,"baseline_used_kg":121.5168,"baseline_unallocated_kg":56.2612,"baseline_remaining_kg":531.6855,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.473,"fit_only_used_kg":121.2315,"fit_only_unallocated_kg":79.969,"fit_only_remaining_kg":482.2169,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.28,"rescuefit_used_kg":134.1253,"rescuefit_unallocated_kg":62.8515,"rescuefit_remaining_kg":626.3903,"rescuefit_redirected_kg":33.5199,"accept_all_stress_test_waste_kg":81.7245,"accept_all_stress_test_used_kg":121.5168,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":531.6855,"accept_all_stress_test_redirected_kg":0.0},{"day":29,"offered_kg":208.9317,"baseline_waste_kg":23.6406,"baseline_used_kg":120.986,"baseline_unallocated_kg":51.4616,"baseline_remaining_kg":544.5291,"baseline_redirected_kg":0.0,"fit_only_waste_kg":1.9371,"fit_only_used_kg":120.9144,"fit_only_unallocated_kg":79.3004,"fit_only_remaining_kg":488.9966,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":2.8222,"rescuefit_used_kg":134.1903,"rescuefit_unallocated_kg":64.7116,"rescuefit_remaining_kg":633.5979,"rescuefit_redirected_kg":31.2143,"accept_all_stress_test_waste_kg":75.1022,"accept_all_stress_test_used_kg":120.986,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":544.5291,"accept_all_stress_test_redirected_kg":0.0},{"day":30,"offered_kg":204.5933,"baseline_waste_kg":25.4269,"baseline_used_kg":121.7663,"baseline_unallocated_kg":53.442,"baseline_remaining_kg":548.4872,"baseline_redirected_kg":0.0,"fit_only_waste_kg":2.2582,"fit_only_used_kg":121.6248,"fit_only_unallocated_kg":74.4905,"fit_only_remaining_kg":495.2165,"fit_only_redirected_kg":0.0,"rescuefit_waste_kg":3.3006,"rescuefit_used_kg":135.2312,"rescuefit_unallocated_kg":57.3868,"rescuefit_remaining_kg":642.2727,"rescuefit_redirected_kg":32.6524,"accept_all_stress_test_waste_kg":78.8689,"accept_all_stress_test_used_kg":121.7663,"accept_all_stress_test_unallocated_kg":0.0,"accept_all_stress_test_remaining_kg":548.4872,"accept_all_stress_test_redirected_kg":0.0}],"replay":{"baseline":[{"kg_offered":123.78,"kg_used":43.0431,"kg_unallocated":0.18,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":80.5569},{"kg_offered":201.5,"kg_used":91.774,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":190.2829},{"kg_offered":244.65,"kg_used":109.8278,"kg_unallocated":14.8542,"kg_redirected":0.0,"kg_wasted_at_agency":8.7441,"kg_remaining":301.5069},{"kg_offered":214.12,"kg_used":106.4233,"kg_unallocated":25.146,"kg_redirected":0.0,"kg_wasted_at_agency":1.4599,"kg_remaining":382.5976},{"kg_offered":180.49,"kg_used":110.8203,"kg_unallocated":40.8506,"kg_redirected":0.0,"kg_wasted_at_agency":23.1609,"kg_remaining":388.2558},{"kg_offered":170.62,"kg_used":110.3222,"kg_unallocated":34.1648,"kg_redirected":0.0,"kg_wasted_at_agency":28.0758,"kg_remaining":386.3129},{"kg_offered":148.56,"kg_used":117.5753,"kg_unallocated":35.166,"kg_redirected":0.0,"kg_wasted_at_agency":39.7462,"kg_remaining":342.3854},{"kg_offered":291.56,"kg_used":124.3013,"kg_unallocated":50.0807,"kg_redirected":0.0,"kg_wasted_at_agency":57.7396,"kg_remaining":401.8239},{"kg_offered":252.1,"kg_used":144.3904,"kg_unallocated":36.1714,"kg_redirected":0.0,"kg_wasted_at_agency":50.0884,"kg_remaining":423.2736},{"kg_offered":168.33,"kg_used":128.0121,"kg_unallocated":6.9481,"kg_redirected":0.0,"kg_wasted_at_agency":45.8401,"kg_remaining":410.8034},{"kg_offered":273.02,"kg_used":133.7213,"kg_unallocated":28.1857,"kg_redirected":0.0,"kg_wasted_at_agency":48.463,"kg_remaining":473.4535},{"kg_offered":255.69,"kg_used":131.1778,"kg_unallocated":72.9275,"kg_redirected":0.0,"kg_wasted_at_agency":28.8115,"kg_remaining":496.2267},{"kg_offered":205.08,"kg_used":129.8248,"kg_unallocated":25.4166,"kg_redirected":0.0,"kg_wasted_at_agency":13.7758,"kg_remaining":532.2896},{"kg_offered":194.99,"kg_used":139.069,"kg_unallocated":11.832,"kg_redirected":0.0,"kg_wasted_at_agency":15.4814,"kg_remaining":560.8972},{"kg_offered":96.85,"kg_used":122.6352,"kg_unallocated":10.9364,"kg_redirected":0.0,"kg_wasted_at_agency":29.3377,"kg_remaining":494.8379},{"kg_offered":206.8,"kg_used":134.6031,"kg_unallocated":11.798,"kg_redirected":0.0,"kg_wasted_at_agency":41.6957,"kg_remaining":513.5412},{"kg_offered":188.16,"kg_used":126.4273,"kg_unallocated":45.0061,"kg_redirected":0.0,"kg_wasted_at_agency":18.8223,"kg_remaining":511.4456},{"kg_offered":323.55,"kg_used":132.299,"kg_unallocated":73.714,"kg_redirected":0.0,"kg_wasted_at_agency":52.2775,"kg_remaining":576.7051},{"kg_offered":156.22,"kg_used":141.1441,"kg_unallocated":27.5938,"kg_redirected":0.0,"kg_wasted_at_agency":32.3573,"kg_remaining":531.8298},{"kg_offered":249.69,"kg_used":140.8006,"kg_unallocated":22.7441,"kg_redirected":0.0,"kg_wasted_at_agency":20.2676,"kg_remaining":597.7075},{"kg_offered":144.4,"kg_used":149.42,"kg_unallocated":61.2254,"kg_redirected":0.0,"kg_wasted_at_agency":13.0464,"kg_remaining":518.4156},{"kg_offered":175.32,"kg_used":138.7729,"kg_unallocated":20.5076,"kg_redirected":0.0,"kg_wasted_at_agency":24.7928,"kg_remaining":509.6623},{"kg_offered":219.64,"kg_used":137.2104,"kg_unallocated":28.2234,"kg_redirected":0.0,"kg_wasted_at_agency":43.5802,"kg_remaining":520.2882},{"kg_offered":276.11,"kg_used":134.1752,"kg_unallocated":86.2758,"kg_redirected":0.0,"kg_wasted_at_agency":30.3764,"kg_remaining":545.5708},{"kg_offered":182.93,"kg_used":122.6808,"kg_unallocated":47.7969,"kg_redirected":0.0,"kg_wasted_at_agency":29.7195,"kg_remaining":528.3035},{"kg_offered":276.63,"kg_used":113.792,"kg_unallocated":66.8136,"kg_redirected":0.0,"kg_wasted_at_agency":55.8083,"kg_remaining":568.5195},{"kg_offered":208.92,"kg_used":125.5459,"kg_unallocated":22.8139,"kg_redirected":0.0,"kg_wasted_at_agency":12.313,"kg_remaining":616.7666},{"kg_offered":244.66,"kg_used":136.1967,"kg_unallocated":70.7988,"kg_redirected":0.0,"kg_wasted_at_agency":19.3562,"kg_remaining":635.0749},{"kg_offered":262.63,"kg_used":121.9838,"kg_unallocated":19.8059,"kg_redirected":0.0,"kg_wasted_at_agency":40.286,"kg_remaining":715.6292},{"kg_offered":302.52,"kg_used":153.4437,"kg_unallocated":75.617,"kg_redirected":0.0,"kg_wasted_at_agency":48.7228,"kg_remaining":740.3658}],"fit_only":[{"kg_offered":123.78,"kg_used":43.0431,"kg_unallocated":14.0514,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":66.6855},{"kg_offered":201.5,"kg_used":91.774,"kg_unallocated":3.0872,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":173.3243},{"kg_offered":244.65,"kg_used":109.8278,"kg_unallocated":65.0594,"kg_redirected":0.0,"kg_wasted_at_agency":0.0224,"kg_remaining":243.0647},{"kg_offered":214.12,"kg_used":106.4233,"kg_unallocated":95.9938,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":254.7677},{"kg_offered":180.49,"kg_used":110.8203,"kg_unallocated":89.8381,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":234.5993},{"kg_offered":170.62,"kg_used":110.3222,"kg_unallocated":48.5267,"kg_redirected":0.0,"kg_wasted_at_agency":5.4414,"kg_remaining":240.9289},{"kg_offered":148.56,"kg_used":117.5753,"kg_unallocated":52.4882,"kg_redirected":0.0,"kg_wasted_at_agency":2.6791,"kg_remaining":216.7463},{"kg_offered":291.56,"kg_used":124.3013,"kg_unallocated":68.4373,"kg_redirected":0.0,"kg_wasted_at_agency":4.4013,"kg_remaining":311.1665},{"kg_offered":252.1,"kg_used":144.1648,"kg_unallocated":81.6498,"kg_redirected":0.0,"kg_wasted_at_agency":7.5476,"kg_remaining":329.9042},{"kg_offered":168.33,"kg_used":127.1914,"kg_unallocated":12.1444,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":358.8984},{"kg_offered":273.02,"kg_used":130.9866,"kg_unallocated":62.0952,"kg_redirected":0.0,"kg_wasted_at_agency":3.5244,"kg_remaining":435.3122},{"kg_offered":255.69,"kg_used":131.1778,"kg_unallocated":125.9613,"kg_redirected":0.0,"kg_wasted_at_agency":4.3025,"kg_remaining":429.5606},{"kg_offered":205.08,"kg_used":129.8248,"kg_unallocated":29.0221,"kg_redirected":0.0,"kg_wasted_at_agency":0.9502,"kg_remaining":474.8435},{"kg_offered":194.99,"kg_used":137.1129,"kg_unallocated":52.9185,"kg_redirected":0.0,"kg_wasted_at_agency":4.1355,"kg_remaining":475.6665},{"kg_offered":96.85,"kg_used":122.3766,"kg_unallocated":20.275,"kg_redirected":0.0,"kg_wasted_at_agency":3.9961,"kg_remaining":425.8688},{"kg_offered":206.8,"kg_used":134.6031,"kg_unallocated":42.9558,"kg_redirected":0.0,"kg_wasted_at_agency":7.2967,"kg_remaining":447.8133},{"kg_offered":188.16,"kg_used":125.0243,"kg_unallocated":60.3952,"kg_redirected":0.0,"kg_wasted_at_agency":6.3486,"kg_remaining":444.2051},{"kg_offered":323.55,"kg_used":132.299,"kg_unallocated":122.6375,"kg_redirected":0.0,"kg_wasted_at_agency":4.9855,"kg_remaining":507.8331},{"kg_offered":156.22,"kg_used":141.1441,"kg_unallocated":40.1269,"kg_redirected":0.0,"kg_wasted_at_agency":2.4301,"kg_remaining":480.3519},{"kg_offered":249.69,"kg_used":140.8006,"kg_unallocated":55.0426,"kg_redirected":0.0,"kg_wasted_at_agency":1.4119,"kg_remaining":532.7868},{"kg_offered":144.4,"kg_used":146.7866,"kg_unallocated":93.7207,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":436.6795},{"kg_offered":175.32,"kg_used":133.1011,"kg_unallocated":57.3559,"kg_redirected":0.0,"kg_wasted_at_agency":0.1304,"kg_remaining":421.4122},{"kg_offered":219.64,"kg_used":137.2104,"kg_unallocated":64.681,"kg_redirected":0.0,"kg_wasted_at_agency":2.9305,"kg_remaining":436.2303},{"kg_offered":276.11,"kg_used":131.7194,"kg_unallocated":140.0174,"kg_redirected":0.0,"kg_wasted_at_agency":4.2225,"kg_remaining":436.3812},{"kg_offered":182.93,"kg_used":120.1875,"kg_unallocated":75.2834,"kg_redirected":0.0,"kg_wasted_at_agency":0.6486,"kg_remaining":423.1917},{"kg_offered":276.63,"kg_used":111.9006,"kg_unallocated":115.201,"kg_redirected":0.0,"kg_wasted_at_agency":7.6251,"kg_remaining":465.0951},{"kg_offered":208.92,"kg_used":125.5459,"kg_unallocated":45.1404,"kg_redirected":0.0,"kg_wasted_at_agency":0.7045,"kg_remaining":502.6242},{"kg_offered":244.66,"kg_used":136.1967,"kg_unallocated":63.8807,"kg_redirected":0.0,"kg_wasted_at_agency":4.4415,"kg_remaining":542.7653},{"kg_offered":262.63,"kg_used":121.9838,"kg_unallocated":103.5403,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":579.8713},{"kg_offered":302.52,"kg_used":153.4437,"kg_unallocated":112.5814,"kg_redirected":0.0,"kg_wasted_at_agency":1.5865,"kg_remaining":614.7797}],"rescuefit":[{"kg_offered":123.78,"kg_used":43.0431,"kg_unallocated":14.0514,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":66.6855},{"kg_offered":201.5,"kg_used":91.774,"kg_unallocated":0.0,"kg_redirected":3.0872,"kg_wasted_at_agency":0.0,"kg_remaining":176.4115},{"kg_offered":244.65,"kg_used":118.7175,"kg_unallocated":24.7333,"kg_redirected":40.326,"kg_wasted_at_agency":0.0224,"kg_remaining":277.5884},{"kg_offered":214.12,"kg_used":120.1281,"kg_unallocated":77.9462,"kg_redirected":18.0476,"kg_wasted_at_agency":0.0,"kg_remaining":293.6341},{"kg_offered":180.49,"kg_used":127.3872,"kg_unallocated":84.4043,"kg_redirected":26.0253,"kg_wasted_at_agency":0.0,"kg_remaining":262.3326},{"kg_offered":170.62,"kg_used":124.5892,"kg_unallocated":52.3616,"kg_redirected":5.4104,"kg_wasted_at_agency":5.4414,"kg_remaining":250.5604},{"kg_offered":148.56,"kg_used":129.3407,"kg_unallocated":13.92,"kg_redirected":47.4891,"kg_wasted_at_agency":2.6791,"kg_remaining":253.1806},{"kg_offered":291.56,"kg_used":135.1269,"kg_unallocated":49.0088,"kg_redirected":27.24,"kg_wasted_at_agency":4.8862,"kg_remaining":355.7186},{"kg_offered":252.1,"kg_used":155.4047,"kg_unallocated":61.9532,"kg_redirected":39.0499,"kg_wasted_at_agency":7.5,"kg_remaining":382.9608},{"kg_offered":168.33,"kg_used":142.2712,"kg_unallocated":20.1856,"kg_redirected":4.3206,"kg_wasted_at_agency":0.0,"kg_remaining":388.834},{"kg_offered":273.02,"kg_used":136.8286,"kg_unallocated":46.1327,"kg_redirected":35.2992,"kg_wasted_at_agency":4.6081,"kg_remaining":474.2845},{"kg_offered":255.69,"kg_used":135.411,"kg_unallocated":73.3021,"kg_redirected":58.9523,"kg_wasted_at_agency":4.3025,"kg_remaining":516.9589},{"kg_offered":205.08,"kg_used":135.2757,"kg_unallocated":58.529,"kg_redirected":2.0033,"kg_wasted_at_agency":0.9502,"kg_remaining":527.284},{"kg_offered":194.99,"kg_used":144.6153,"kg_unallocated":27.2895,"kg_redirected":33.2353,"kg_wasted_at_agency":2.992,"kg_remaining":547.3772},{"kg_offered":96.85,"kg_used":136.2075,"kg_unallocated":1.4825,"kg_redirected":26.2857,"kg_wasted_at_agency":4.4318,"kg_remaining":502.1054},{"kg_offered":206.8,"kg_used":138.4295,"kg_unallocated":33.6283,"kg_redirected":11.1152,"kg_wasted_at_agency":6.8999,"kg_remaining":529.9476},{"kg_offered":188.16,"kg_used":134.972,"kg_unallocated":34.7934,"kg_redirected":26.7882,"kg_wasted_at_agency":6.3886,"kg_remaining":541.9537},{"kg_offered":323.55,"kg_used":140.0532,"kg_unallocated":97.1356,"kg_redirected":28.1736,"kg_wasted_at_agency":8.2362,"kg_remaining":620.0788},{"kg_offered":156.22,"kg_used":145.002,"kg_unallocated":24.0252,"kg_redirected":20.631,"kg_wasted_at_agency":2.53,"kg_remaining":604.7415},{"kg_offered":249.69,"kg_used":151.2921,"kg_unallocated":53.8407,"kg_redirected":26.9056,"kg_wasted_at_agency":1.4119,"kg_remaining":647.8867},{"kg_offered":144.4,"kg_used":152.011,"kg_unallocated":75.7647,"kg_redirected":18.3049,"kg_wasted_at_agency":0.0,"kg_remaining":564.511},{"kg_offered":175.32,"kg_used":146.328,"kg_unallocated":45.4414,"kg_redirected":28.2694,"kg_wasted_at_agency":0.1304,"kg_remaining":547.9313},{"kg_offered":219.64,"kg_used":140.6666,"kg_unallocated":42.8135,"kg_redirected":47.8756,"kg_wasted_at_agency":5.3159,"kg_remaining":578.7753},{"kg_offered":276.11,"kg_used":146.0832,"kg_unallocated":100.9341,"kg_redirected":50.7467,"kg_wasted_at_agency":5.7443,"kg_remaining":602.1236},{"kg_offered":182.93,"kg_used":134.4095,"kg_unallocated":99.751,"kg_redirected":12.2746,"kg_wasted_at_agency":1.7001,"kg_remaining":549.193},{"kg_offered":276.63,"kg_used":119.5817,"kg_unallocated":95.1954,"kg_redirected":49.8978,"kg_wasted_at_agency":9.0906,"kg_remaining":601.9552},{"kg_offered":208.92,"kg_used":136.5836,"kg_unallocated":43.8088,"kg_redirected":43.6762,"kg_wasted_at_agency":2.2522,"kg_remaining":628.2306},{"kg_offered":244.66,"kg_used":142.301,"kg_unallocated":27.7547,"kg_redirected":50.7034,"kg_wasted_at_agency":4.5148,"kg_remaining":698.3202},{"kg_offered":262.63,"kg_used":126.2357,"kg_unallocated":86.9024,"kg_redirected":41.5765,"kg_wasted_at_agency":4.145,"kg_remaining":743.6672},{"kg_offered":302.52,"kg_used":153.4437,"kg_unallocated":106.8508,"kg_redirected":26.3103,"kg_wasted_at_agency":4.3471,"kg_remaining":781.5457}],"accept_all_stress_test":[{"kg_offered":123.78,"kg_used":43.0431,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":0.18,"kg_remaining":80.5569},{"kg_offered":201.5,"kg_used":91.774,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":0.0,"kg_remaining":190.2829},{"kg_offered":244.65,"kg_used":109.8278,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":23.5982,"kg_remaining":301.5069},{"kg_offered":214.12,"kg_used":106.4233,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":26.606,"kg_remaining":382.5976},{"kg_offered":180.49,"kg_used":110.8203,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":64.0115,"kg_remaining":388.2558},{"kg_offered":170.62,"kg_used":110.3222,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":62.2406,"kg_remaining":386.3129},{"kg_offered":148.56,"kg_used":117.5753,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":74.9122,"kg_remaining":342.3854},{"kg_offered":291.56,"kg_used":124.3013,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":107.8203,"kg_remaining":401.8239},{"kg_offered":252.1,"kg_used":144.3904,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":86.2599,"kg_remaining":423.2736},{"kg_offered":168.33,"kg_used":128.0121,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":52.7881,"kg_remaining":410.8034},{"kg_offered":273.02,"kg_used":133.7213,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":76.6487,"kg_remaining":473.4535},{"kg_offered":255.69,"kg_used":131.1778,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":101.739,"kg_remaining":496.2267},{"kg_offered":205.08,"kg_used":129.8248,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":39.1924,"kg_remaining":532.2896},{"kg_offered":194.99,"kg_used":139.069,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":27.3134,"kg_remaining":560.8972},{"kg_offered":96.85,"kg_used":122.6352,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":40.2741,"kg_remaining":494.8379},{"kg_offered":206.8,"kg_used":134.6031,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":53.4936,"kg_remaining":513.5412},{"kg_offered":188.16,"kg_used":126.4273,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":63.8284,"kg_remaining":511.4456},{"kg_offered":323.55,"kg_used":132.299,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":125.9915,"kg_remaining":576.7051},{"kg_offered":156.22,"kg_used":141.1441,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":59.9511,"kg_remaining":531.8298},{"kg_offered":249.69,"kg_used":140.8006,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":43.0118,"kg_remaining":597.7075},{"kg_offered":144.4,"kg_used":149.42,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":74.2719,"kg_remaining":518.4156},{"kg_offered":175.32,"kg_used":138.7729,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":45.3005,"kg_remaining":509.6623},{"kg_offered":219.64,"kg_used":137.2104,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":71.8037,"kg_remaining":520.2882},{"kg_offered":276.11,"kg_used":134.1752,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":116.6522,"kg_remaining":545.5708},{"kg_offered":182.93,"kg_used":122.6808,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":77.5165,"kg_remaining":528.3035},{"kg_offered":276.63,"kg_used":113.792,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":122.6219,"kg_remaining":568.5195},{"kg_offered":208.92,"kg_used":125.5459,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":35.1269,"kg_remaining":616.7666},{"kg_offered":244.66,"kg_used":136.1967,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":90.1551,"kg_remaining":635.0749},{"kg_offered":262.63,"kg_used":121.9838,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":60.0919,"kg_remaining":715.6292},{"kg_offered":302.52,"kg_used":153.4437,"kg_unallocated":0.0,"kg_redirected":0.0,"kg_wasted_at_agency":124.3397,"kg_remaining":740.3658}]},"uncertainty":{"baseline":{"kg_offered":{"mean":6197.5606,"p05":5542.969,"p95":6700.0035},"kg_received":{"mean":4841.0523,"p05":4462.6197,"p95":5284.746},"kg_wasted_at_agency":{"mean":811.6897,"p05":646.2179,"p95":1067.2174},"kg_used":{"mean":3480.8754,"p05":3186.0265,"p95":3772.6155},"kg_unallocated":{"mean":1356.5083,"p05":929.907,"p95":1751.2051},"kg_remaining":{"mean":548.4872,"p05":431.7607,"p95":674.9849},"kg_redirected":{"mean":0.0,"p05":0.0,"p95":0.0},"meals":{"mean":6395.0139,"p05":5853.3217,"p95":6930.9945},"co2e_kg":{"mean":0.0,"p05":0.0,"p95":0.0},"cad":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_co2e_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_cad_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"transfers":{"mean":0.0,"p05":0.0,"p95":0.0},"redirect_kg_km":{"mean":0.0,"p05":0.0,"p95":0.0}},"fit_only":{"kg_offered":{"mean":6197.5606,"p05":5542.969,"p95":6700.0035},"kg_received":{"mean":4038.4162,"p05":3734.7354,"p95":4403.2434},"kg_wasted_at_agency":{"mean":67.2463,"p05":50.9827,"p95":92.5232},"kg_used":{"mean":3475.9534,"p05":3177.1582,"p95":3790.6117},"kg_unallocated":{"mean":2159.1444,"p05":1621.8437,"p95":2713.6219},"kg_remaining":{"mean":495.2165,"p05":382.4484,"p95":615.1241},"kg_redirected":{"mean":0.0,"p05":0.0,"p95":0.0},"meals":{"mean":6385.9713,"p05":5837.029,"p95":6964.0568},"co2e_kg":{"mean":0.0,"p05":0.0,"p95":0.0},"cad":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_co2e_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_cad_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"transfers":{"mean":0.0,"p05":0.0,"p95":0.0},"redirect_kg_km":{"mean":0.0,"p05":0.0,"p95":0.0}},"rescuefit":{"kg_offered":{"mean":6197.5606,"p05":5542.969,"p95":6700.0035},"kg_received":{"mean":4562.2884,"p05":4268.5069,"p95":4888.238},"kg_wasted_at_agency":{"mean":90.0934,"p05":69.1613,"p95":116.8589},"kg_used":{"mean":3829.9224,"p05":3548.8675,"p95":4129.167},"kg_unallocated":{"mean":1635.2722,"p05":1167.9639,"p95":2097.3782},"kg_remaining":{"mean":642.2727,"p05":515.0235,"p95":781.9806},"kg_redirected":{"mean":883.1161,"p05":691.5347,"p95":1093.9228},"meals":{"mean":7036.2779,"p05":6519.928,"p95":7586.0459},"co2e_kg":{"mean":0.0,"p05":0.0,"p95":0.0},"cad":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_co2e_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_cad_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"transfers":{"mean":136.68,"p05":107.0,"p95":164.2},"redirect_kg_km":{"mean":10863.6595,"p05":7902.3966,"p95":13897.1812}},"accept_all_stress_test":{"kg_offered":{"mean":6197.5606,"p05":5542.969,"p95":6700.0035},"kg_received":{"mean":6197.5606,"p05":5542.969,"p95":6700.0035},"kg_wasted_at_agency":{"mean":2168.198,"p05":1628.273,"p95":2758.0125},"kg_used":{"mean":3480.8754,"p05":3186.0265,"p95":3772.6155},"kg_unallocated":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_remaining":{"mean":548.4872,"p05":431.7607,"p95":674.9849},"kg_redirected":{"mean":0.0,"p05":0.0,"p95":0.0},"meals":{"mean":6395.0139,"p05":5853.3217,"p95":6930.9945},"co2e_kg":{"mean":0.0,"p05":0.0,"p95":0.0},"cad":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_co2e_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"kg_with_cad_factor":{"mean":0.0,"p05":0.0,"p95":0.0},"transfers":{"mean":0.0,"p05":0.0,"p95":0.0},"redirect_kg_km":{"mean":0.0,"p05":0.0,"p95":0.0}},"paired_delta":{"kg_wasted_at_agency_reduction":{"mean":721.5964,"p05":553.6045,"p95":939.5163},"kg_used_increase":{"mean":349.047,"p05":231.061,"p95":516.4177},"kg_used_increase_over_fit_only":{"mean":353.9689,"p05":230.9107,"p95":528.0201},"kg_unallocated_reduction":{"mean":-278.7639,"p05":-477.9927,"p95":-39.7034},"kg_wasted_plus_unallocated_reduction":{"mean":442.8325,"p05":290.0219,"p95":620.9024}}},"assumptions":["Offers, recipients, available capacity and service are synthetic. Historical counts size the reference network.","The PEI profile normalizes the supported 98 reported percentage points of rescued weight into an assumed offer mix.","Within-group split, offer rates, sizes, storage and remaining-use windows are scenario assumptions.","Each seed gives every policy identical offers, home destinations and daily use shocks.","Capacity only checks storage at the home kitchen. Fit only also checks planned use. Both use earliest deadline first.","Fit + redirect can try one alternate transfer per offer after a confirmation draw. It tries nearer feasible recipients first.","A modeled transfer uses same-day receipt and straight-line distance. Cold-chain logistics and costs are outside this scenario.","Use is forecast with the configured share of daily kitchen throughput. Actual daily use can deviate within the selected range.","Offered kg = used + expired at kitchens + unallocated + ending inventory. Redirected weight is an intermediate movement.","The destination of unallocated food and the later fate of ending inventory are unknown.","Meal equivalents are a mass conversion. The model has no verified PEI emissions or network cash-savings factors."]},"register":[{"row":4,"source":"Food waste dataset: secondary school in Finland 2024-2025","register_license":"Open","register_redistributable":"Yes","url":"https://zenodo.org/records/20825233","use":"Excluded from forecast","limit":"Finnish school waste and diners are not incoming donation offers."},{"row":8,"source":"Food Waste Dataset from a University Canteen","register_license":"Open","register_redistributable":"Yes","url":"https://www.kaggle.com/datasets/rahuljangir78/food-waste-dataset-from-a-university-canteen","use":"Excluded from forecast","limit":"Canteen disposal by category describes a different outcome from offered edible weight."},{"row":19,"source":"Nutrition5k","register_license":"Open","register_redistributable":"Yes","url":"https://github.com/google-research-datasets/Nutrition5k","use":"Possible future weight benchmark","limit":"Weighed meal images do not establish donation weights, storage or eligibility."},{"row":28,"source":"Fruit and Vegetable Disease (Healthy vs Rotten)","register_license":"Open","register_redistributable":"Yes","url":"https://www.kaggle.com/datasets/muhammad0subhan/fruit-and-vegetable-disease-healthy-vs-rotten","use":"Deferred image evaluation","limit":"A visual quality label cannot establish microbiological safety or storage history."},{"row":29,"source":"Grocery Store Dataset","register_license":"Open","register_redistributable":"Yes","url":"https://github.com/marcusklasson/GroceryStoreDataset","use":"Deferred image evaluation","limit":"Category-labelled grocery images need a reviewed model and a holdout before scoring."},{"row":37,"source":"Open Food Facts product database","register_license":"Open (share-alike)","register_redistributable":"Yes - share-alike","url":"https://world.openfoodfacts.org/data","use":"Optional product reference","limit":"Product metadata does not establish eligibility. Barcode lookup is separate from intake."},{"row":39,"source":"USDA FSIS FoodKeeper Data","register_license":"Open","register_redistributable":"Yes","url":"https://catalog.data.gov/dataset/fsis-foodkeeper-data","use":"Storage reference","limit":"The prototype uses operator review. Model windows are explicitly synthetic."},{"row":43,"source":"StatCan — Monthly average retail prices for selected products (18-10-0245-01)","register_license":"Open","register_redistributable":"Yes","url":"https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810024501","use":"Pricing reference","limit":"Matched PEI item, period and units or kitchen invoice required. App CAD uses illustrative inputs."},{"row":61,"source":"Food Banks Canada HungerCount","register_license":"Unstated","register_redistributable":"No - link only","url":"https://foodbankscanada.ca/hunger-in-canada/hungercount/","use":"Background only","limit":"Food-bank visits do not measure the demand or intake capacity at a receiving kitchen."},{"row":66,"source":"SU-EATABLE LIFE (SEL) database","register_license":"Open","register_redistributable":"Yes","url":"https://doi.org/10.6084/m9.figshare.13271111","use":"Not applied","limit":"Product footprints are not avoided PEI treatment emissions without a defined comparison."},{"row":68,"source":"ECCC Greenhouse Gas Calculator for Organic Waste Management","register_license":"Unstated","register_redistributable":"No - link only","url":"https://www.canada.ca/en/environment-climate-change/services/managing-reducing-waste/municipal-solid/waste-greenhouse-gases-canada-actions/calculator.html","use":"Optional factor source","limit":"Use for a documented treatment scenario. No default coefficient was applied."},{"row":83,"source":"IWMC 'Sort It Out' waste sorting guide","register_license":"Unstated","register_redistributable":"No - link only","url":"https://iwmc.pe.ca/sort/","use":"Local disposal context","limit":"A landfill default can misstate the comparison under PEI's separate compost collection."},{"row":90,"source":"PEI Food Recovery Network — Final Report","register_license":"Unstated","register_redistributable":"No - link only","url":"https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_10500298/File/Environment%20and%20Sustainability/Food/ES%2023-08%20Attachment%20-%20PEI%20Food%20Recovery%20Network%20Final.pdf","use":"Implemented in simulations","limit":"Historical signups size the reference case. Chart 1 sets expected offer mix in a synthetic scenario."},{"row":91,"source":"FoodRescue.ca + Second Harvest research library","register_license":"Restricted","register_redistributable":"No - link only","url":"https://www.secondharvest.ca/research","use":"Existing system and background","limit":"Documented matching tools provide a comparison. No private offer data was imported."},{"row":92,"source":"PEI Food Banks directory","register_license":"Unstated","register_redistributable":"No - link only","url":"https://www.urhm.org/contact-us/pei-food-banks/","use":"Partner research only","limit":"Directory locations do not establish capacity or receiving consent."},{"row":98,"source":"Canadian Business Counts, with employees, CMAs and census subdivisions (33-10-1097-01)","register_license":"Open","register_redistributable":"Yes","url":"https://open.canada.ca/data/en/dataset/b2606c69-087d-4330-ad1d-122639b0cad0","use":"Expansion research only","limit":"Only an eligible and reachable subset would represent potential customers."},{"row":100,"source":"OpenStreetMap PEI extract","register_license":"Open (share-alike)","register_redistributable":"Yes - share-alike","url":"https://download.geofabrik.de/north-america/canada/prince-edward-island.html","use":"Reference only","limit":"The demo uses a schematic, approximate town centres and straight-line distance."},{"row":105,"source":"RecipeNLG","register_license":"Non-commercial","register_redistributable":"Yes - non-commercial","url":"https://recipenlg.cs.put.poznan.pl/dataset","use":"Deferred recipe discovery","limit":"No redistribution or automatic recipe approval. The demo uses five authored meal entries."}]}</script>
+  <script id="sim-code">(function initializeSimulation(root) {
+  "use strict";
+
+  const EPS = 1e-8;
+  const UINT32 = 4294967296;
+  const STORAGE = {dry: "pantry_days", fridge: "fridge_days", freezer: "freezer_days"};
+  const POLICIES = ["baseline", "fit_only", "rescuefit", "accept_all_stress_test"];
+  const METRICS = ["kg_offered", "kg_received", "kg_wasted_at_agency", "kg_used", "kg_unallocated",
+    "kg_remaining", "kg_redirected", "meals", "co2e_kg", "cad", "kg_with_co2e_factor", "kg_with_cad_factor",
+    "transfers", "redirect_kg_km"];
+  const DAILY = {waste: "kg_wasted_at_agency", used: "kg_used", unallocated: "kg_unallocated",
+    remaining: "kg_remaining", redirected: "kg_redirected"};
+
+  function mixBits(value) {
+    value = Math.imul(value ^ (value >>> 16), 0x7feb352d);
+    value = Math.imul(value ^ (value >>> 15), 0x846ca68b);
+    return (value ^ (value >>> 16)) >>> 0;
+  }
+
+  function random(seed) {
+    let state = seed >>> 0;
+    return function draw() {
+      state = (state + 0x9e3779b9) >>> 0;
+      return mixBits(state) / UINT32;
+    };
+  }
+
+  function distanceKm(a, b) {
+    const rad = Math.PI / 180;
+    const hav = Math.sin((b.lat - a.lat) * rad / 2) ** 2
+      + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin((b.lon - a.lon) * rad / 2) ** 2;
+    return 12742 * Math.asin(Math.sqrt(Math.min(1, hav)));
+  }
+
+  function computeNeighbors(agencies, radiusKm) {
+    return agencies.map((a, i) => agencies.map((b, j) => ({index: j, id: b.id, km: distanceKm(a, b)}))
+      .filter((b) => b.index !== i && b.km <= radiusKm + EPS)
+      .sort((a, b) => a.km - b.km || a.id.localeCompare(b.id)));
+  }
+
+  function createInputs(fixtures, settings) {
+    const categories = {};
+    for (const item of fixtures.shelf) {
+      const storage = Object.keys(STORAGE).find((key) => item[STORAGE[key]] > 0);
+      if (storage) categories[item.category] = {storage, days: item[STORAGE[storage]], weight: settings.mix === "uniform" ? 1 : 0};
+    }
+    if (settings.mix === "pei") {
+      for (const group of fixtures.evidence.groups) {
+        group.categories.forEach((name, i) => {
+          categories[name].weight += group.percent * group.within_group_weights[i];
+        });
+      }
+    }
+    const names = Object.keys(categories).filter((name) => categories[name].weight > 0).sort();
+    if (!names.length) throw new Error("No categories have a usable simulation weight.");
+    const totalWeight = names.reduce((total, key) => total + categories[key].weight, 0);
+    const demand = fixtures.agencies.map((a) => a.meals_per_day * fixtures.factors.kg_per_meal * settings.use_share);
+    const free = fixtures.agencies.map((a) => Object.fromEntries(Object.keys(STORAGE)
+      .map((storage) => [storage, Math.min(a.free_kg[storage] || 0, a.capacity_kg[storage] || 0)])));
+    return {categories, names, totalWeight, demand, free, neighbors: computeNeighbors(fixtures.agencies, settings.radius_km)};
+  }
+
+  function offerStream(settings, seed, inputs, agencyCount) {
+    const draw = random(seed);
+    const homes = Array.from({length: settings.donors}, () => Math.floor(draw() * agencyCount));
+    const activation = homes.map(() => settings.min_donor_active + draw() * (settings.max_donor_active - settings.min_donor_active));
+    const useDraw = random(seed ^ 0xd1b54a35);
+    const realized = Array.from({length: settings.days}, () => Array.from({length: agencyCount},
+      () => 1 + settings.use_uncertainty * (2 * useDraw() - 1)));
+    const days = [];
+    for (let day = 1; day <= settings.days; day++) {
+      const offers = [];
+      for (let donor = 0; donor < homes.length; donor++) {
+        if (draw() >= activation[donor]) continue;
+        let choice = draw() * inputs.totalWeight;
+        const kind = inputs.names.find((name) => {
+          choice -= inputs.categories[name].weight;
+          return choice < 0;
+        }) ?? inputs.names.at(-1);
+        const size = settings.min_offer_kg + draw() * (settings.max_offer_kg - settings.min_offer_kg);
+        const ticket = seed ^ Math.imul(day, 0xb5297a4d) ^ Math.imul(donor + 1, 0x68e31da4);
+        offers.push({home: homes[donor], kind, kg: Math.round(size * settings.offer_scale * 100) / 100,
+          confirmation: mixBits(ticket) / UINT32});
+      }
+      days.push(offers);
+    }
+    return {days, realized};
+  }
+
+  function useBefore(lots, deadline, day, planned) {
+    const deadlines = new Set([deadline]);
+    for (const lot of lots) if (lot.expires >= deadline) deadlines.add(lot.expires);
+    let remaining = Infinity;
+    for (const end of deadlines) {
+      const reserved = lots.reduce((sum, lot) => sum + (lot.expires <= end ? lot.kg : 0), 0);
+      remaining = Math.min(remaining, planned * (end - day) - reserved);
+    }
+    return remaining;
+  }
+
+  function runPolicy(stream, inputs, factors, settings, policy) {
+    const fit = policy === "fit_only" || policy === "rescuefit";
+    let stocks = inputs.demand.map(() => []);
+    const total = Object.fromEntries(METRICS.map((metric) => [metric, 0]));
+    const daily = [];
+    for (let i = 0; i < settings.days; i++) {
+      const day = i + 1;
+      const today = {kg_offered: 0, kg_used: 0, kg_unallocated: 0, kg_redirected: 0, kg_wasted_at_agency: 0, kg_remaining: 0};
+      stocks = stocks.map((lots) => lots.filter((lot) => {
+        if (lot.expires > day) return true;
+        today.kg_wasted_at_agency += lot.kg;
+        return false;
+      }));
+      for (const offer of stream.days[i]) {
+        const category = inputs.categories[offer.kind];
+        const expires = day + category.days;
+        const local = {index: offer.home, km: 0};
+        const canRedirect = policy === "rescuefit" && offer.confirmation < settings.confirmation;
+        const candidates = canRedirect ? [local, ...inputs.neighbors[offer.home]] : [local];
+        let left = offer.kg;
+        today.kg_offered += left;
+        for (const {index, km} of candidates) {
+          if (left < EPS) break;
+          const lots = stocks[index];
+          const stored = lots.reduce((sum, lot) => sum + (lot.storage === category.storage ? lot.kg : 0), 0);
+          const space = inputs.free[index][category.storage] - stored;
+          const usable = fit ? useBefore(lots, expires, day, inputs.demand[index]) : Infinity;
+          const amount = Math.min(left, Math.max(0, Math.min(space, usable)));
+          if (amount <= EPS) continue;
+          lots.push({kind: offer.kind, storage: category.storage, expires, kg: amount});
+          total.kg_received += amount;
+          left -= amount;
+          if (index !== offer.home) {
+            today.kg_redirected += amount;
+            total.transfers++;
+            total.redirect_kg_km += km * amount;
+            break;
+          }
+        }
+        if (policy === "accept_all_stress_test") {
+          total.kg_received += left;
+          today.kg_wasted_at_agency += left;
+        } else today.kg_unallocated += left;
+      }
+      stocks = stocks.map((lots, index) => {
+        let capacity = inputs.demand[index] * stream.realized[i][index];
+        // Equal deadlines use the dry/fridge/freezer insertion order of the reference model.
+        const order = Object.keys(STORAGE);
+        const queue = lots.slice().sort((a, b) => a.expires - b.expires || order.indexOf(a.storage) - order.indexOf(b.storage));
+        for (const lot of queue) {
+          if (capacity < EPS) break;
+          const used = Math.min(lot.kg, capacity);
+          lot.kg -= used;
+          capacity -= used;
+          today.kg_used += used;
+          const coefficient = factors.categories[lot.kind] ?? {};
+          if (coefficient.co2e_per_kg != null) {
+            total.co2e_kg += used * coefficient.co2e_per_kg;
+            total.kg_with_co2e_factor += used;
+          }
+          if (coefficient.cad_per_kg != null) {
+            total.cad += used * coefficient.cad_per_kg;
+            total.kg_with_cad_factor += used;
+          }
+        }
+        return lots.filter((lot) => lot.kg > EPS);
+      });
+      today.kg_remaining = stocks.reduce((sum, lots) => sum + lots.reduce((kg, lot) => kg + lot.kg, 0), 0);
+      for (const metric of Object.keys(today)) if (metric !== "kg_remaining") total[metric] += today[metric];
+      total.kg_remaining = today.kg_remaining;
+      daily.push(today);
+    }
+    total.meals = total.kg_used / factors.kg_per_meal;
+    const accounted = total.kg_used + total.kg_unallocated + total.kg_remaining + total.kg_wasted_at_agency;
+    if (Math.abs(total.kg_offered - accounted) > 1e-6) throw new Error("Mass balance failed during simulation.");
+    return {total, daily};
+  }
+
+  const round4 = (value) => Math.round(value * 10000) / 10000;
+  const average = (entries) => entries.reduce((sum, value) => sum + value, 0) / entries.length;
+
+  function interval(entries) {
+    const ordered = entries.slice().sort((a, b) => a - b);
+    function percentile(q) {
+      const index = (ordered.length - 1) * q;
+      const left = Math.floor(index);
+      return ordered[left] + (ordered[Math.min(left + 1, ordered.length - 1)] - ordered[left]) * (index - left);
+    }
+    return {mean: round4(average(entries)), p05: round4(percentile(.05)), p95: round4(percentile(.95))};
+  }
+
+  function createRunner(fixtures, parameters) {
+    const settings = {...fixtures.config, ...parameters};
+    const ints = {days: [1, 60], donors: [1, 150], seeds: [1, 200], seed_start: [0, 4294967095]};
+    const decimals = {offer_scale: [.1, 4], use_share: [0, 1], confirmation: [0, 1], radius_km: [0, 300], use_uncertainty: [0, 1]};
+    for (const [key, [min, max]] of Object.entries({...ints, ...decimals})) {
+      const value = settings[key];
+      if (!Number.isFinite(value) || value < min || value > max || (key in ints && !Number.isInteger(value))) {
+        throw new Error(key + " must be between " + min + " and " + max + ".");
+      }
+    }
+    if (!["pei", "uniform"].includes(settings.mix)) throw new Error("Choose an offer mix.");
+    const inputs = createInputs(fixtures, settings);
+    const outcomes = Object.fromEntries(POLICIES.map((policy) => [policy, []]));
+    let completed = 0;
+    function step(count) {
+      for (let i = 0; i < count && completed < settings.seeds; i++, completed++) {
+        const stream = offerStream(settings, settings.seed_start + completed, inputs, fixtures.agencies.length);
+        for (const policy of POLICIES) outcomes[policy].push(runPolicy(stream, inputs, fixtures.factors, settings, policy));
+      }
+      return completed;
+    }
+
+    function finish() {
+      if (completed !== settings.seeds) throw new Error("The requested runs have not finished.");
+      const uncertainty = {};
+      for (const policy of POLICIES) uncertainty[policy] = Object.fromEntries(METRICS.map((metric) =>
+        [metric, interval(outcomes[policy].map((run) => run.total[metric]))]));
+      function pairedDelta(metric, first, second) {
+        return interval(outcomes[first].map((run, i) => run.total[metric] - outcomes[second][i].total[metric]));
+      }
+      uncertainty.paired_delta = {
+        kg_used_increase: pairedDelta("kg_used", "rescuefit", "baseline"),
+        kg_used_increase_over_fit_only: pairedDelta("kg_used", "rescuefit", "fit_only"),
+        kg_wasted_at_agency_reduction: pairedDelta("kg_wasted_at_agency", "baseline", "rescuefit"),
+        kg_unallocated_reduction: pairedDelta("kg_unallocated", "baseline", "rescuefit"),
+        kg_wasted_plus_unallocated_reduction: interval(outcomes.baseline.map((run,i)=>
+          run.total.kg_wasted_at_agency + run.total.kg_unallocated -
+          outcomes.rescuefit[i].total.kg_wasted_at_agency - outcomes.rescuefit[i].total.kg_unallocated)),
+      };
+      const daily = Array.from({length: settings.days}, (_, i) => {
+        const row = {day: i + 1, offered_kg: round4(average(outcomes.baseline.map((run) => run.daily[i].kg_offered)))};
+        for (const policy of POLICIES) for (const [alias, metric] of Object.entries(DAILY)) {
+          row[policy + "_" + alias + "_kg"] = round4(average(outcomes[policy].map((run) => run.daily[i][metric])));
+        }
+        return row;
+      });
+      const result = {model_version: 2, data_status: "synthetic_scenario_not_measured",
+        days: settings.days, donors: settings.donors, agencies: fixtures.agencies.length,
+        seeds: settings.seeds, seed_start: settings.seed_start, settings, daily, uncertainty,
+        kg_per_meal: fixtures.factors.kg_per_meal, assumptions: fixtures.reference.assumptions, replay: {}};
+      for (const policy of POLICIES) {
+        result[policy] = Object.fromEntries(METRICS.map((metric) => [metric, uncertainty[policy][metric].mean]));
+        result.replay[policy] = outcomes[policy][0].daily.map((row) =>
+          Object.fromEntries(Object.entries(row).map(([key, value]) => [key, round4(value)])));
+      }
+      return result;
+    }
+    return {step, finish};
+  }
+
+  const api = {createRunner, distanceKm, POLICIES};
+  root.RescueSim = api;
+  if (typeof module !== "undefined") module.exports = api;
+}(globalThis));
+</script>
+  <script>(function initializeDecision(root) {
+  "use strict";
+
+  const EPS = 1e-6;
+  const mass = (value) => Math.round(value * 100) / 100;
+  const clampKg = (value) => Math.max(0, Math.floor((value + EPS) * 100) / 100);
+  const categoryLabels = {
+    bread:"Bread and rolls", root_veg:"Carrots / root vegetables", leafy_veg:"Leafy vegetables", fruit:"Fruit",
+    berries:"Berries", potatoes:"Potatoes", tomatoes:"Tomatoes", broccoli:"Broccoli", milk:"Milk",
+    yogurt:"Yogurt", cheese:"Cheese", eggs:"Eggs", canned_beans:"Beans and lentils", dry_grains:"Dry grains",
+    frozen_veg:"Frozen vegetables", frozen_meat:"Frozen meat", bakery:"Baked treats", prepared:"Prepared meals",
+  };
+
+  function tokensFor(shelf) {
+    return shelf.flatMap((item) => item.keywords.map((word) => ({word, category:item.category})))
+      .sort((a, b) => b.word.length - a.word.length);
+  }
+
+  function normalize(text) {
+    return text.toLowerCase().replace(/\bpotatoes\b/g, "potato").replace(/\btomatoes\b/g, "tomato")
+      .replace(/\bberries\b/g, "berry").replace(/\bcookies\b/g, "cookie").replace(/\bpastries\b/g, "pastry")
+      .replace(/\bsandwiches\b/g, "sandwich");
+  }
+
+  function classify(name, shelf) {
+    const cleaned = normalize(name);
+    return tokensFor(shelf).find(({word}) => {
+      const token = word.replace(/[.*+?^{}$()|[\]\\]/g, "\\$&");
+      return new RegExp("\\b" + token + "s?\\b").test(cleaned);
+    })?.category || "";
+  }
+
+  function parseText(text, shelf) {
+    const samples = text.trim().split(/[;\n]+|,\s*(?=\d|\D+\b\d+(?:\.\d+)?\s*(?:kg|g|lb)\b)/i)
+      .map((line) => line.trim()).filter(Boolean).slice(0, 8);
+    return samples.map((line) => {
+      const quantity = line.match(/(?:^|\s)(\d+(?:\.\d+)?)\s*(kilograms?|kgs?|grams?|g|pounds?|lbs?)\b/i);
+      const count = !quantity ? line.match(/^(\d+)\s+(?:each\s+|trays?\s+(?:of\s+)?)?(.+)$/i) : null;
+      const inferredName = (quantity ? line.replace(quantity[0], " ") : count ? count[2] : line).trim()
+        .replace(/^[\s:–-]+|[\s:–-]+$/g, "");
+      const name = inferredName.replace(/^of\s+/i, "").slice(0, 70) || "Unnamed item";
+      let offered = null;
+      if (quantity) {
+        const unit = quantity[2].toLowerCase();
+        const multiplier = /^(?:lb|pound)/.test(unit) ? .45359237 : /^(?:g|gram)/.test(unit) ? .001 : 1;
+        offered = mass(Number(quantity[1]) * multiplier);
+      }
+      return {name, offered, category:classify(name, shelf), quantity_note:count ? count[1] + " counted units" : ""};
+    });
+  }
+
+  function serviceNeeds(kitchen) {
+    const stock = {...kitchen.starting_stock};
+    const cells = [];
+    for (const service of [...kitchen.services].sort((a, b) => a.day - b.day)) {
+      for (const [category, need] of Object.entries(service.ingredients)) {
+        const onHand = Math.min(need, stock[category] || 0);
+        stock[category] = mass((stock[category] || 0) - onHand);
+        cells.push({service, category, need, onHand, gap:mass(need - onHand), open:mass(need - onHand)});
+      }
+    }
+    return cells;
+  }
+
+  function usableAtDestination(agency, lot, reserved, share, kgPerMeal) {
+    // Use-by days are inclusive. Keep the full reservation through its last day.
+    const live = reserved.filter((prior) => prior.use_by >= lot.arrival);
+    const stored = live.filter((prior) => prior.storage === lot.storage)
+      .reduce((sum, prior) => sum + prior.kg, 0);
+    const space = Math.min(agency.capacity_kg[lot.storage], agency.free_kg[lot.storage]) - stored;
+    const dailyUse = agency.meals_per_day * kgPerMeal * share;
+    const deadlines = [...new Set([lot.use_by, ...live.filter((p) => p.use_by >= lot.use_by).map((p) => p.use_by)])];
+    const usable = Math.min(...deadlines.map((deadline) => dailyUse * (deadline - lot.arrival + 1)
+      - live.filter((p) => p.use_by <= deadline).reduce((kg, p) => kg + p.kg, 0)));
+    return clampKg(Math.min(space, usable));
+  }
+
+  function plan(lots, kitchen, agencies, settings) {
+    const needs = serviceNeeds(kitchen);
+    // Kept food holds storage from its arrival day until the service that
+    // uses it, then frees it. So space is tracked per storage type per day.
+    const space = {...kitchen.ready_storage};
+    const occupied = Object.fromEntries(Object.keys(space).map((type) => [type, {}]));
+    const freeOver = (type, from, to, held) => {
+      let free = Infinity;
+      for (let day = from; day <= to; day++) {
+        free = Math.min(free, space[type] - (occupied[type][day] || 0) - (held[day] || 0));
+      }
+      return free;
+    };
+    const adjustable = {...kitchen.adjustable_purchases_kg};
+    const prep = [...kitchen.prep_kg];
+    const origin = agencies.find((a) => a.id === kitchen.origin_id);
+    const reservations = new Map();
+    const rows = [];
+    const priority = lots.slice().sort((a,b) => a.use_by - b.use_by || a.arrival - b.arrival);
+    for (const lot of priority) {
+      const eligible = lot.reviewed === true && Object.hasOwn(categoryLabels, lot.category)
+        && Object.hasOwn(space, lot.storage) && Number.isFinite(lot.offered)
+        && lot.offered > 0 && Number.isInteger(lot.arrival) && lot.arrival >= 1
+        && Number.isInteger(lot.use_by) && lot.use_by >= lot.arrival
+        && (lot.stage!=="collected" || (Number.isFinite(lot.collected) && lot.collected>=0 && lot.collected<=lot.offered));
+      const collected = lot.stage === "collected" ? lot.collected : 0;
+      const available = eligible ? (lot.stage === "collected" ? collected : lot.offered) : 0;
+      const candidate = eligible ? needs.filter((cell) => cell.category === lot.category
+        && cell.service.day >= lot.arrival && cell.service.day <= lot.use_by) : [];
+      const allocations = [];
+      const tempPrep = [...prep];
+      const held = {};
+      let kept = 0;
+      for (const cell of candidate) {
+        const index = cell.service.day - 1;
+        const qty = clampKg(Math.min(cell.open, tempPrep[index], available - kept,
+          freeOver(lot.storage, lot.arrival, cell.service.day, held)));
+        if (qty <= EPS) continue;
+        allocations.push({cell, qty});
+        tempPrep[index] = mass(tempPrep[index] - qty);
+        for (let day = lot.arrival; day <= cell.service.day; day++) held[day] = mass((held[day] || 0) + qty);
+        kept = mass(kept + qty);
+      }
+      const wholePickup = lot.stage === "offer" && !lot.may_split && kept + EPS < lot.offered;
+      if (wholePickup) {
+        allocations.length = 0;
+        kept = 0;
+      }
+      for (const {cell, qty} of allocations) {
+        cell.open = mass(cell.open - qty);
+        prep[cell.service.day - 1] = mass(prep[cell.service.day - 1] - qty);
+      }
+      if (kept > 0) {
+        for (const [day, kg] of Object.entries(held)) {
+          occupied[lot.storage][day] = mass((occupied[lot.storage][day] || 0) + kg);
+        }
+      }
+      const surplus = mass(Math.max(0, collected - kept));
+      const potential = eligible && lot.stage === "collected" && lot.may_redirect && surplus > EPS && origin
+        ? agencies.filter((a) => a.id !== origin.id && !(settings.closed || []).includes(a.id)).map((agency) => {
+          const km = root.RescueSim.distanceKm(origin, agency);
+          const room = usableAtDestination(agency, lot, reservations.get(agency.id) || [],
+            settings.useShare, settings.kgPerMeal);
+          return {id:agency.id, name:agency.name, town:agency.town, km, room, qty:Math.min(surplus, room)};
+        }).filter((entry) => entry.km <= settings.radius && entry.qty > EPS)
+          .sort((a,b) => a.km - b.km || a.id.localeCompare(b.id)) : [];
+      const route = potential.find((x) => x.id === settings.routeOverrides?.[lot.id]) || potential[0] || null;
+      if (route) {
+        if (!reservations.has(route.id)) reservations.set(route.id, []);
+        reservations.get(route.id).push({storage:lot.storage, use_by:lot.use_by, kg:route.qty});
+      }
+      const replaced = mass(Math.min(kept, adjustable[lot.category] || 0));
+      if (replaced > 0) adjustable[lot.category] = mass(adjustable[lot.category] - replaced);
+      const net = mass(replaced * lot.price - (kept > 0 ? lot.handling_cost : 0));
+      const action = !eligible ? "Review required" : wholePickup ? "Whole offer exceeds fit" :
+        kept > 0 ? (kept + EPS >= available ? "Accept" : "Accept part") : route ? "Redirect" : "No kitchen fit";
+      const reason = !eligible ? "Confirm the ingredient, storage and use-by window before planning." :
+        wholePickup ? "The donor requires a whole-lot pickup. The kitchen can only use a smaller quantity." :
+        kept > 0 ? "The quantity fits the meal plan, prep budget and available storage." :
+        route ? "This kitchen has no use in the selected window. A modeled recipient has room." :
+        "The meal plan, available space or prep budget leaves no usable allocation.";
+      rows.push({lot, kept, replaced, net, collected, offered:lot.offered, surplus, route, potential, action, reason, eligible,
+        allocation:allocations.map(({cell,qty}) => ({service_id:cell.service.id, day:cell.service.day, name:cell.service.name, qty})),
+        unplaced:mass(surplus - (route?.qty || 0))});
+    }
+    // Free space on each type's tightest day.
+    const remainingSpace = Object.fromEntries(Object.entries(space).map(([type, kg]) =>
+      [type, mass(kg - Math.max(0, ...Object.values(occupied[type])))]));
+    return {rows, needs, remainingSpace, prep};
+  }
+
+  function ledgerFor(row) {
+    return {id:row.lot.id, collected:row.collected, kitchen:row.lot.stage === "collected" ? row.kept : 0,
+      pending:row.route?.qty || 0, transferred:0, used:0, discarded:0, unplaced:row.unplaced,
+      confirmed:false, pickedUp:row.lot.stage === "collected", released:false};
+  }
+
+  function evolve(ledger, row, event, kg = 0) {
+    const next = {...ledger};
+    if (event === "pickup" && !next.pickedUp && row.lot.stage === "offer" && row.kept > 0) {
+      next.collected = row.kept;
+      next.kitchen = row.kept;
+      next.pickedUp = true;
+    } else if (event === "confirm" && next.pending > 0 && !next.confirmed) {
+      next.confirmed = true;
+    } else if (event === "transfer" && next.pending > 0 && next.confirmed) {
+      next.transferred = mass(next.transferred + next.pending);
+      next.pending = 0;
+    } else if (event === "release" && next.pending > 0) {
+      next.unplaced = mass(next.unplaced + next.pending);
+      next.pending = 0;
+      next.confirmed = false;
+      next.released = true;
+    } else if (event === "use" && Number.isFinite(kg) && kg > 0 && kg <= next.kitchen + EPS) {
+      next.kitchen = mass(next.kitchen - kg);
+      next.used = mass(next.used + kg);
+    } else if (event === "discard" && Number.isFinite(kg) && kg > 0 && kg <= next.unplaced + next.kitchen + EPS) {
+      const fromUnplaced = Math.min(kg, next.unplaced);
+      next.unplaced = mass(next.unplaced - fromUnplaced);
+      next.kitchen = mass(next.kitchen - (kg - fromUnplaced));
+      next.discarded = mass(next.discarded + kg);
+    } else return null;
+    const sum = next.kitchen + next.pending + next.transferred + next.used + next.discarded + next.unplaced;
+    if (Math.abs(sum - next.collected) > EPS) throw new Error("The lot ledger failed to balance.");
+    return next;
+  }
+
+  const api = {mass, categoryLabels, parseText, serviceNeeds, plan, ledgerFor, evolve};
+  root.RescueDecision = api;
+  if (typeof module !== "undefined") module.exports = api;
+}(globalThis));
+</script>
+  <script>(function initializePlots(root) {
+  "use strict";
+
+  const COLORS = {baseline:"#95512f",fit_only:"#366b94",rescuefit:"#246847"};
+  const TITLE = {baseline:"Storage only",fit_only:"Kitchen fit",rescuefit:"Fit + redirect"};
+
+  function setup(canvas) {
+    const bounds = canvas.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return null;
+    const ratio = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.round(bounds.width * ratio);
+    canvas.height = Math.round(bounds.height * ratio);
+    const ctx = canvas.getContext("2d");
+    ctx.scale(ratio, ratio);
+    return {ctx,width:bounds.width,height:bounds.height};
+  }
+
+  // Hand-drawn geographic reference from approximate town positions.
+  // This coastline is schematic and has no role in distance calculations.
+  const coast = [
+    [-64.04,47.00],[-63.97,46.96],[-63.99,46.87],[-63.90,46.76],[-63.87,46.66],
+    [-63.73,46.55],[-63.64,46.50],[-63.48,46.51],[-63.34,46.48],[-63.20,46.46],
+    [-62.98,46.44],[-62.82,46.48],[-62.71,46.46],[-62.58,46.47],[-62.44,46.47],
+    [-62.27,46.44],[-62.10,46.49],[-61.98,46.47],[-62.09,46.39],[-62.15,46.32],
+    [-62.31,46.30],[-62.39,46.23],[-62.52,46.23],[-62.54,46.14],[-62.48,46.09],
+    [-62.42,46.00],[-62.56,45.97],[-62.72,46.04],[-62.73,46.10],[-62.88,46.16],
+    [-63.03,46.17],[-63.11,46.20],[-63.19,46.15],[-63.35,46.18],[-63.47,46.20],
+    [-63.56,46.19],[-63.72,46.24],[-63.77,46.32],[-63.90,46.34],[-64.09,46.40],
+    [-64.18,46.48],[-64.34,46.62],[-64.37,46.72],[-64.23,46.82],[-64.15,46.92],
+  ];
+
+  function island(canvas, agencies, origin, selected, possible, closed, onSelect) {
+    const stage = setup(canvas);
+    if (!stage) return;
+    const {ctx,width,height} = stage;
+    const pad = 25;
+    const pt = (lon,lat) => [pad + (lon+64.47)/2.6*(width-pad*2),
+      pad + (47.07-lat)/1.18*(height-pad*2)];
+    ctx.fillStyle = "#e4eff0";
+    ctx.fillRect(0,0,width,height);
+    ctx.strokeStyle = "#cadae0";
+    ctx.lineWidth = .6;
+    for (let x=25; x<width; x+=35) {
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,height);ctx.stroke();
+    }
+    for (let y=22; y<height; y+=31) {
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();
+    }
+    ctx.beginPath();
+    coast.forEach(([lon,lat],i) => i ? ctx.lineTo(...pt(lon,lat)) : ctx.moveTo(...pt(lon,lat)));
+    ctx.closePath();
+    ctx.fillStyle = "#cfdfc2";ctx.fill();
+    ctx.strokeStyle = "#8fa992";ctx.lineWidth = 1.4;ctx.stroke();
+    const dot = (agency) => pt(agency.lon,agency.lat);
+    if (origin && selected) {
+      ctx.beginPath();ctx.moveTo(...dot(origin));ctx.lineTo(...dot(selected));
+      ctx.setLineDash([4,3]);ctx.strokeStyle = "#26593f";ctx.lineWidth=2.6;ctx.stroke();ctx.setLineDash([]);
+    }
+    const hits = [];
+    for (const agency of agencies) {
+      const [x,y] = dot(agency);
+      const local = agency.id === origin?.id;
+      const active = agency.id === selected?.id;
+      const can = possible.has(agency.id);
+      ctx.fillStyle = local ? "#183d31" : active ? "#174a34" : can ? "#4f8966" : closed.has(agency.id) ? "#aa6448" : "#8da59b";
+      ctx.strokeStyle = "#f8fcf2"; ctx.lineWidth = active ? 2.4 : 1.4;
+      ctx.beginPath();
+      if (local) ctx.rect(x-5,y-5,10,10); else ctx.arc(x,y,active ? 7.5 : can ? 5.1 : 3.6,0,Math.PI*2);
+      ctx.fill();ctx.stroke();
+      if (can) hits.push({x,y,id:agency.id});
+    }
+    ctx.font = "700 11px system-ui";
+    function label(agency, text, above) {
+      if (!agency) return;
+      let [x,y] = dot(agency);
+      const size = ctx.measureText(text).width;
+      x = Math.max(7,Math.min(width-8-size,x-size/2));
+      y += above ? -12 : 21;
+      ctx.fillStyle = "#f9fcf4";
+      ctx.fillRect(x-4,y-11,size+8,15);
+      ctx.fillStyle = "#1f4032";
+      ctx.fillText(text,x,y);
+    }
+    label(origin, origin?.town || "", true);
+    label(selected, selected?.town || "", false);
+    ctx.font = "600 11px system-ui";
+    ctx.fillStyle = "#325769";
+    ctx.fillText("PEI · schematic",13,height-12);
+    canvas.onclick = (event) => {
+      if (!onSelect) return;
+      const rect = canvas.getBoundingClientRect();
+      const nearest = hits.map((hit) => ({...hit,d:Math.hypot(hit.x-event.clientX+rect.x,hit.y-event.clientY+rect.y)}))
+        .sort((a,b) => a.d-b.d)[0];
+      if (nearest && nearest.d < 17) onSelect(nearest.id);
+    };
+  }
+
+  function trend(canvas, daily, totalDays, focusedDay) {
+    const stage = setup(canvas);
+    if (!stage) return;
+    const {ctx,width,height} = stage;
+    const xStart=48, xEnd=width-16, yTop=15, yBottom=height-31;
+    const rawMax = Math.max(0, ...daily.flatMap((row) => Object.keys(TITLE).map((p) => row[p])));
+    const axisMax = Math.max(1, Math.ceil(rawMax / 4) * 4);
+    const x = (day) => xStart + (day-1)/Math.max(1,totalDays-1)*(xEnd-xStart);
+    const y = (value) => yBottom-value/axisMax*(yBottom-yTop);
+    ctx.font = "11px system-ui";
+    ctx.fillStyle = "#4b6557";
+    ctx.strokeStyle = "#dce7dc";
+    ctx.lineWidth = 1;
+    for (let i=0;i<=4;i++) {
+      const value=axisMax*i/4;
+      const at=y(value);
+      ctx.beginPath();ctx.moveTo(xStart,at);ctx.lineTo(xEnd,at);ctx.stroke();
+      ctx.fillText(new Intl.NumberFormat("en-CA",{maximumFractionDigits:1}).format(value),2,at+4);
+    }
+    const labels=[...new Set([1,Math.max(1,Math.round(totalDays/2)),totalDays])];
+    for (const day of labels) {
+      const label="Day "+day;
+      ctx.fillText(label,Math.min(width-ctx.measureText(label).width-1,x(day)-9),height-10);
+    }
+    if (focusedDay) {
+      ctx.beginPath();ctx.moveTo(x(focusedDay),yTop);ctx.lineTo(x(focusedDay),yBottom);
+      ctx.setLineDash([3,4]);ctx.strokeStyle="#607c6d";ctx.stroke();ctx.setLineDash([]);
+    }
+    for (const policy of Object.keys(TITLE)) {
+      const rows = focusedDay ? daily.filter((row) => row.day<=focusedDay) : daily;
+      ctx.strokeStyle = COLORS[policy];ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      rows.forEach((row,i) => i ? ctx.lineTo(x(row.day),y(row[policy])) : ctx.moveTo(x(row.day),y(row[policy])));
+      ctx.stroke();
+      const last=rows.at(-1);
+      if (last) {
+        ctx.beginPath();ctx.fillStyle=COLORS[policy];ctx.arc(x(last.day),y(last[policy]),3,0,2*Math.PI);ctx.fill();
+      }
+    }
+  }
+  root.RescuePlots = {island,trend,COLORS,TITLE};
+}(globalThis));
+</script>
+  <script>(function startWorkspace() {
+  "use strict";
+
+  const fixtures = JSON.parse(document.getElementById("fixtures").textContent);
+  const D = window.RescueDecision;
+  const S = window.RescueSim;
+  const P = window.RescuePlots;
+  const main = document.getElementById("main");
+  const nav = document.getElementById("navigation");
+  const saveKey = "rescuefit-pei-v2-intake";
+  const STEPS = [
+    ["intake","Intake","↳"],["fit","Kitchen fit","▤"],["network","Redirect map","⟷"],
+    ["plan","Use-first plan","◷"],["impact","Impact lab","▥"],["evidence","Data sources","◉"],
+  ];
+  const STORAGE = {fridge:"Refrigerated",freezer:"Frozen",dry:"Dry"};
+  const policyIds = ["baseline","fit_only","rescuefit"];
+  const ledgerFields = [
+    ["kitchen","Kitchen stock"],["pending","Pending handoff"],["transferred","Transferred"],
+    ["used","Used in prep"],["discarded","Discarded"],["unplaced","Held without destination"],
+  ];
+  const eventNames = {pickup:"Recorded collection",confirm:"Recipient confirmed",transfer:"Recorded handoff",
+    release:"Released pending handoff",use:"Recorded preparation use",discard:"Recorded discard"};
+  const n = new Intl.NumberFormat("en-CA",{maximumFractionDigits:2});
+  const num = (value) => n.format(value);
+  const kg = (value) => num(value) + " kg";
+  const dollars = new Intl.NumberFormat("en-CA",{style:"currency",currency:"CAD"});
+  const money = (value) => dollars.format(value);
+  const signed = (value) => (value>0 ? "+" : value<0 ? "−" : "") + num(Math.abs(value));
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[char]);
+  const blank = (message) => '<p class="inline-alert">' + esc(message) + "</p>";
+  const chip = (label,color="") => '<span class="chip '+color+'">'+esc(label)+"</span>";
+  const btn = (label,action,options={}) => '<button type="button" class="btn '+(options.style||"")+
+    '" data-action="'+action+'"'+(options.arg==null?"":' data-arg="'+esc(options.arg)+'"')+
+    (options.disabled?" disabled":"")+'> '+esc(label)+"</button>";
+  const go = (label, target, style="") => btn(label, "go", {arg:target,style});
+  const input = (label, value, attrs="", type="number") =>
+    '<label class="field"><span>'+esc(label)+'</span><input type="'+type+'" value="'+esc(value)+'" '+attrs+'></label>';
+  function select(label, value, options, attrs="") {
+    return '<label class="field"><span>'+esc(label)+'</span><select '+attrs+'>'+
+      Object.entries(options).map(([key,title]) => '<option value="'+esc(key)+'"'+(String(value)===key?" selected":"")+
+        '>'+esc(title)+'</option>').join("")+"</select></label>";
+  }
+  function checkbox(label, checked, attrs) {
+    return '<label class="checkbox"><input type="checkbox" '+attrs+(checked?" checked":"")+'><span>'+esc(label)+'</span></label>';
+  }
+  function card(title, body, subtitle="", className="") {
+    return '<section class="card '+className+'"><div class="card-head"><div><h2>'+esc(title)+'</h2>'+
+      (subtitle?'<p class="subheading">'+esc(subtitle)+'</p>':"")+'</div></div>'+body+"</section>";
+  }
+  function metric(label, value, detail="", primary=false) {
+    return '<div class="metric '+(primary?"primary":"")+'"><small>'+esc(label)+'</small><strong>'+esc(value)+
+      '</strong>'+(detail?'<p class="detail">'+esc(detail)+'</p>':"")+"</div>";
+  }
+  function rowList(rows) {
+    return '<ul class="list">'+rows.map(([key,value]) =>
+      '<li><span>'+esc(key)+'</span><strong class="number">'+esc(value)+"</strong></li>").join("")+"</ul>";
+  }
+  function table(headers, rows, caption) {
+    return '<div class="table-wrap"><table><caption class="sr-only">'+esc(caption)+'</caption><thead><tr>'+
+      headers.map((head)=>'<th scope="col">'+esc(head)+"</th>").join("")+
+      "</tr></thead><tbody>"+rows.map(([label,...cells])=>'<tr><th scope="row">'+esc(label)+'</th>'+
+        cells.map((value)=>'<td>'+esc(value)+"</td>").join("")+"</tr>").join("")+"</tbody></table></div>";
+  }
+  const stepIndex = Object.fromEntries(STEPS.map(([id],i)=>[id,i]));
+  const fromHash = () => Object.hasOwn(stepIndex,location.hash.slice(1)) ? location.hash.slice(1) : "intake";
+
+  function freshState() {
+    return {version:2,kitchen:structuredClone(fixtures.kitchen),lots:[structuredClone(fixtures.kitchen.sample)],
+      selected:"DEMO-001",radius:35,closed:[],routeOverrides:{},approved:null,ledgers:{},events:[],
+      openLots:["DEMO-001"],note:"12 kg carrots",nextLot:2};
+  }
+  function restore() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(saveKey));
+      if (stored?.version===2 && Array.isArray(stored.lots) && stored.kitchen?.services?.length) return stored;
+    } catch {}
+    return freshState();
+  }
+  let state=restore();
+  let page=fromHash();
+  let photo=null;
+  let toastTimer=0;
+  let fitData=null;
+  let settings={...fixtures.config};
+  let latest=fixtures.reference;
+  let scenarioName="Reference run";
+  let simulation=null;
+  let completed=0;
+  let tabMetric="used";
+  let replay=false;
+  let replayDay=1;
+  let timer=null;
+  let climate={factor:"",path:""};
+  let eventKg="";
+  const openPanels=new Set();
+
+  const save = () => {try {localStorage.setItem(saveKey,JSON.stringify(state));} catch {}};
+  function announce(message) {
+    document.getElementById("notice").textContent=message;
+    window.clearTimeout(toastTimer);
+    toastTimer=window.setTimeout(()=>{document.getElementById("notice").textContent="";},4800);
+  }
+
+  function recompute() {
+    fitData=state.approved || D.plan(state.lots,state.kitchen,fixtures.agencies,{
+      radius:state.radius,kgPerMeal:fixtures.factors.kg_per_meal,useShare:fixtures.config.use_share,
+      routeOverrides:state.routeOverrides,closed:state.closed,
+    });
+    if (!fitData.rows.some((row)=>row.lot.id===state.selected)) state.selected=fitData.rows[0]?.lot.id ?? "";
+  }
+  const selectedRow = () => fitData.rows.find((row)=>row.lot.id===state.selected);
+  const total = (key) => D.mass(fitData.rows.reduce((sum,row)=>sum+(row[key]||0),0));
+  const currentLedger = (row) => state.ledgers[row.lot.id] || D.ledgerFor(row);
+
+  function hero(label,title,copy,detail="") {
+    return '<section class="mast"><div><span class="eyebrow">'+esc(label)+'</span><h1>'+esc(title)+
+      '</h1><p>'+esc(copy)+'</p></div>'+detail+"</section>";
+  }
+  function ticket(value, subtitle, id="") {
+    return '<div class="lot-ticket"><small>'+esc(id)+'</small><strong>'+esc(value)+'</strong><span>'+
+      esc(subtitle)+'</span><div class="ticket-bars" aria-hidden="true"></div></div>';
+  }
+  function workflow() {
+    if (stepIndex[page]>3) return "";
+    return '<div class="workflow" aria-label="Decision sequence">'+STEPS.slice(0,4).map(([id,label],i)=>
+      (i?'<span class="step-arrow" aria-hidden="true">→</span>':"")+
+      '<button type="button" class="step '+(stepIndex[page]>i?"done":"")+'" data-action="go" data-arg="'+id+'"'+
+      (page===id?' aria-current="step"':"")+">"+esc(label)+"</button>").join("")+"</div>";
+  }
+  function chooseLot() {
+    return fitData.rows.length>1 ? '<div class="actions lot-picker">'+select("Inspect lot",state.selected,
+      Object.fromEntries(fitData.rows.map(({lot})=>[lot.id,lot.id+" · "+lot.name])), 'data-setting="selected"')+"</div>" : "";
+  }
+  function numFields(attrs,min=0,max=500,step=".01") {
+    return ' min="'+min+'" max="'+max+'" step="'+step+'" '+attrs;
+  }
+  function editLot(lot) {
+    const locked=state.approved?" disabled":"";
+    const attr=(key) => 'data-field="'+key+'" data-lot="'+esc(lot.id)+'"'+locked;
+    const label=lot.offered>0?kg(lot.offered)+" offered":"Weight required";
+    const isOpen=state.openLots.includes(lot.id);
+    return '<details class="intake-row" data-detail="'+esc(lot.id)+'"'+(isOpen?" open":"")+
+      '><summary><span>'+esc(lot.name)+' <small class="row-meta">'+esc(lot.id)+'</small></span><small class="row-meta">'+
+      esc(label)+'</small></summary><div class="field-grid">'+
+      input("Food",lot.name,attr("name")+' maxlength="70"',"text")+
+      select("Ingredient",lot.category,{"":"Choose ingredient",...D.categoryLabels},attr("category"))+
+      input("Offered kg",lot.offered??"",numFields(attr("offered"),.01))+
+      select("Custody",lot.stage,{collected:"Already collected",offer:"Offer before pickup"},attr("stage"))+
+      (lot.stage==="collected"?input("Collected kg",lot.collected??"",numFields(attr("collected"),0,lot.offered||500)):"")+
+      select("Storage",lot.storage,{"":"Choose storage",...STORAGE},attr("storage"))+
+      input("Arrival day",lot.arrival??"",numFields(attr("arrival"),1,7,1))+
+      input("Reviewed use-by day",lot.use_by??"",numFields(attr("use_by"),1,7,1))+
+      input("Adjustable price, CAD/kg",lot.price,numFields(attr("price"),0,250))+
+      input("Added handling, CAD",lot.handling_cost,numFields(attr("handling_cost"),0,1000))+
+      '</div><div class="checklist">'+checkbox("I checked the weight, storage history and this use window.",lot.reviewed,attr("reviewed"))+
+      (lot.stage==="offer"?checkbox("Donor allows a partial pickup",lot.may_split,attr("may_split")):
+        checkbox("This collected lot can be shared onward",lot.may_redirect,attr("may_redirect")))+
+      '</div>'+(!state.approved?'<div class="actions">'+btn("Remove lot","remove-lot",{arg:lot.id,style:"quiet small"})+'</div>':"")+
+      (lot.quantity_note?'<p class="form-hint">'+esc(lot.quantity_note)+'. Enter the measured edible weight.</p>':"")+'</details>';
+  }
+
+  function intake() {
+    const row=selectedRow();
+    const label=row?.lot.name || "Incoming lot";
+    const draft=state.approved ? '<p class="inline-good">Plan saved. Outcome actions are available on Redirect map and Use-first plan.</p>' : "";
+    const photoMarkup = photo ? '<img id="photo-preview" class="photo-preview" src="'+esc(photo.url)+
+      '" alt="Attached donation label or item"><div class="actions">'+btn("Read printed label","read-label",{style:"quiet small"})+
+      btn("Remove photo","remove-photo",{style:"quiet small"})+"</div>" : "";
+    const left=card("Donor message",
+      '<label class="field" for="donor-message"><span>Food and quantity</span></label><textarea id="donor-message" maxlength="900" '+
+      (state.approved?"disabled ":"")+'placeholder="12 kg carrots, 4 kg potatoes, 20 rolls">'+esc(state.note)+
+      '</textarea><div class="actions">'+btn("Parse message","parse",{disabled:!!state.approved})+
+      btn("Mixed offer example","sample-text",{style:"quiet",disabled:!!state.approved})+
+      '</div><div class="file-pane"><label class="field"><span>Attach a photo of the item or label</span>'+
+      '<input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp" '+(state.approved?"disabled":"")+
+      '></label>'+photoMarkup+'<div class="form-hint">Review any label text and enter the actual storage and use window.</div></div>',
+      "Use kg, g, lb or a count. Counts need a measured weight.");
+    const right=card("Receiving capacity",'<div class="stat-list">'+Object.entries(STORAGE).map(([key,title])=>
+      '<div><small>'+title+'</small><strong>'+kg(state.kitchen.ready_storage[key])+"</strong></div>").join("")+
+      '</div>'+rowList([["Planning window","3 days"],["Approved recipe entries",state.kitchen.services.length]])+
+      '<p class="subheading">Update space, stock, prep budget and adjustable purchases on Kitchen fit.</p>'+
+      '<div class="actions">'+go("Check kitchen fit","fit")+'</div>',
+      "Sample kitchen inputs");
+    return hero("Intake","Review a donation","Turn the donor’s message into a weighing and review list.",
+      ticket(row?.lot.offered?kg(row.lot.offered):"Draft",label,row?.lot.id||"Intake"))+workflow()+draft+
+      '<div class="dashboard two"><div class="stack">'+left+
+      card("Review lot details",'<div class="ticket-list">'+state.lots.map(editLot).join("")+
+        (!state.lots.length?blank("There are no lots in this intake. Parse a message or add an item."):"")+
+        '</div><div class="actions">'+btn("Add an item","add-lot",{style:"quiet",disabled:!!state.approved})+
+        go("Check kitchen fit","fit")+"</div>")+'</div><div class="stack">'+right+
+      card("What happens next?",'<p class="muted">The fit check matches the reviewed quantities to meals and preparation capacity. A collected surplus stays in the lot ledger until its next outcome is recorded.</p>')+
+      "</div></div>";
+  }
+
+  function balanced(ledger) {
+    return D.mass(ledgerFields.reduce((sum,[key])=>sum+ledger[key],0));
+  }
+  function ledgerCard(row) {
+    const ledger=currentLedger(row);
+    const used=balanced(ledger);
+    const shown=ledgerFields.filter(([key])=>ledger[key]>0);
+    return '<section class="card lot-ledger"><div class="card-head"><div><h2>Lot ledger</h2><p class="subheading">'+
+      esc(row.lot.id+" · "+row.lot.name)+(state.approved?" · saved plan":" · draft allocation")+
+      '</p></div><span class="balance">'+kg(used)+' / '+kg(ledger.collected)+'</span></div>'+
+      '<div class="bar lot-bar" aria-hidden="true">'+shown.map(([key])=>'<i class="segment seg-'+key+'" style="width:'+
+      (100*ledger[key]/ledger.collected)+'%"></i>').join("")+
+      '</div><div class="ledger-items">'+shown.map(([key,title])=>'<span><i class="swatch seg-'+key+'"></i>'+
+      esc(title)+" "+kg(ledger[key])+"</span>").join("")+
+      (!shown.length?'<span>Collection pending · '+kg(row.lot.offered)+' offered</span>':"")+
+      '</div><p class="subheading">'+(ledger.collected===used?"Collected weight balances.":"Review recorded weights.")+
+      (row.lot.stage==="offer"?" Donor-side quantity after proposed pickup: "+kg(Math.max(0,row.offered-row.kept))+".":"")+
+      "</p></section>";
+  }
+
+  function fit() {
+    const row=selectedRow();
+    if (!row) return hero("Kitchen fit","Check what fits","Add a lot to start the meal and storage comparison.")+
+      workflow()+go("Back to intake","intake");
+    const locked = state.approved ? " disabled" : "";
+    const catName = D.categoryLabels[row.lot.category] || "Selected ingredient";
+    const storage = Object.entries(STORAGE).map(([key,title]) =>
+      input(title+" free kg",state.kitchen.ready_storage[key],numFields('data-space="'+key+'"'+locked))).join("");
+    const categoryFields = Object.hasOwn(D.categoryLabels,row.lot.category) ?
+      input(catName+" on hand, kg",state.kitchen.starting_stock[row.lot.category]||0,
+        numFields('data-stock="'+esc(row.lot.category)+'"'+locked))+
+      input("Uncommitted "+catName.toLowerCase()+", kg",state.kitchen.adjustable_purchases_kg[row.lot.category]||0,
+        numFields('data-buy="'+esc(row.lot.category)+'"'+locked)) : "";
+    const prepFields = state.kitchen.prep_kg.map((value,i)=>
+      input("Day "+(i+1)+" prep kg",value,numFields('data-prep="'+i+'"'+locked))).join("");
+    const decisionRows=fitData.rows.map((r)=>[r.lot.name,r.action,kg(r.kept),kg(r.route?.qty||0),kg(r.replaced)]);
+    const serviceRows=fitData.needs.filter((cell)=>cell.category===row.lot.category);
+    const need = serviceRows.reduce((sum,cell)=>sum+cell.need,0);
+    const usedStock = serviceRows.reduce((sum,cell)=>sum+cell.onHand,0);
+    return hero("Kitchen fit","Check what fits","Match each reviewed lot to the three-day meal plan, available storage and prep capacity.",
+      ticket(kg(total("kept")),"proposed for the kitchen","Across this intake"))+workflow()+chooseLot()+
+      '<div class="metrics">'+metric("Kitchen allocation",kg(total("kept")),"Draft meal assignments",true)+
+      metric("Suggested transfer",kg(D.mass(fitData.rows.reduce((sum,r)=>sum+(r.route?.qty||0),0))),"Recipient review required")+
+      metric("Adjustable purchases",kg(total("replaced")),"Proposed reduction")+
+      metric("Net purchase change",money(total("net")),"Illustrative prices and handling")+"</div>"+
+      '<div class="dashboard two"><div class="stack">'+ledgerCard(row)+
+      card("Decision for "+row.lot.name,chip(row.action,row.eligible?"":"amber")+
+        '<p class="formula">'+kg(need)+' needed − '+kg(usedStock)+' available stock = '+kg(Math.max(0,need-usedStock))+' meal gap</p>'+
+        '<p class="muted">'+esc(row.reason)+'</p>'+
+        (row.allocation.length?rowList(row.allocation.map((x)=>["Day "+x.day+" · "+x.name,kg(x.qty)])):"")+
+        '<div class="actions">'+go("Review redirect options","network")+go("View meal plan","plan","quiet")+"</div>")+
+      card("All lot decisions",table(["Food","Decision","Keep","Propose onward","Buy less"],decisionRows,"Lot decisions"))+
+      '</div>'+card("Change the kitchen inputs",'<div class="field-grid">'+storage+categoryFields+prepFields+
+        '</div><p class="subheading">Prep budgets limit how much donated food can be prepared each day.</p>'+
+        '<details class="timeline" data-panel="portions"'+(openPanels.has("portions")?" open":"")+'><summary>Adjust portions for planned services</summary><div class="field-grid">'+
+        state.kitchen.services.map((service)=>input(service.name,service.portions,numFields(
+          'data-service="'+esc(service.id)+'"'+locked,0,300,1))).join("")+'</div></details>'+
+        '<div class="actions">'+go("Edit intake","intake","quiet")+
+        (state.approved&&!state.events.length?btn("Reopen draft","reopen",{style:"quiet"}):"")+"</div>",
+        state.approved?"This plan is saved.":"Recommendations update when inputs change.")+"</div>";
+  }
+
+  function network() {
+    const row=selectedRow();
+    if (!row) return hero("Redirect map","Place the surplus","Review at least one lot first.")+workflow()+go("Open intake","intake");
+    const ledger=currentLedger(row);
+    const list=row.potential.filter((x)=>!state.closed.includes(x.id)).slice(0,10);
+    const routeExists=!!row.route;
+    const selected=routeExists?row.route:null;
+    const routeRows=list.map((r)=>'<button type="button" class="route-card" data-action="pick-route" data-arg="'+esc(r.id)+
+      '" aria-pressed="'+(r.id===selected?.id)+'"'+(state.approved?" disabled":"")+'><strong>'+esc(r.name+' · '+r.town)+
+      '</strong><small>'+kg(r.qty)+' assignable · '+num(r.km)+' km straight line</small></button>').join("");
+    let actions="";
+    if (state.approved && ledger.pending>0) {
+      actions=btn(ledger.confirmed?"Record simulated handoff":"Simulate recipient confirmation",
+        ledger.confirmed?"event-transfer":"event-confirm")+btn("Release handoff","event-release",{style:"amber"});
+    } else if (!state.approved && selected) {
+      actions=btn("Mark this recipient unavailable","close-route",{arg:selected.id,style:"quiet"})+
+        go("Review and save plan","plan");
+    } else if (!state.approved) actions=go("Continue to meal plan","plan");
+    const badge=ledger.transferred>0?chip("Simulated handoff recorded","blue"):ledger.released?chip("Handoff released","amber"):
+      ledger.confirmed?chip("Confirmed · awaiting handoff","blue"):ledger.pending>0?chip("Pending confirmation","amber"):chip("No handoff queued");
+    return hero("Redirect map","Find room for the surplus","Rank modeled receiving sites by distance after checking space and use capacity.",
+      ticket(row.surplus?kg(row.surplus):"0 kg","available for review",row.lot.id))+workflow()+chooseLot()+
+      '<div class="dashboard two"><div class="stack">'+
+      card("PEI receiving sites",'<div class="map-frame"><canvas id="map-canvas" role="img" aria-label="Schematic of 22 modeled PEI receiving sites. The recipient list provides the same choices."></canvas></div>'+
+        '<p class="subheading">Square: starting kitchen. Green circles: possible receiving sites for this lot. The dashed segment shows straight-line distance.</p>'+
+        '<div class="actions">'+input("Search radius, km",state.radius,numFields('data-setting="radius"'+(state.approved?" disabled":""),0,150,1))+
+        (state.closed.length&&!state.approved?btn("Restore modeled availability","restore-routes",{style:"quiet"}):"")+"</div>",
+        "Positions use approximate town centres. All receiving sites and capacities are modeled.")+ledgerCard(row)+
+      '</div><div class="stack">'+card("Onward decision",badge+
+        (selected?rowList([["Selected site",selected.name],["Town",selected.town],["Available to place",kg(selected.qty)],
+          ["Straight-line distance",num(selected.km)+" km"]]):blank(row.lot.stage==="offer"?
+          "Record collection before suggesting an onward handoff.":row.surplus?
+          "No modeled recipient fits the current review, window and radius.":"The kitchen has no collected surplus for this lot."))+
+        '<div class="actions">'+actions+"</div>"+
+        (state.approved&&ledger.transferred>0?'<p class="form-hint">Reported use remains '+kg(ledger.used)+' until preparation is recorded.</p>':""))+
+      card("Possible recipients",'<div class="route-list">'+(routeRows||'<p class="muted">No candidates for the selected lot.</p>')+'</div>',
+        "Select a site to see its proposed quantity.")+"</div></div>";
+  }
+
+  function shopping() {
+    const planned=Object.entries(state.kitchen.adjustable_purchases_kg).filter(([,amount])=>amount>0);
+    return planned.map(([category,qty])=>{
+      const replaced=D.mass(fitData.rows.filter((r)=>r.lot.category===category).reduce((sum,r)=>sum+r.replaced,0));
+      return [D.categoryLabels[category],kg(qty),kg(replaced),kg(Math.max(0,D.mass(qty-replaced)))];
+    });
+  }
+  function planView() {
+    const row=selectedRow();
+    if (!row) return hero("Use-first plan","Prepare a meal plan","Review at least one lot first.")+workflow()+go("Open intake","intake");
+    const ledger=currentLedger(row);
+    const menu='<div class="service-grid">'+[1,2,3].map((day)=>'<div class="day-panel"><h3>Day '+day+'</h3>'+
+      state.kitchen.services.filter((s)=>s.day===day).map((service)=>{
+        const allocations=fitData.rows.flatMap((r)=>r.allocation.filter((a)=>a.service_id===service.id)
+          .map((a)=>r.lot.name+" "+kg(a.qty)));
+        return '<div class="service-line"><strong>'+esc(service.name)+'</strong><span class="tiny muted">'+
+          service.portions+' planned portions</span><p class="tiny">'+esc(allocations.length?allocations.join(" · "):"Use planned stock and purchases")+
+          "</p></div>";
+      }).join("")+'</div>').join("")+"</div>";
+    const next=state.approved ? '<p class="inline-good">Plan saved in this browser.</p>'+
+      '<div class="actions">'+btn("Export decision and ledger","ledger-download",{style:"quiet"})+go("Open impact lab","impact")+'</div>'
+      : '<div class="actions">'+btn("Save demo plan","approve",{disabled:state.lots.some((lot)=>!validLot(lot))})+
+        go("Review redirect map","network","quiet")+'</div>';
+    const outcomes=state.approved?
+      card("Record lot outcomes",(row.lot.stage==="offer"&&!ledger.pickedUp&&row.kept>0?
+        btn("Record simulated pickup · "+kg(row.kept),"event-pickup"):"")+
+        (ledger.pending>0?'<div class="actions">'+go("Complete a handoff","network","quiet")+"</div>":"")+
+        '<div class="actions">'+input("Quantity to record, kg",eventKg,numFields('data-setting="event-kg"',.01))+
+        btn("Record prep use","event-use",{disabled:ledger.kitchen<=0})+
+        btn("Record discard","event-discard",{style:"amber",disabled:ledger.unplaced+ledger.kitchen<=0})+
+        '</div>'+rowList([["Used in preparation",kg(ledger.used)],["Discard recorded",kg(ledger.discarded)],["Still allocated in kitchen",kg(ledger.kitchen)]]),
+        "Record what took place for "+row.lot.id+"."):card("Review before saving",
+          rowList([["Kitchen allocation",kg(total("kept"))],["Reduce planned purchases by",kg(total("replaced"))],
+            ["Indicative purchase benefit",money(total("net"))]])+
+          '<p class="subheading">Replace adjustable purchases only after staff confirm the receipt and quantity.</p>');
+    return hero("Use-first plan","Put the food on the menu","Schedule the earliest reviewed lots and keep a separate record of actual outcomes.",
+      ticket(kg(total("replaced")),"less on the proposed list","Adjustable purchases"))+workflow()+chooseLot()+
+      '<div class="dashboard"><div class="stack">'+card("Three-day prep plan",menu+next)+
+      '<div class="dashboard two equal">'+card("Shopping adjustments",table(["Ingredient","Planned","Replace","Still to buy"],shopping(),
+        "Adjustable purchase changes"),"Quantities show the saved or draft decision.")+outcomes+
+      '</div>'+ledgerCard(row)+
+      (state.events.length?card("Event log",table(["Event","Lot","Weight","Recorded"],state.events.slice(-16).reverse().map((e)=>
+        [eventNames[e.type],e.id,kg(e.kg),new Date(e.time).toLocaleTimeString()]),"Recorded demo events")):"")+"</div></div>";
+  }
+
+  function validLot(lot) {
+    return lot.name.trim().length>0 && Number.isFinite(lot.offered) && lot.offered>=.01 && lot.offered<=500
+      && (lot.stage!=="collected" || (Number.isFinite(lot.collected) && lot.collected>=0 && lot.collected<=lot.offered))
+      && Number.isInteger(lot.arrival) && lot.arrival>=1 && lot.arrival<=7 && Number.isInteger(lot.use_by)
+      && lot.use_by>=lot.arrival && lot.use_by<=7 && Number.isFinite(lot.price) && Number.isFinite(lot.handling_cost);
+  }
+
+  const presets = {
+    reference:{label:"PEI reference",settings:{}},
+    no_redirect:{label:"No alternates",settings:{confirmation:0}},
+    more_food:{label:"High offers",settings:{offer_scale:1.55}},
+    less_staff:{label:"Limited prep",settings:{use_share:.18,use_uncertainty:.45}},
+  };
+  const measures = {used:"Food used",waste:"Expired at kitchens",unallocated:"Unallocated",remaining:"On hand"};
+  const replayKeys = {used:"kg_used",waste:"kg_wasted_at_agency",unallocated:"kg_unallocated",remaining:"kg_remaining"};
+
+  function timelineRows() {
+    if (!replay) return latest.daily.map((row)=>({day:row.day,...Object.fromEntries(
+      policyIds.map((id)=>[id,row[id+"_"+tabMetric+"_kg"]]))}));
+    return Array.from({length:latest.days},(_,i)=>({day:i+1,...Object.fromEntries(
+      policyIds.map((id)=>[id,latest.replay[id][i][replayKeys[tabMetric]]]))}));
+  }
+
+  function policyMass() {
+    const parts=[["kg_used","Used","used"],["kg_wasted_at_agency","Expired","waste"],
+      ["kg_remaining","On hand","remain"],["kg_unallocated","Unallocated","unallocated"]];
+    const bars=policyIds.map((id)=>{
+      const data=latest[id];
+      return '<div class="scenario-bar"><strong>'+P.TITLE[id]+'</strong><div class="bar" aria-hidden="true">'+parts.map(
+        ([key,,color])=>'<i class="segment seg-'+color+'" style="width:'+((100*data[key]/(data.kg_offered||1)))+
+        '%"></i>').join("")+'</div><small>'+parts.map(([key,label])=>label+" "+kg(data[key])).join(" · ")+"</small></div>";
+    }).join("");
+    return card("Where the offered food ended up",bars,"Mean across paired runs, kg per modeled period.");
+  }
+
+  function slider(key,label,min,max,step,unit,precision=1) {
+    const value=settings[key]*precision;
+    return '<label class="field"><span>'+label+' <strong id="val-'+key+'">'+num(value)+esc(unit)+
+      '</strong></span><input type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+value+
+      '" data-sim="'+key+'" data-factor="'+precision+'" data-unit="'+esc(unit)+'"'+(simulation?" disabled":"")+'></label>';
+  }
+
+  function scenarioControls() {
+    const stale=Object.keys(fixtures.config).some((key)=>settings[key]!==latest.settings[key]);
+    return card("Scenario controls",'<div class="actions">'+Object.entries(presets).map(([key,p])=>
+      btn(p.label,"preset",{arg:key,style:"quiet small"})).join("")+'</div>'+
+      '<div class="checklist">'+slider("confirmation","Eligible offers with a confirmed alternate",0,100,5,"%",100)+
+      slider("offer_scale","Offered weight",50,175,5,"% of reference",100)+
+      slider("use_share","Kitchen throughput available to donations",0,55,1,"%",100)+
+      slider("use_uncertainty","Daily kitchen use can vary",0,60,5,"% either way",100)+
+      slider("radius_km","Straight-line search radius",0,80,5," km")+'</div><div class="field-grid">'+
+      input("Days",settings.days,numFields('data-sim="days"'+(simulation?" disabled":""),1,60,1))+
+      input("Donors",settings.donors,numFields('data-sim="donors"'+(simulation?" disabled":""),1,150,1))+
+      input("Paired runs",settings.seeds,numFields('data-sim="seeds"'+(simulation?" disabled":""),1,200,1))+
+      input("Starting seed",settings.seed_start,numFields('data-sim="seed_start"'+(simulation?" disabled":""),0,4294967095,1))+
+      '</div><div class="actions">'+select("Offer mix",settings.mix,{pei:"PEI report profile",uniform:"Uniform categories"},
+        'data-sim="mix"'+(simulation?" disabled":""))+'</div><div class="actions">'+
+      (simulation?btn("Cancel run","cancel",{style:"amber"}):btn("Run simulation","run"))+
+      '<span id="sim-state" class="tiny muted">'+(stale?"Inputs changed. Run to update results.":"")+'</span></div>'+
+      '<div id="simulation-progress" class="simulation-progress">'+(simulation?'<progress value="'+completed+'" max="'+settings.seeds+
+        '" aria-label="Paired simulations completed"></progress><span id="progress-text" class="tiny muted">'+
+        completed+' of '+settings.seeds+' paired runs complete</span>':"")+'</div>',
+      "Each run uses identical offers and service shocks for all three policies.");
+  }
+
+  function impact() {
+    const delta=latest.uncertainty.paired_delta.kg_used_increase;
+    const extra=latest.uncertainty.paired_delta.kg_used_increase_over_fit_only;
+    const base=latest.baseline;
+    const improved=latest.rescuefit;
+    const waste=base.kg_wasted_at_agency-improved.kg_wasted_at_agency;
+    const travel=improved.transfers ? improved.kg_redirected : 0;
+    const series=timelineRows();
+    const day=series[replay ? replayDay-1 : series.length-1];
+    const rowFor=(key,formatter=kg)=>policyIds.map((id)=>formatter(latest[id][key]));
+    const keyTable=table(["Outcome",...policyIds.map((id)=>P.TITLE[id])],
+      [["Offered",...rowFor("kg_offered")],["Used",...rowFor("kg_used")],["Expired at kitchens",...rowFor("kg_wasted_at_agency")],
+       ["Unallocated",...rowFor("kg_unallocated")],["Ending inventory",...rowFor("kg_remaining")],
+       ["Transferred within network",...rowFor("kg_redirected")],["Meal equivalents",...rowFor("meals",num)],
+       ["Modeled transfers",...rowFor("transfers",num)],["Transport exposure (kg·km)",...rowFor("redirect_kg_km",num)]],
+      "Simulation averages by policy");
+    const toggles='<div class="segmented">'+Object.entries(measures).map(([key,label])=>
+      '<button type="button" data-action="metric" data-arg="'+key+'" aria-pressed="'+(key===tabMetric)+'">'+label+'</button>')
+      .join("")+'</div>';
+    const mode='<div class="segmented"><button type="button" data-action="ensemble" aria-pressed="'+!replay+
+      '">Mean of runs</button><button type="button" data-action="replay" aria-pressed="'+replay+'">Replay seed '+
+      latest.seed_start+'</button></div>';
+    const chart=card(measures[tabMetric]+" by day",
+      '<div class="actions">'+mode+toggles+'</div><div class="chart-legend">'+policyIds.map((id)=>
+        '<span><i class="chart-key" style="background:'+P.COLORS[id]+'"></i>'+P.TITLE[id]+'</span>').join("")+
+      '</div><canvas id="trend-canvas" role="img" aria-label="'+esc(measures[tabMetric]+" in kilograms, by policy over time.")+'"></canvas>'+
+      '<div class="timeline"><strong>'+ (replay?"Replay day ":"Day ")+day.day+" / "+latest.days+'</strong>'+
+      (replay?'<div class="actions">'+btn(timer?"Pause":"Play days",timer?"pause":"play",{style:"quiet small"})+
+        btn("Next day","next-day",{style:"quiet small",disabled:replayDay>=latest.days})+'</div>'+
+        '<label class="field"><span>Replay position</span><input type="range" min="1" max="'+latest.days+'" step="1" value="'+
+        replayDay+'" data-setting="day"></label>':"")+
+      rowList(policyIds.map((id)=>[P.TITLE[id],kg(day[id])]))+'</div>'+
+      '<details data-panel="daily"'+(openPanels.has("daily")?" open":"")+'><summary>View daily values</summary>'+table(["Day",...policyIds.map((id)=>P.TITLE[id])],
+        series.map((row)=>[row.day,...policyIds.map((id)=>kg(row[id]))]),"Daily kilograms by policy")+'</details>',
+      "Kg per day. Replay shows one paired set of offers and outcomes.");
+    const factor=climate.factor!=="" && Number.isFinite(Number(climate.factor)) && climate.path.trim();
+    const conversions=card("Impact conversions",rowList([["Additional meal equivalents",signed(delta.mean/latest.kg_per_meal)],
+        ["Planning ledger value",money(total("net"))]])+
+      '<p class="subheading">Meal equivalents use the 1.2 lb convention. CAD uses the draft or saved local shopping adjustment and entered handling costs.</p>'+
+      '<details class="timeline" data-panel="climate"'+(openPanels.has("climate")?" open":"")+'><summary>Try a treatment emissions factor</summary><div class="field-grid">'+
+      input("Factor in kg CO₂e per kg",climate.factor,'data-setting="co2" min="-10" max="10" step=".01"')+
+      input("Pathway and factor source",climate.path,'data-setting="co2-path" maxlength="120"',"text")+
+      '</div><p class="subheading">'+(factor?esc(signed(waste*Number(climate.factor))+' kg CO₂e · '+climate.path):
+      "Enter a factor and its source to calculate a treatment-only estimate.")+
+      '</p><p class="form-hint">Applies to the difference in expired kg at kitchens. Excludes transport and unallocated stock.</p></details>',
+      "Separate modeled food use from operator-entered costs and emissions assumptions.");
+    return hero("Impact lab","Run a paired simulation","Change the conditions and compare what happens across the same fictional kitchens and donations.",
+      ticket(latest.days+" days",latest.seeds+" paired runs",scenarioName))+
+      '<div class="metrics">'+metric("Additional food used",signed(delta.mean)+" kg",
+        num(delta.p05)+" to "+num(delta.p95)+" kg, central 90% of modeled differences",true)+
+        metric("Additional use from redirects",signed(extra.mean)+" kg","Compared with kitchen fit alone")+
+        metric("Less expiry at kitchens",signed(waste)+" kg","Compared with storage only")+
+        metric("Transferred in model",kg(travel),num(improved.transfers)+" average handoffs")+'</div>'+
+      '<div class="dashboard two"><div class="stack">'+chart+policyMass()+
+      card("Policy outcomes",keyTable+'<p class="subheading">Unallocated food has an unknown next destination. Food on hand stays in closing inventory.</p>')+
+      '</div><div class="stack">'+scenarioControls()+conversions+
+      card("Export this comparison",'<div class="actions">'+btn("Download JSON","sim-json",{style:"quiet"})+
+        btn("Download daily CSV","sim-csv",{style:"quiet"})+'</div>',
+      "Exports the results you see, including parameters and seed.")+'</div></div>';
+  }
+
+  function evidence() {
+    const e=fixtures.evidence;
+    const supported=e.groups.filter((group)=>group.categories.length);
+    const tally=supported.reduce((sum,group)=>sum+group.percent,0);
+    const bars='<div class="source-bars">'+e.groups.map((group)=>
+      '<div class="source-bar"><span>'+esc(group.label)+'</span><div class="bar" aria-hidden="true"><i class="segment '+
+      (group.categories.length?"seg-used":"seg-unallocated")+'" style="width:'+Math.min(100,group.percent/41*100)+
+      '%"></i></div><strong>'+num(group.percent)+'%</strong></div>').join("")+'</div>';
+    const items=fixtures.register.map((item)=>[
+      String(item.row),item.source,item.use,item.limit,
+    ]);
+    return hero("Data sources","What went into the model","Review the IMPAC workbook entries and see which published values affect the simulation.",
+      ticket(num(tally)+" pp","of published mix represented","Workbook row 90"))+
+      '<div class="metrics">'+metric("New donor signups",e.new_donors,"Historical project",true)+
+      metric("New nonprofit signups",e.new_nonprofits,"Historical project")+
+      metric("Meals rescued, report KPI",num(e.reported_meals_lower_bound)+"+","Historical project")+
+      metric("Scenario receiving sites",latest.agencies,"Synthetic capacities")+'</div>'+
+      '<div class="dashboard two equal">'+card("Reported mix by rescued weight",bars+
+        '<p class="subheading">The model normalizes the six represented groups and uses that mix as an assumption about offered weight.</p>'+
+        '<p class="subheading"><a href="'+esc(e.url)+'" target="_blank" rel="noopener">Final report, Chart 1 and Table 1</a></p>',
+        e.mix_start+" through "+e.mix_end)+
+      card("How to read these values",'<p class="muted">'+esc(e.caveat)+'</p>'+
+        '<ul class="list">'+latest.assumptions.slice(1).map((x)=>'<li>'+esc(x)+'</li>').join("")+'</ul>')+
+      '</div><div class="dashboard">'+card("IMPAC workbook review",table(["Row","Source","Role in the build","Limit"],items,
+        "Review of shortlisted workbook entries")+
+        '<details><summary>Open source links</summary><ul>'+fixtures.register.map((r)=>'<li><a href="'+esc(r.url)+
+          '" target="_blank" rel="noopener">'+esc(r.source)+'</a></li>').join("")+'</ul></details>')+"</div>";
+  }
+
+  const views={intake,fit,network,plan:planView,impact,evidence};
+  let renderTimer=0;
+  function render() {
+    window.clearTimeout(renderTimer);
+    const active=document.activeElement;
+    const key=active?.id || active?.dataset?.setting;
+    const activeLot=active?.dataset?.lot;
+    const activeField=active?.dataset?.field;
+    const labels=["service","space","stock","buy","prep"];
+    const fieldAttribute=labels.find((name)=>active?.dataset?.[name]!==undefined);
+    recompute();
+    nav.innerHTML=STEPS.map(([id,label,glyph],i)=>(i===4?'<hr class="nav-rule">':"")+
+      '<button type="button" class="nav-btn" data-action="go" data-arg="'+id+'"'+(page===id?' aria-current="page"':"")+
+      '><span class="nav-glyph" aria-hidden="true">'+glyph+'</span>'+label+'</button>').join("");
+    main.innerHTML=views[page]();
+    document.title="RescueFit · "+STEPS[stepIndex[page]][1];
+    document.getElementById("facility").textContent=state.kitchen.name;
+    save();
+    draw();
+    if (active?.tagName==="INPUT" || active?.tagName==="SELECT" || active?.tagName==="TEXTAREA") {
+      const replacement=key?document.getElementById(key) || main.querySelector('[data-setting="'+CSS.escape(key)+'"]'):
+        activeLot&&activeField?main.querySelector('[data-lot="'+CSS.escape(activeLot)+'"][data-field="'+CSS.escape(activeField)+'"]'):
+        fieldAttribute?main.querySelector('[data-'+fieldAttribute+'="'+CSS.escape(active.dataset[fieldAttribute])+'"]'):null;
+      replacement?.focus({preventScroll:true});
+    }
+  }
+
+  function draw() {
+    const map=document.getElementById("map-canvas");
+    const row=selectedRow();
+    if (map && row) P.island(map,fixtures.agencies,fixtures.agencies.find((a)=>a.id===state.kitchen.origin_id),
+      fixtures.agencies.find((a)=>a.id===row.route?.id),new Set(row.potential.map((r)=>r.id)),new Set(state.closed),
+      state.approved?null:(id)=>chooseRoute(id));
+    const chart=document.getElementById("trend-canvas");
+    if (chart) P.trend(chart,timelineRows(),latest.days,replay?replayDay:null);
+  }
+
+  function navigate(id) {
+    if (!Object.hasOwn(stepIndex,id)) return;
+    stopReplay();
+    page=id;
+    if (location.hash.slice(1)!==id) {
+      try {history.replaceState(null,"","#"+id);} catch {location.hash=id;}
+    }
+    render();
+    window.scrollTo(0,0);
+    main.focus({preventScroll:true});
+  }
+
+  function draftFrom(parsed) {
+    const source=parsed || {name:"New item",category:"",offered:null,quantity_note:""};
+    return {id:"DEMO-"+String(state.nextLot++).padStart(3,"0"),...source,collected:0,storage:"",arrival:1,use_by:1,
+      reviewed:false,stage:"offer",may_split:false,may_redirect:false,price:state.kitchen.sample_price_per_kg[source.category]||0,handling_cost:0};
+  }
+
+  function parseDonation() {
+    if (state.approved) return;
+    const parsed=D.parseText(state.note,fixtures.shelf);
+    if (!parsed.length) return announce("Enter a message with food and quantity.");
+    state.lots=parsed.map(draftFrom);
+    state.openLots=state.lots.map((lot)=>lot.id);
+    state.selected=state.lots[0].id;
+    render();
+    announce(parsed.length+" draft "+(parsed.length===1?"lot":"lots")+". Review the weight, category and handling details.");
+  }
+
+  async function readLabel() {
+    if (!photo || state.approved) return;
+    if (typeof window.TextDetector!=="function") return announce("Label reading is unavailable in this browser. Enter the label text in the donor message.");
+    try {
+      const bitmap=await createImageBitmap(photo.file);
+      let regions;
+      try {regions=await new window.TextDetector().detect(bitmap);} finally {bitmap.close();}
+      const found=regions.map((region)=>region.rawValue).join(" ").trim();
+      if (!found) return announce("No printed text was read. Enter the label text or add a lot manually.");
+      state.note=found.slice(0,900);
+      render();
+      announce("Label text added to the message for review.");
+    } catch {announce("The browser could not read this label. Enter its text in the donor message.");}
+  }
+
+  function chooseRoute(id) {
+    if (state.approved || !selectedRow()?.potential.some((r)=>r.id===id)) return;
+    state.routeOverrides[state.selected]=id;
+    render();
+  }
+
+  function approve() {
+    recompute();
+    if (state.approved || !state.lots.length || state.lots.some((lot)=>!validLot(lot))) return announce("Review all lot weights and use windows first.");
+    state.approved=structuredClone(fitData);
+    state.ledgers=Object.fromEntries(fitData.rows.map((row)=>[row.lot.id,D.ledgerFor(row)]));
+    render();
+    announce("Plan saved. You can now record collections, handoffs and food use.");
+  }
+
+  function record(type) {
+    const row=selectedRow();
+    if (!row || !state.approved) return announce("Save the plan to record outcomes.");
+    const previous=currentLedger(row);
+    const quantity=D.mass(Number(eventKg));
+    const after=D.evolve(previous,row,type,quantity);
+    if (!after) return announce("Enter an eligible quantity or complete the prior step.");
+    const changed=type==="use" || type==="discard"?quantity:type==="pickup"?after.collected:previous.pending;
+    state.ledgers[row.lot.id]=after;
+    state.events.push({id:row.lot.id,time:new Date().toISOString(),type,kg:changed,
+      recipient:["confirm","transfer","release"].includes(type)?row.route?.id:undefined});
+    eventKg="";
+    render();
+    announce(eventNames[type]+" · "+kg(changed)+".");
+  }
+
+  function download(name,content,type) {
+    const href=URL.createObjectURL(new Blob([content],{type}));
+    const anchor=document.createElement("a");
+    anchor.href=href;
+    anchor.download=name;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(()=>URL.revokeObjectURL(href),1000);
+  }
+  function exportLedger() {
+    download("rescuefit-demo-ledger.json",JSON.stringify({status:"simulated",kitchen:state.kitchen.name,
+      plan:state.approved,balances:state.ledgers,events:state.events},null,2),"application/json");
+  }
+  function exportResults(asCsv) {
+    const stamp="rescuefit-sim-seed-"+latest.seed_start;
+    if (!asCsv) return download(stamp+".json",JSON.stringify(latest,null,2),"application/json");
+    const keys=Object.keys(latest.daily[0]);
+    const lines=[["data_status","starting_seed","runs","days","confirmation","radius_km","use_share","use_uncertainty",
+      "offer_scale","mix","donors","agencies",...keys].join(","),
+      ...latest.daily.map((row)=>["synthetic",latest.seed_start,latest.seeds,latest.days,latest.settings.confirmation,
+        latest.settings.radius_km,latest.settings.use_share,latest.settings.use_uncertainty,latest.settings.offer_scale,
+        latest.settings.mix,latest.donors,latest.agencies,...keys.map((key)=>row[key])].join(","))];
+    download(stamp+"-daily.csv",lines.join("\n")+"\n","text/csv;charset=utf-8");
+  }
+
+  function finishSimulation(task,result) {
+    if (simulation!==task) return;
+    if (task.worker) task.worker.terminate();
+    simulation=null;
+    latest=result;
+    scenarioName="Browser run";
+    replay=false;
+    replayDay=1;
+    render();
+    announce("Simulation complete · "+latest.seeds+" paired runs.");
+  }
+  function progress(task,value) {
+    if (simulation!==task) return;
+    completed=value;
+    const bar=document.querySelector("#simulation-progress progress");
+    if (bar) bar.value=value;
+    const label=document.getElementById("progress-text");
+    if (label) label.textContent=value+" of "+task.settings.seeds+" paired runs complete";
+  }
+  function fallbackSimulation(task) {
+    try {
+      const runner=S.createRunner(fixtures,task.settings);
+      function tick() {
+        if (simulation!==task) return;
+        try {
+          const count=runner.step(2);
+          progress(task,count);
+          if (count===task.settings.seeds) finishSimulation(task,runner.finish());
+          else setTimeout(tick,0);
+        } catch (error) {failSimulation(task,error.message);}
+      }
+      setTimeout(tick,0);
+    } catch (error) {failSimulation(task,error.message);}
+  }
+  function failSimulation(task,message) {
+    if (simulation!==task) return;
+    cancelSimulation(false);
+    announce("Could not calculate this scenario. "+message);
+  }
+  function runSimulation() {
+    if (simulation) return;
+    const invalid=[...document.querySelectorAll("[data-sim]")].find((node)=>!node.checkValidity() || node.value==="");
+    if (invalid) return invalid.reportValidity() || announce("Enter a value for every scenario field.");
+    stopReplay();
+    const task={settings:{...settings},worker:null};
+    simulation=task;
+    completed=0;
+    render();
+    try {
+      const code=document.getElementById("sim-code").textContent+
+        "\nself.onmessage = (e) => { try { const run = RescueSim.createRunner(e.data.fixtures, e.data.settings); "+
+        "let completed = 0; while (completed < e.data.settings.seeds) { completed = run.step(5); self.postMessage({progress:completed}); } "+
+        "self.postMessage({result:run.finish()}); } catch (err) { self.postMessage({error:err.message}); } };";
+      const url=URL.createObjectURL(new Blob([code],{type:"text/javascript"}));
+      const worker=new Worker(url);
+      URL.revokeObjectURL(url);
+      task.worker=worker;
+      worker.onmessage=({data})=> {
+        if (data.error) failSimulation(task,data.error);
+        else if (data.result) finishSimulation(task,data.result);
+        else progress(task,data.progress);
+      };
+      worker.onerror=(event)=>{
+        event.preventDefault();
+        if (simulation!==task) return;
+        worker.terminate();
+        task.worker=null;
+        fallbackSimulation(task);
+      };
+      worker.postMessage({fixtures,settings:task.settings});
+    } catch {fallbackSimulation(task);}
+  }
+  function cancelSimulation(say=true) {
+    if (!simulation) return;
+    simulation.worker?.terminate();
+    simulation=null;
+    render();
+    if (say) announce("Stopped the run. The previous results are still displayed.");
+  }
+
+  function stopReplay() {
+    if (timer!==null) clearInterval(timer);
+    timer=null;
+  }
+  function playReplay() {
+    if (timer!==null) return;
+    if (replayDay>=latest.days) replayDay=1;
+    timer=setInterval(()=>{
+      replayDay=Math.min(latest.days,replayDay+1);
+      if (replayDay===latest.days) stopReplay();
+      render();
+    },420);
+    render();
+  }
+  function discardPhoto() {
+    if (photo) URL.revokeObjectURL(photo.url);
+    photo=null;
+  }
+
+  const actions={
+    go:navigate, reset:()=>{
+      stopReplay();
+      if (simulation) cancelSimulation(false);
+      state=freshState(); settings={...fixtures.config}; latest=fixtures.reference;
+      scenarioName="Reference run"; replay=false; replayDay=1; eventKg=""; tabMetric="used"; climate={factor:"",path:""};
+      discardPhoto(); navigate("intake"); announce("Example reset.");
+    },
+    parse:parseDonation, "sample-text":()=>{state.note="12 kg carrots, 4 kg potatoes, 20 rolls";parseDonation();},
+    "add-lot":()=>{
+      if (state.approved) return;
+      if (state.lots.length>=8) return announce("This workspace supports up to eight lots per intake.");
+      const lot=draftFrom();state.lots.push(lot);state.openLots.push(lot.id);state.selected=lot.id;render();
+    },
+    "remove-lot":(id)=>{if (!state.approved){state.lots=state.lots.filter((l)=>l.id!==id);render();}},
+    "remove-photo":()=>{discardPhoto();render();},
+    "read-label":()=>{void readLabel();}, "pick-route":chooseRoute,
+    "close-route":(id)=>{if (!state.approved){state.closed.push(id);render();announce("Recipient marked unavailable in this demo.");}},
+    "restore-routes":()=>{if (!state.approved){state.closed=[];state.routeOverrides={};render();}},
+    approve, reopen:()=>{if (!state.events.length){state.approved=null;state.ledgers={};render();}},
+    "ledger-download":exportLedger, "sim-json":()=>exportResults(false),"sim-csv":()=>exportResults(true),
+    preset:(key)=>{if (!simulation && Object.hasOwn(presets,key)){
+      settings={...fixtures.config,...presets[key].settings};render();announce(presets[key].label+" inputs selected.");}},
+    run:runSimulation,cancel:()=>cancelSimulation(),metric:(key)=>{if(Object.hasOwn(measures,key)){tabMetric=key;render();}},
+    ensemble:()=>{stopReplay();replay=false;render();},replay:()=>{replay=true;replayDay=1;render();},
+    "next-day":()=>{replayDay=Math.min(latest.days,replayDay+1);render();},play:playReplay,
+    pause:()=>{stopReplay();render();},
+  };
+  document.body.addEventListener("click",(event)=>{
+    const button=event.target.closest("button[data-action]");
+    if (!button || button.disabled) return;
+    const action=button.dataset.action;
+    if (action.startsWith("event-")) record(action.slice(6));
+    else if (Object.hasOwn(actions,action)) actions[action](button.dataset.arg);
+  });
+  document.body.addEventListener("toggle",(event)=>{
+    const panel=event.target.dataset?.panel;
+    if (panel && event.target.isConnected) {
+      if (event.target.open) openPanels.add(panel);
+      else openPanels.delete(panel);
+    }
+    const id=event.target.dataset?.detail;
+    if (!id || !event.target.isConnected) return;
+    state.openLots=state.openLots.filter((x)=>x!==id);
+    if (event.target.open) state.openLots.push(id);
+    save();
+  },true);
+
+  function scheduleRender() {
+    window.clearTimeout(renderTimer);
+    renderTimer=window.setTimeout(render,130);
+  }
+  document.body.addEventListener("input",(event)=>{
+    const field=event.target;
+    if (field.id==="donor-message") {state.note=field.value;save();return;}
+    if (field.dataset.setting==="event-kg") {eventKg=field.value;return;}
+    if (field.dataset.sim && field.type==="range") {
+      const value=Number(field.value);
+      settings[field.dataset.sim]=value/Number(field.dataset.factor);
+      document.getElementById("val-"+field.dataset.sim).textContent=num(value)+field.dataset.unit;
+      document.getElementById("sim-state").textContent="Inputs changed. Run to update results.";
+    } else if (field.dataset.setting==="day") {
+      replayDay=Number(field.value);
+      draw();
+    }
+  });
+
+  document.body.addEventListener("change",(event)=>{
+    const field=event.target;
+    if (field.id==="photo-input") {
+      const file=field.files?.[0];
+      if (!file) return;
+      if (file.size>6*1024*1024 || !["image/jpeg","image/png","image/webp"].includes(file.type)) {
+        field.value="";
+        return announce("Choose a JPEG, PNG or WebP under 6 MB.");
+      }
+      discardPhoto();
+      photo={file,url:URL.createObjectURL(file)};
+      return render();
+    }
+    if (!field.dataset || !field.checkValidity()) {field.reportValidity?.();return;}
+    const key=field.dataset.setting;
+    if (field.dataset.sim) {
+      if (!simulation && field.type!=="range" && field.value!=="") settings[field.dataset.sim]=field.tagName==="SELECT"?field.value:Number(field.value);
+      const label=document.getElementById("sim-state");
+      if (label) label.textContent="Inputs changed. Run to update results.";
+      return;
+    }
+    if (key==="selected") {state.selected=field.value;eventKg="";return render();}
+    if (key==="day") {stopReplay();return render();}
+    if (key==="event-kg") return;
+    if (key==="co2" || key==="co2-path") {
+      climate[key==="co2"?"factor":"path"]=field.value;
+      // Refresh the conversion output in place to keep the input open.
+      const panel=field.closest("details");
+      const difference=latest.baseline.kg_wasted_at_agency-latest.rescuefit.kg_wasted_at_agency;
+      panel.querySelector(".subheading").textContent=climate.path.trim()&&climate.factor!==""?
+        signed(difference*Number(climate.factor))+" kg CO₂e · "+climate.path:
+        "Enter a factor and its source to calculate a treatment-only estimate.";
+      return;
+    }
+    if (state.approved) return;
+    if (key==="radius") {if (field.value!==""){state.radius=Number(field.value);scheduleRender();}return;}
+    if (field.dataset.lot) {
+      const lot=state.lots.find((item)=>item.id===field.dataset.lot);
+      const prop=field.dataset.field;
+      if (!lot || !Object.hasOwn(lot,prop)) return;
+      const previous=lot[prop];
+      lot[prop]=field.type==="checkbox"?field.checked:field.type==="number"?field.value===""?null:Number(field.value):field.value.trim();
+      if (prop==="stage" && lot.stage==="collected" && !lot.collected) lot.collected=lot.offered;
+      if (prop==="offered" && lot.stage==="collected" && lot.collected===previous) lot.collected=lot.offered;
+      if (["category","storage","arrival","use_by","offered","collected","stage"].includes(prop) && lot[prop]!==previous) lot.reviewed=false;
+      state.selected=lot.id;
+      save();
+      return scheduleRender();
+    }
+    if (field.value==="") return;
+    const value=Number(field.value);
+    if (field.dataset.space) state.kitchen.ready_storage[field.dataset.space]=value;
+    else if (field.dataset.stock) state.kitchen.starting_stock[field.dataset.stock]=value;
+    else if (field.dataset.buy) state.kitchen.adjustable_purchases_kg[field.dataset.buy]=value;
+    else if (field.dataset.prep!==undefined) state.kitchen.prep_kg[Number(field.dataset.prep)]=value;
+    else if (field.dataset.service) {
+      const service=state.kitchen.services.find((entry)=>entry.id===field.dataset.service);
+      const original=fixtures.kitchen.services.find((entry)=>entry.id===field.dataset.service);
+      service.portions=value;
+      service.ingredients=Object.fromEntries(Object.entries(original.ingredients).map(([category,kg])=>
+        [category,D.mass(kg*value/original.portions)]));
+    }
+    else return;
+    save();scheduleRender();
+  });
+
+  window.addEventListener("hashchange",()=>{navigate(fromHash());});
+  window.addEventListener("resize",draw);
+  render();
+}());
+</script>
+</body>
+</html>

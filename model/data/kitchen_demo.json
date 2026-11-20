@@ -1,0 +1,33 @@
+{
+  "name":"Harbour Community Kitchen",
+  "status":"synthetic",
+  "origin_id":"demo-01",
+  "ready_storage":{"fridge":18.2,"freezer":23.1,"dry":30.8},
+  "starting_stock":{"root_veg":2,"potatoes":2,"bread":2,"dry_grains":1,"canned_beans":2,"broccoli":1},
+  "adjustable_purchases_kg":{"root_veg":6,"potatoes":8,"bread":2,"dry_grains":3,"canned_beans":6,"broccoli":3,"fruit":6},
+  "prep_kg":[14,13,12],
+  "services":[
+    {"id":"soup","day":1,"name":"Carrot and lentil soup","portions":60,"ingredients":{"root_veg":8,"canned_beans":3}},
+    {"id":"rolls","day":1,"name":"Soup service rolls","portions":60,"ingredients":{"bread":4}},
+    {"id":"tray","day":2,"name":"Potato and broccoli tray bake","portions":55,"ingredients":{"potatoes":10,"broccoli":4}},
+    {"id":"bowls","day":3,"name":"Bean and grain bowls","portions":50,"ingredients":{"canned_beans":5,"dry_grains":4}},
+    {"id":"fruit","day":3,"name":"Fruit side","portions":50,"ingredients":{"fruit":6}}
+  ],
+  "sample_price_per_kg":{"root_veg":2.5,"potatoes":2,"bread":4,"dry_grains":3,"canned_beans":3,"broccoli":5,"fruit":3.5},
+  "sample":{
+    "id":"DEMO-001",
+    "name":"Carrots",
+    "category":"root_veg",
+    "offered":12,
+    "collected":12,
+    "storage":"fridge",
+    "arrival":1,
+    "use_by":2,
+    "reviewed":true,
+    "may_split":true,
+    "may_redirect":true,
+    "price":2.5,
+    "handling_cost":2,
+    "stage":"collected"
+  }
+}
