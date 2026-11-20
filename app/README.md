@@ -51,6 +51,9 @@ already be running, on port 3000 or on the address in `RF_BASE`.
 To use a different model, set `RESCUEFIT_MODEL=claude-sonnet-5-5`. The default
 is `claude-opus-5-5`.
 
+Deploying it is a separate job. `DEPLOY.md` covers it, including the one
+setting that fails for everybody.
+
 ## Commands
 
 | Command | What it does |
