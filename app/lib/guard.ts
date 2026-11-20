@@ -9,23 +9,51 @@
  * loop or one impatient volunteer. It does not stop a real attack.
  */
 
-/** About 1568 px on the long edge as JPEG is well under this. */
-export const MAX_IMAGE_BYTES = Number(
-  process.env.RESCUEFIT_MAX_IMAGE_BYTES ?? 4_000_000,
-);
+/**
+ * Read a positive number from the environment, or fall back.
+ *
+ * Number("") is 0 and Number("abc") is NaN, and ?? catches neither. Both
+ * would have turned the rate limit off without a word in the log, so a typo
+ * in the Vercel dashboard would silently delete the control.
+ */
+function positiveEnv(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (raw === undefined || raw.trim() === "") return fallback;
+  const value = Number(raw);
+  if (!Number.isFinite(value) || value < 0) {
+    console.warn(`[guard] ${name}="${raw}" is not a number. Using ${fallback}.`);
+    return fallback;
+  }
+  return value;
+}
+
+/**
+ * About 1568 px on the long edge as JPEG is well under this.
+ *
+ * 3 MB of image is 4 MB of base64, which still fits inside Vercel's request
+ * body limit of about 4.5 MB. A higher cap could never be reached: the
+ * platform would reject the body first, with an error we cannot explain.
+ */
+export const MAX_IMAGE_BYTES = positiveEnv("RESCUEFIT_MAX_IMAGE_BYTES", 3_000_000);
 
 /** A donor text message. Long enough for a chatty message, not a novel. */
-export const MAX_TEXT_CHARS = Number(
-  process.env.RESCUEFIT_MAX_TEXT_CHARS ?? 4_000,
-);
+export const MAX_TEXT_CHARS = positiveEnv("RESCUEFIT_MAX_TEXT_CHARS", 4_000);
+
+/**
+ * The largest JSON body any route will read.
+ *
+ * This is checked from content-length before the body is buffered, so a
+ * huge upload is refused without being read into memory first.
+ */
+export const MAX_BODY_BYTES = positiveEnv("RESCUEFIT_MAX_BODY_BYTES", 4_300_000);
 
 /**
  * Requests allowed per IP per window. Fahd's accuracy run (task X2) sends
  * about 100 images in a batch, so set RESCUEFIT_RATE_LIMIT=0 to turn this
  * off for that run.
  */
-const RATE_LIMIT = Number(process.env.RESCUEFIT_RATE_LIMIT ?? 30);
-const RATE_WINDOW_MS = Number(process.env.RESCUEFIT_RATE_WINDOW_MS ?? 60_000);
+const RATE_LIMIT = positiveEnv("RESCUEFIT_RATE_LIMIT", 30);
+const RATE_WINDOW_MS = positiveEnv("RESCUEFIT_RATE_WINDOW_MS", 60_000);
 
 const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
@@ -71,7 +99,9 @@ export function readImage(
         `Use ${ALLOWED_IMAGE_TYPES.join(", ")}.`,
     );
   }
-  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(base64)) {
+  // The regex rejects whitespace, newlines, and url-safe characters. The
+  // length check catches 4n+1, which passes the regex and can never decode.
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(base64) || base64.length % 4 === 1) {
     throw new InputError("The image is not valid base64.");
   }
 
@@ -87,6 +117,29 @@ export function readImage(
   }
 
   return { data: base64, mediaType: mediaType as ImageMediaType };
+}
+
+/**
+ * Refuse a body that is too large before it is buffered into memory.
+ *
+ * content-length can be absent or wrong, so this is a cheap first gate,
+ * not the real cap. The per-field limits below are the real cap.
+ */
+export function checkBodySize(request: Request): void {
+  const header = request.headers.get("content-length");
+  if (!header) return;
+
+  const bytes = Number(header);
+  if (!Number.isFinite(bytes)) return;
+
+  if (bytes > MAX_BODY_BYTES) {
+    throw new InputError(
+      `The request is about ${Math.round(bytes / 1_000_000)} MB, over the ` +
+        `${Math.round(MAX_BODY_BYTES / 1_000_000)} MB limit. ` +
+        "Resize the photo before you upload it.",
+      413,
+    );
+  }
 }
 
 export function readText(raw: string): string {
@@ -108,10 +161,27 @@ export function readText(raw: string): string {
 
 const hits = new Map<string, number[]>();
 
-/** Read the caller's IP from the proxy headers Vercel sets. */
+/**
+ * The caller's IP, as far as it can be trusted.
+ *
+ * Never take the leftmost x-forwarded-for token. That end of the chain is
+ * written by the client, so an attacker sends their own and gets a fresh
+ * rate-limit bucket on every request.
+ *
+ * Vercel sets x-vercel-forwarded-for itself and a client cannot forge it,
+ * so it wins. Otherwise take the rightmost XFF token, which is the hop
+ * closest to us and the only one our own proxy wrote.
+ */
 export function callerIp(request: Request): string {
+  const vercel = request.headers.get("x-vercel-forwarded-for");
+  if (vercel) return vercel.split(",")[0].trim();
+
   const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
+  if (forwarded) {
+    const hops = forwarded.split(",");
+    return hops[hops.length - 1].trim();
+  }
+
   return request.headers.get("x-real-ip") ?? "unknown";
 }
 
@@ -140,9 +210,10 @@ export function checkRateLimit(request: Request): void {
   hits.set(ip, recent);
 
   // Keep the map small. It lives for the life of the instance.
-  if (hits.size > 5_000) {
-    for (const [key, times] of hits) {
-      if (times.every((time) => now - time >= RATE_WINDOW_MS)) hits.delete(key);
-    }
-  }
+  //
+  // The old version deleted only entries whose timestamps had all expired.
+  // An attacker rotating the IP keeps every entry fresh, so nothing was
+  // ever deleted and the sweep then ran on every request. Clearing is
+  // crude, bounded, and costs at most one window of counting.
+  if (hits.size > 5_000) hits.clear();
 }

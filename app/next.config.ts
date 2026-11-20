@@ -13,6 +13,45 @@ const nextConfig: NextConfig = {
     "/*": ["./public/data/**/*.json"],
   },
 
+  /*
+   * Baseline security headers. There is no auth cookie and no HTML sink in
+   * this app, so these are cheap insurance rather than a fix for a known
+   * hole. The CSP allows inline styles because Tailwind and next/font emit
+   * them, and connect-src stays on 'self' because the browser only ever
+   * calls this app's own routes.
+   */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "DENY" },
+          {
+            key: "Permissions-Policy",
+            // The intake control uses a file input, not getUserMedia.
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "img-src 'self' data: blob:",
+              "style-src 'self' 'unsafe-inline'",
+              "script-src 'self' 'unsafe-inline'",
+              "connect-src 'self'",
+              "font-src 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join("; "),
+          },
+        ],
+      },
+    ];
+  },
+
   turbopack: {
     rules: {
       "*.css": {

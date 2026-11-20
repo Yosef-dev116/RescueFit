@@ -107,10 +107,13 @@ export const UNITS = ["each", "kg", "tray", "loaf", "case", "bag", "L"] as const
  * The item shape the intake API returns. All three people use it.
  */
 export const IntakeItemSchema = z.object({
-  name: z.string().min(1),
-  category: z.string().min(1),
+  // name and unit are written by the model and are sent back to /api/plan,
+  // where they go into a second prompt. Uncapped, 40 items of 20,000
+  // characters would buy about 200,000 input tokens in one request.
+  name: z.string().min(1).max(120),
+  category: z.string().min(1).max(60),
   qty: z.number().min(0),
-  unit: z.string().min(1),
+  unit: z.string().min(1).max(40),
   est_kg: z.number().min(0),
   storage: StorageTypeSchema,
   shelf_life_days: z.number().min(0),

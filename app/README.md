@@ -31,6 +31,12 @@ Put a key in `app/.env.local`, which `.gitignore` already blocks:
 ANTHROPIC_API_KEY=sk-ant-...
 ```
 
+Use a **dedicated key in its own Anthropic Console workspace, with a hard
+spend cap**. The deployed app has no accounts and no login, so anyone with
+the URL can spend this key. The spend cap is the real control, not the rate
+limit, which is best effort only: it lives in memory, so each serverless
+instance counts on its own.
+
 Restart the dev server, then prove it works and measure the cost:
 
 ```bash
@@ -125,11 +131,17 @@ The intake route returns `mode` on every reply. **Reject any response with
 `mode: "demo"`.** A canned answer would make the measured accuracy
 meaningless.
 
-For a batch of about 100 images, turn the rate limit off:
+For a batch of about 100 images, turn the rate limit off **locally**:
 
+```bash
+RESCUEFIT_RATE_LIMIT=0 npm run dev
 ```
-RESCUEFIT_RATE_LIMIT=0
-```
+
+**Never set `RESCUEFIT_RATE_LIMIT` in the Vercel dashboard.** The risk is not
+the bypass itself. It is that somebody sets it for the batch, nobody unsets
+it, and the limit is then gone for the whole judging window with nothing in
+the interface to show it. Run the batch against localhost, or against a
+separate preview deployment with its own key.
 
 ## Credits
 

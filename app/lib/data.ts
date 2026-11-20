@@ -40,9 +40,25 @@ export type DataSource = "data" | "fixture";
 export type Loaded<T> = {
   value: T;
   source: DataSource;
-  /** Set when the real file was missing or failed validation. */
+  /**
+   * Set when the real file was missing or failed validation.
+   *
+   * This names a path and is written for a developer, so it goes to the
+   * server log only. Use clientWarning() for anything sent to a browser.
+   */
   warning?: string;
 };
+
+/**
+ * What a public caller is told when a data file is missing.
+ *
+ * The developer warning names public/data paths and a teammate. The app is
+ * public, so the browser gets the fact without the file system detail.
+ */
+export function clientWarning(loaded: Loaded<unknown>): string | null {
+  if (loaded.source === "data") return null;
+  return "Some shared data is not published yet, so these numbers come from sample data.";
+}
 
 const DATA_DIR = path.join(process.cwd(), "public", "data");
 

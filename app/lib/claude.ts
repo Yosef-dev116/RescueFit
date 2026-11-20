@@ -152,26 +152,33 @@ function measure(
   };
 }
 
-/** Turn any thrown error into a message a volunteer can read. */
+/**
+ * Turn any thrown error into a message a volunteer can read.
+ *
+ * Every branch returns a fixed string. The app is public with no accounts,
+ * so an error body is readable by anyone, and passing error.message through
+ * would ship zod dumps and absolute serverless paths such as /var/task/...
+ * to a stranger. The detail belongs in the server log, which is private.
+ */
 export function readableError(error: unknown): string {
+  // These two are written by this app for this user, so they are safe.
   if (error instanceof RefusalError || error instanceof EmptyParseError) {
     return error.message;
   }
   if (error instanceof Anthropic.AuthenticationError) {
-    return "The API key is missing or wrong. Check app/.env.local.";
+    return "This app is not set up to reach the AI service right now.";
   }
   if (error instanceof Anthropic.RateLimitError) {
     return "Too many requests right now. Wait a few seconds and try again.";
   }
   if (error instanceof Anthropic.BadRequestError) {
-    return `The request was rejected: ${error.message}`;
+    return "The AI service rejected that request. Try a smaller photo.";
   }
   if (error instanceof Anthropic.APIConnectionError) {
-    return "Could not reach the Claude API. Check the network.";
+    return "Could not reach the AI service. Check the network and retry.";
   }
   if (error instanceof Anthropic.APIError) {
-    return `Claude API error ${error.status ?? ""}: ${error.message}`;
+    return "The AI service failed. Try again in a moment.";
   }
-  if (error instanceof Error) return error.message;
-  return "Unknown error.";
+  return "Something went wrong reading that donation. Try again.";
 }

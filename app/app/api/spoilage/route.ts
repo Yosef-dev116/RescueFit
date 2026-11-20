@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { askClaude, currentMode, readableError } from "@/lib/claude";
 import { DEMO_SPOILAGE } from "@/lib/demo";
-import { checkRateLimit, InputError, readImage } from "@/lib/guard";
+import { checkBodySize, checkRateLimit, InputError, readImage } from "@/lib/guard";
 import {
   LlmSpoilageSchema,
   SPOILAGE_VERDICTS,
@@ -48,6 +48,7 @@ function readVerdict(raw: string): SpoilageVerdict {
 export async function POST(request: Request) {
   try {
     checkRateLimit(request);
+    checkBodySize(request);
 
     const body = (await request.json()) as {
       image?: unknown;
@@ -92,6 +93,7 @@ export async function POST(request: Request) {
     const answer = await askClaude({
       schema: LlmSpoilageSchema,
       effort: "low",
+      maxTokens: 2000,
       system: [
         "You check donated produce for a charity kitchen in Prince Edward",
         "Island. People who eat here often have no other option, so a wrong",
