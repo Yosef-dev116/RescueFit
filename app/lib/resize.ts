@@ -4,8 +4,22 @@
  * Shrink a phone photo in the browser before it is uploaded.
  *
  * A modern phone camera writes 3 to 8 MB per photo, and Vercel caps a
- * request body at about 4.5 MB. Claude also gains nothing from more than
- * about 1568 px on the long edge, so the resize costs no accuracy.
+ * request body at about 4.5 MB, so some resize is forced on us.
+ *
+ * The size we picked is a cost decision, not a model limit. Claude charges
+ * an image in 28x28 patches, so a picture costs
+ * ceil(width / 28) * ceil(height / 28) tokens. The models this app uses
+ * accept up to 2576 px on the long edge and 4784 image tokens. We send
+ * 1568 px instead:
+ *
+ *   1568 x 1176  ->  56 x 42  =  2352 tokens
+ *   2576 x 1932  ->  capped at 4784 tokens
+ *   1092 x  819  ->  39 x 30  =  1170 tokens
+ *
+ * So this setting costs about half of what the models allow. A tray of
+ * food is a large object in the frame and does not need the detail that
+ * the full size buys. Drop MAX_EDGE to 1092 to halve the bill again, and
+ * measure the reading accuracy before you keep it.
  */
 
 const MAX_EDGE = 1568;

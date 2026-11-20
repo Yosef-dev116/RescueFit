@@ -172,7 +172,9 @@ if (costs.length > 0) {
   if (perPhoto) {
     console.log(
       `Cost per photo: USD ${perPhoto.usage.usd_cost.toFixed(5)}. ` +
-        "A real photo costs more, because 1568 px of image is about 1600 tokens.",
+        "A real photo costs more. At the 1568 px this app uploads, a 4:3\n" +
+        "      photo is about 2350 image tokens, because Claude charges an\n" +
+        "      image in 28x28 patches.",
     );
   }
 }
