@@ -3,14 +3,13 @@ import { NextResponse } from "next/server";
 
 import { askClaude, currentMode, readableError } from "@/lib/claude";
 import { DEMO_SPOILAGE } from "@/lib/demo";
+import { readVerdict } from "@/lib/verdict";
 import { checkBodySize, checkRateLimit, InputError, readImage } from "@/lib/guard";
 import {
   LlmSpoilageSchema,
-  SPOILAGE_VERDICTS,
   SpoilageResultSchema,
   type Mode,
   type SpoilageResult,
-  type SpoilageVerdict,
 } from "@/lib/schemas";
 
 /**
@@ -32,18 +31,6 @@ type SpoilageResponseBody = {
   usage?: { input_tokens: number; output_tokens: number; usd_cost: number };
   model?: string;
 };
-
-/** Map whatever wording the model uses onto the three verdicts. */
-function readVerdict(raw: string): SpoilageVerdict {
-  const text = raw.toLowerCase().replace(/[\s_]+/g, "-");
-  if (SPOILAGE_VERDICTS.includes(text as SpoilageVerdict)) {
-    return text as SpoilageVerdict;
-  }
-  if (text.includes("compost") || text.includes("discard")) return "compost";
-  if (text.includes("fresh") || text.includes("good")) return "fresh";
-  // Anything unclear rounds to the cautious answer, never to "fresh".
-  return "use-today";
-}
 
 export async function POST(request: Request) {
   try {

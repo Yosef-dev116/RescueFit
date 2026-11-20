@@ -322,3 +322,37 @@ describe("checkFit totals", () => {
     expect(JSON.stringify(home)).toBe(before);
   });
 });
+
+describe("dietConflict matches whole words only", () => {
+  const halal = agency({ diet_flags: ["halal-needed"] });
+  const vegetarian = agency({ diet_flags: ["vegetarian-needed"] });
+
+  it.each([
+    ["chicken drumsticks", "meat-fresh"],
+    ["bread crumbs", "dry-goods"],
+    ["hamburger buns", "bread"],
+    ["graham crackers", "dry-goods"],
+  ])("lets %s through at a halal kitchen", (name, category) => {
+    expect(dietConflict(item({ name, category }), halal)).toBeNull();
+  });
+
+  it.each([
+    ["ham slices", "not halal (ham)"],
+    ["pork sausages", "not halal (pork)"],
+  ])("still refuses %s at a halal kitchen", (name, reason) => {
+    expect(dietConflict(item({ name, category: "meat-fresh" }), halal)).toBe(reason);
+  });
+
+  it("lets hamburger buns and graham crackers through at a vegetarian kitchen", () => {
+    expect(dietConflict(item({ name: "hamburger buns" }), vegetarian)).toBeNull();
+    expect(
+      dietConflict(item({ name: "graham crackers", category: "dry-goods" }), vegetarian),
+    ).toBeNull();
+  });
+
+  it("still refuses chicken drumsticks at a vegetarian kitchen", () => {
+    expect(
+      dietConflict(item({ name: "chicken drumsticks", category: "other" }), vegetarian),
+    ).toBe("not vegetarian");
+  });
+});

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import {
   ArrowIcon,
@@ -13,7 +13,7 @@ import {
 import { Waybill } from "@/components/waybill";
 import { checkFit } from "@/lib/fit";
 import type { Agency, IntakeItem, Mode, StorageType } from "@/lib/schemas";
-import { useConsignment } from "@/lib/store";
+import { saveAgencyId, useAgencyId, useConsignment } from "@/lib/store";
 
 /*
  * The fit check, on screen.
@@ -38,7 +38,10 @@ export function FitView({
   kgPerMeal: number;
   dataWarnings: string[];
 }) {
-  const [agencyId, setAgencyId] = useState(agencies[0]?.id ?? "");
+  // The choice lives in sessionStorage, so /plan writes its menu for the
+  // same kitchen. An unknown stored id falls back to the first kitchen.
+  const storedAgencyId = useAgencyId();
+  const agencyId = storedAgencyId ?? agencies[0]?.id ?? "";
 
   // sessionStorage is an external store, so it is read with
   // useSyncExternalStore rather than copied into state by an effect. It is
@@ -101,7 +104,7 @@ export function FitView({
             <select
               id="agency"
               value={agencyId}
-              onChange={(event) => setAgencyId(event.target.value)}
+              onChange={(event) => saveAgencyId(event.target.value)}
               className="typed w-full cursor-pointer border border-ink bg-stock-shade px-2.5 py-2 text-[0.875rem] text-ink focus:bg-stock focus:outline-none"
             >
               {agencies.map((option) => (

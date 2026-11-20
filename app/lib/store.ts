@@ -136,3 +136,61 @@ function subscribe(onChange: () => void): () => void {
 export function useConsignment(): Consignment | null {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
+
+// ------------------------------------------------------ the chosen kitchen
+
+/*
+ * The kitchen picked on /fit. /plan reads it, so the menu is written for
+ * the same kitchen, diet rules and meals per day that the fit check used.
+ * It is a plain string, so the snapshot is stable without a cache.
+ */
+
+const AGENCY_KEY = "rescuefit.agency.v1";
+const AGENCY_CHANGED = "rescuefit:agency-changed";
+
+export function saveAgencyId(id: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(AGENCY_KEY, id);
+    window.dispatchEvent(new Event(AGENCY_CHANGED));
+  } catch {
+    // Storage refused. The page still works with its own choice.
+  }
+}
+
+function getAgencySnapshot(): string | null {
+  try {
+    return window.sessionStorage.getItem(AGENCY_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function subscribeAgency(onChange: () => void): () => void {
+  window.addEventListener(AGENCY_CHANGED, onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener(AGENCY_CHANGED, onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+/** The id of the kitchen picked on /fit, or null when none is picked. */
+export function useAgencyId(): string | null {
+  return useSyncExternalStore(subscribeAgency, getAgencySnapshot, () => null);
+}
+
+// ------------------------------------------------------------ hydration
+
+const noop = () => () => {};
+
+/**
+ * False on the server and during hydration, true after it.
+ *
+ * The stored donation and kitchen read as null until hydration ends. A page
+ * that fetches from them waits for this, so it does not fetch once for the
+ * sample and again for the real donation.
+ */
+export function useHydrated(): boolean {
+  return useSyncExternalStore(noop, () => true, () => false);
+}

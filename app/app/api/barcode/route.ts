@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { loadShelfLife } from "@/lib/data";
 import { findShelfLife, shelfLifeDays } from "@/lib/data";
 import { checkRateLimit, InputError } from "@/lib/guard";
-import { normaliseStorage } from "@/lib/intake";
+import { storageFor } from "@/lib/intake";
 import { IntakeItemSchema, type IntakeItem } from "@/lib/schemas";
 
 /**
@@ -140,7 +140,7 @@ export async function GET(request: Request) {
 
     const table = loadShelfLife();
     const row = findShelfLife(table.value, category, name);
-    const storage = normaliseStorage("", category);
+    const storage = storageFor(row, `${product.categories ?? ""} ${name}`);
 
     // product_quantity is grams when it is present at all.
     const grams = Number(product.product_quantity);

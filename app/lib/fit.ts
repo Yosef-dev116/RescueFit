@@ -128,16 +128,32 @@ export function haversineKm(
 /**
  * Why this agency cannot serve this item at all, or null when it can.
  */
+/*
+ * Match whole words only, with an optional plural. A plain substring test
+ * finds "rum" in "drumsticks" and "bread crumbs", and "ham" in "hamburger
+ * buns" and "graham crackers", and refuses safe food.
+ */
+const wordPatterns = new Map<string, RegExp>();
+function hasWord(text: string, word: string): boolean {
+  let pattern = wordPatterns.get(word);
+  if (!pattern) {
+    const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    pattern = new RegExp(`\\b${escaped}(?:s|es)?\\b`);
+    wordPatterns.set(word, pattern);
+  }
+  return pattern.test(text);
+}
+
 export function dietConflict(item: IntakeItem, agency: Agency): string | null {
   const text = `${item.name} ${item.category}`.toLowerCase();
   const isMeat =
     MEAT_CATEGORIES.includes(item.category.toLowerCase()) ||
-    NOT_VEGETARIAN.some((word) => text.includes(word));
+    NOT_VEGETARIAN.some((word) => hasWord(text, word));
 
   for (const flag of agency.diet_flags) {
     const normalised = flag.toLowerCase();
     if (normalised.startsWith("halal")) {
-      const hit = NOT_HALAL.find((word) => text.includes(word));
+      const hit = NOT_HALAL.find((word) => hasWord(text, word));
       if (hit) return `not halal (${hit})`;
     }
     if (normalised.startsWith("vegetarian") && isMeat) {

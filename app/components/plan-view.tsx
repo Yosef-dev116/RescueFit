@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   Box,
@@ -11,7 +11,7 @@ import {
 } from "@/components/document";
 import { checkFit } from "@/lib/fit";
 import { PlanSchema, type Agency, type IntakeItem, type Mode, type Plan } from "@/lib/schemas";
-import { useConsignment } from "@/lib/store";
+import { useAgencyId, useConsignment, useHydrated } from "@/lib/store";
 
 /*
  * The use-first plan.
@@ -27,32 +27,37 @@ type Status =
   | { kind: "error"; message: string };
 
 export function PlanView({
-  agency,
+  agencies,
   sampleItems,
   kgPerMeal,
 }: {
-  agency: Agency;
+  agencies: Agency[];
   sampleItems: IntakeItem[];
   kgPerMeal: number;
 }) {
   const [status, setStatus] = useState<Status>({ kind: "loading" });
 
   const stored = useConsignment();
+  const hydrated = useHydrated();
+
+  // The kitchen picked on /fit, so the plan matches the fit check.
+  const agencyId = useAgencyId();
+  const agency = agencies.find((a) => a.id === agencyId) ?? agencies[0];
 
   // Which items this kitchen actually keeps. Derived, never stored in
   // state, so there is no effect copying one piece of state into another.
   const kept = useMemo<IntakeItem[]>(() => {
     const items =
       stored && stored.items.length > 0 ? stored.items : sampleItems;
-    const report = checkFit({ items, agency, kgPerMeal });
+    const report = checkFit({ items, agency, others: agencies, kgPerMeal });
     return report.results
       .filter((result) => result.accepted_kg > 0)
       .map((result) => ({ ...result.item, est_kg: result.accepted_kg }));
-  }, [stored, sampleItems, agency, kgPerMeal]);
+  }, [stored, sampleItems, agency, agencies, kgPerMeal]);
 
   const keptNothing = kept.length === 0;
 
-  const build = useCallback(async () => {
+  const build = useCallback(async (signal: AbortSignal) => {
     const keptItems = kept;
 
     // Nothing kept is not an error the effect reports. It is a fact about
@@ -62,6 +67,7 @@ export function PlanView({
 
     try {
       const response = await fetch("/api/plan", {
+        signal,
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -72,6 +78,9 @@ export function PlanView({
       });
 
       const data = (await response.json()) as unknown;
+      // A newer request replaced this one. Its reply must not overwrite
+      // the menu for the donation and kitchen on screen now.
+      if (signal.aborted) return;
       if (!response.ok) {
         const error = (data as { error?: string }).error;
         throw new Error(error ?? `The plan failed (${response.status}).`);
@@ -89,6 +98,7 @@ export function PlanView({
         warnings: (data as { warnings?: string[] }).warnings ?? [],
       });
     } catch (error) {
+      if (signal.aborted) return;
       setStatus({
         kind: "error",
         message:
@@ -102,10 +112,28 @@ export function PlanView({
   // await, so no state is set synchronously and nothing cascades. The rule
   // cannot see through the async boundary, so it reports build() as if it
   // were a synchronous setter.
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    void build();
+  //
+  // It waits for hydration. Before that the stored donation and kitchen
+  // read as null, so fetching then would plan the sample first and the
+  // real donation second: two paid calls, and the older reply could land
+  // last. The abort drops any request the inputs have since replaced.
+  // One request at a time. Starting a new one, from the effect or from
+  // TRY AGAIN, aborts the one before it.
+  const current = useRef<AbortController | null>(null);
+  const start = useCallback(() => {
+    current.current?.abort();
+    const controller = new AbortController();
+    current.current = controller;
+    void build(controller.signal);
+    return controller;
   }, [build]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    const controller = start();
+    return () => controller.abort();
+  }, [start, hydrated]);
 
   return (
     <>
@@ -206,7 +234,7 @@ export function PlanView({
           <div className="mt-3 flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => void build()}
+              onClick={() => start()}
               className="typed cursor-pointer border border-ink bg-stock px-3 py-2 text-[0.6875rem] text-ink transition-colors hover:bg-ink hover:text-stock"
             >
               TRY AGAIN

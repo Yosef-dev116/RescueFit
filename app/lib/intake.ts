@@ -42,6 +42,23 @@ export function normaliseStorage(raw: string, category: string): StorageType {
   return "dry";
 }
 
+/**
+ * Storage for an item that arrives with no storage hint, such as a barcode
+ * scan. A frozen or chilled word in the product text wins. Otherwise the
+ * shelf-life row decides: shelf-stable food goes dry, food with no pantry
+ * life goes in the fridge, and food with no fridge life goes in the freezer.
+ */
+export function storageFor(
+  row: { pantry_days: number; fridge_days: number; freezer_days: number },
+  hint: string,
+): StorageType {
+  const fromHint = normaliseStorage("", hint);
+  if (fromHint !== "dry") return fromHint;
+  if (row.pantry_days > 0) return "dry";
+  if (row.fridge_days > 0) return "fridge";
+  return "freezer";
+}
+
 export function normaliseItems(
   raw: LlmItem[],
   shelfLifeTable: ShelfLife[],
