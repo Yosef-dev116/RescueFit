@@ -63,12 +63,15 @@
   }
 
   function usableAtDestination(agency, lot, reserved, share, kgPerMeal) {
-    const stored = reserved.filter((p) => p.storage === lot.storage).reduce((sum,p) => sum+p.kg,0);
+    // Use-by days are inclusive. Keep the full reservation through its last day.
+    const live = reserved.filter((prior) => prior.use_by >= lot.arrival);
+    const stored = live.filter((prior) => prior.storage === lot.storage)
+      .reduce((sum, prior) => sum + prior.kg, 0);
     const space = Math.min(agency.capacity_kg[lot.storage], agency.free_kg[lot.storage]) - stored;
     const dailyUse = agency.meals_per_day * kgPerMeal * share;
-    const deadlines = [...new Set([lot.use_by, ...reserved.filter((p) => p.use_by >= lot.use_by).map((p) => p.use_by)])];
+    const deadlines = [...new Set([lot.use_by, ...live.filter((p) => p.use_by >= lot.use_by).map((p) => p.use_by)])];
     const usable = Math.min(...deadlines.map((deadline) => dailyUse * (deadline - lot.arrival + 1)
-      - reserved.filter((p) => p.use_by <= deadline).reduce((kg,p) => kg+p.kg,0)));
+      - live.filter((p) => p.use_by <= deadline).reduce((kg, p) => kg + p.kg, 0)));
     return clampKg(Math.min(space, usable));
   }
 

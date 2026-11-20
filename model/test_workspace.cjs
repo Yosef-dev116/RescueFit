@@ -61,6 +61,31 @@ test("counted text is held for weight and recognized mass units are normalized",
     [["root_veg",12],["potatoes",4],["bread",null],["cheese",.5],["fruit",.91]]);
 });
 
+// Day 1 reserves 6 kg. On day 2 the next lot requests 6 kg at the same recipient.
+for (const [name, firstUseBy, firstStorage, fridgeSpace, dailyUse, expectedKg] of [
+  ["a prior-day reservation releases fridge space", 1, "fridge", 6, 20, 6],
+  ["a prior-day reservation releases shared prep capacity", 1, "dry", 20, 6, 6],
+  ["a reservation due on arrival still occupies its fridge space", 2, "fridge", 8, 20, 2],
+  ["a reservation due on arrival still uses prep across storage types", 2, "dry", 20, 8, 2],
+]) {
+  test(name, () => {
+    const kitchen = {...fixtures.kitchen, services: []};
+    const origin = fixtures.agencies.find((agency) => agency.id === kitchen.origin_id);
+    const space = {fridge: fridgeSpace, dry: 20};
+    const recipient = {...origin, id: "recipient", free_kg: space, capacity_kg: space, meals_per_day: dailyUse};
+    const lot = {...sample, offered: 6, collected: 6};
+    const lots = [
+      {...lot, id: "first", arrival: 1, use_by: firstUseBy, storage: firstStorage},
+      {...lot, id: "next", arrival: 2, use_by: 2, storage: "fridge"},
+    ];
+    const settings = {...defaults, useShare: 1, kgPerMeal: 1};
+    const [first, next] = D.plan(lots, kitchen, [origin, recipient], settings).rows;
+    assert.equal(first.route?.qty, 6);
+    assert.equal(next.route?.qty, expectedKg);
+    assert.equal(next.unplaced, 6 - expectedKg);
+  });
+}
+
 test("the live engine reproduces the published Python run and responds to confirmation", () => {
   const cases = S.createRunner(fixtures,{});
   cases.step(fixtures.config.seeds);
