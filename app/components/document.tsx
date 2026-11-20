@@ -221,10 +221,14 @@ export function StorageGauge({
         />
       </div>
 
-      <p className="typed mt-1.5 text-[0.625rem] text-ink-faint">
+      <p
+        className={`typed mt-1.5 text-[0.625rem] ${
+          tight ? "text-stamp" : "text-ink-faint"
+        }`}
+      >
         {claimedKg > 0
-          ? `${claimedKg.toFixed(1)} kg claimed by this donation`
-          : "no claim yet"}
+          ? `free after this donation claims ${claimedKg.toFixed(1)} kg`
+          : "free now, nothing claimed yet"}
       </p>
     </div>
   );

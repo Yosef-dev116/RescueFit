@@ -91,7 +91,7 @@ export function Waybill({
                   </span>
 
                   <span className="min-w-0">
-                    <span className="block truncate text-[0.9375rem] font-600 text-ink">
+                    <span className="block text-[0.9375rem] font-600 text-ink md:truncate">
                       {result.item.name}
                     </span>
                     <span className="typed block text-[0.6875rem] text-carbon">

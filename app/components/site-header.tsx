@@ -32,12 +32,12 @@ export function SiteHeader() {
         </Link>
 
         <nav aria-label="Sections">
-          <ul className="flex flex-wrap gap-px bg-ink">
+          <ul className="flex flex-wrap gap-1">
             {SECTIONS.map((section) => (
               <li key={section.href}>
                 <Link
                   href={section.href}
-                  className="flex items-baseline gap-1.5 bg-stock px-2.5 py-1.5 no-underline transition-colors hover:bg-ink hover:text-stock focus-visible:bg-ink focus-visible:text-stock"
+                  className="flex items-baseline gap-1.5 border border-ink bg-stock px-2.5 py-1.5 no-underline transition-colors hover:bg-ink hover:text-stock focus-visible:bg-ink focus-visible:text-stock"
                 >
                   <span className="typed text-[0.625rem] text-carbon-soft">
                     {section.index}

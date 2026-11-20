@@ -37,13 +37,16 @@ for (const [vpName, width, height] of VIEWPORTS) {
   page.on("pageerror", (err) => problems.push(`${vpName} pageerror: ${err.message}`));
 
   for (const [name, route] of ROUTES) {
+    // /plan fetches its menu after mount, so networkidle can hang.
     const response = await page.goto(`${BASE}${route}`, {
-      waitUntil: "networkidle",
+      waitUntil: "domcontentloaded",
+      timeout: 30000,
     });
+    await page.waitForLoadState("load").catch(() => {});
     if (!response || !response.ok()) {
       problems.push(`${route} returned ${response ? response.status() : "no response"}`);
     }
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1800);
     await page.evaluate(() => window.scrollTo(0, 0));
     const suffix = vpName === "desktop" ? "" : `-${vpName}`;
     await page.screenshot({
