@@ -1,5 +1,7 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
+
 import { IntakeResponseSchema, type IntakeItem, type Mode } from "./schemas";
 
 /**
@@ -24,11 +26,15 @@ export type Consignment = {
   savedAt: string;
 };
 
+/** Fires when this tab writes, because "storage" only fires in other tabs. */
+const CHANGED = "rescuefit:consignment-changed";
+
 export function saveConsignment(value: Omit<Consignment, "savedAt">): void {
   if (typeof window === "undefined") return;
   const payload: Consignment = { ...value, savedAt: new Date().toISOString() };
   try {
     window.sessionStorage.setItem(KEY, JSON.stringify(payload));
+    window.dispatchEvent(new Event(CHANGED));
   } catch {
     // Private browsing can refuse storage. The sample donation covers it.
   }
@@ -69,7 +75,64 @@ export function clearConsignment(): void {
   if (typeof window === "undefined") return;
   try {
     window.sessionStorage.removeItem(KEY);
+    window.dispatchEvent(new Event(CHANGED));
   } catch {
     // Nothing to do. An unreadable store is the same as an empty one.
   }
+}
+
+// --------------------------------------------------------------- the hook
+
+/*
+ * sessionStorage is an external store, so React reads it with
+ * useSyncExternalStore rather than with an effect that sets state. An
+ * effect would cause a cascading render on every mount, and React now
+ * reports that as an error.
+ *
+ * getSnapshot has to return the same object when nothing changed, or React
+ * re-renders forever. So the raw string is cached and only re-parsed when
+ * the string itself differs.
+ */
+
+let cachedRaw: string | null = null;
+let cachedValue: Consignment | null = null;
+
+function getSnapshot(): Consignment | null {
+  let raw: string | null = null;
+  try {
+    raw = window.sessionStorage.getItem(KEY);
+  } catch {
+    raw = null;
+  }
+
+  if (raw === cachedRaw) return cachedValue;
+
+  cachedRaw = raw;
+  cachedValue = readConsignment();
+  return cachedValue;
+}
+
+/** The server has no sessionStorage, so it always renders the sample. */
+function getServerSnapshot(): Consignment | null {
+  return null;
+}
+
+function subscribe(onChange: () => void): () => void {
+  window.addEventListener(CHANGED, onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener(CHANGED, onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+/**
+ * The logged donation, or null when nothing is logged.
+ *
+ * It is null on the server and on the first client render, so a page using
+ * it must have a sensible answer for null. Both callers fall back to the
+ * sample donation, which is what keeps /fit and /plan from opening empty.
+ */
+export function useConsignment(): Consignment | null {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

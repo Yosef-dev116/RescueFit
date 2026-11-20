@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   Box,
@@ -12,7 +12,7 @@ import {
 import { Waybill } from "@/components/waybill";
 import { checkFit } from "@/lib/fit";
 import type { Agency, IntakeItem, Mode, StorageType } from "@/lib/schemas";
-import { readConsignment } from "@/lib/store";
+import { useConsignment } from "@/lib/store";
 
 /*
  * The fit check, on screen.
@@ -38,20 +38,17 @@ export function FitView({
   dataWarnings: string[];
 }) {
   const [agencyId, setAgencyId] = useState(agencies[0]?.id ?? "");
-  const [items, setItems] = useState<IntakeItem[]>(sampleItems);
-  const [mode, setMode] = useState<Mode>("demo");
-  const [origin, setOrigin] = useState<"photo" | "text" | "sample">("sample");
 
-  // Read the logged donation after mount. sessionStorage is not on the
-  // server, so the first paint is the sample and then this corrects it.
-  useEffect(() => {
-    const stored = readConsignment();
-    if (stored && stored.items.length > 0) {
-      setItems(stored.items);
-      setMode(stored.mode);
-      setOrigin(stored.origin);
-    }
-  }, []);
+  // sessionStorage is an external store, so it is read with
+  // useSyncExternalStore rather than copied into state by an effect. It is
+  // null on the server and on the first client render, which is why the
+  // sample donation is the fallback rather than an empty state.
+  const stored = useConsignment();
+  const logged = stored && stored.items.length > 0 ? stored : null;
+
+  const items: IntakeItem[] = logged ? logged.items : sampleItems;
+  const mode: Mode = logged ? logged.mode : "demo";
+  const origin: "photo" | "text" | "sample" = logged ? logged.origin : "sample";
 
   const agency = agencies.find((a) => a.id === agencyId) ?? agencies[0];
 

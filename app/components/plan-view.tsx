@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   Box,
@@ -11,7 +11,7 @@ import {
 } from "@/components/document";
 import { checkFit } from "@/lib/fit";
 import { PlanSchema, type Agency, type IntakeItem, type Mode, type Plan } from "@/lib/schemas";
-import { readConsignment } from "@/lib/store";
+import { useConsignment } from "@/lib/store";
 
 /*
  * The use-first plan.
@@ -36,31 +36,29 @@ export function PlanView({
   kgPerMeal: number;
 }) {
   const [status, setStatus] = useState<Status>({ kind: "loading" });
-  const [kept, setKept] = useState<IntakeItem[]>([]);
 
-  const build = useCallback(async () => {
-    setStatus({ kind: "loading" });
+  const stored = useConsignment();
 
-    const stored = readConsignment();
-    const items = stored && stored.items.length > 0 ? stored.items : sampleItems;
-
-    // Only the food this kitchen keeps gets planned.
+  // Which items this kitchen actually keeps. Derived, never stored in
+  // state, so there is no effect copying one piece of state into another.
+  const kept = useMemo<IntakeItem[]>(() => {
+    const items =
+      stored && stored.items.length > 0 ? stored.items : sampleItems;
     const report = checkFit({ items, agency, kgPerMeal });
-    const keptItems = report.results
+    return report.results
       .filter((result) => result.accepted_kg > 0)
       .map((result) => ({ ...result.item, est_kg: result.accepted_kg }));
+  }, [stored, sampleItems, agency, kgPerMeal]);
 
-    setKept(keptItems);
+  const keptNothing = kept.length === 0;
 
-    if (keptItems.length === 0) {
-      setStatus({
-        kind: "error",
-        message:
-          "This kitchen kept nothing from the donation, so there is no " +
-          "menu to write. Pick a different kitchen on the fit check.",
-      });
-      return;
-    }
+  const build = useCallback(async () => {
+    const keptItems = kept;
+
+    // Nothing kept is not an error the effect reports. It is a fact about
+    // the data, so it is derived during render instead. Setting state here
+    // would make the effect cascade a second render on mount.
+    if (keptItems.length === 0) return;
 
     try {
       const response = await fetch("/api/plan", {
@@ -97,9 +95,15 @@ export function PlanView({
           error instanceof Error ? error.message : "The plan request failed.",
       });
     }
-  }, [agency, kgPerMeal, sampleItems]);
+  }, [agency, kept]);
 
+  // Fetching the menu is exactly what an effect is for: synchronising
+  // with an external system. Every setStatus inside build() runs after an
+  // await, so no state is set synchronously and nothing cascades. The rule
+  // cannot see through the async boundary, so it reports build() as if it
+  // were a synchronous setter.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void build();
   }, [build]);
 
@@ -166,8 +170,25 @@ export function PlanView({
         </Box>
       ) : null}
 
+      {/* Nothing kept. Derived from the data, not from a request. */}
+      {keptNothing ? (
+        <div className="mt-6 border-2 border-stamp bg-stamp/10 p-4" role="alert">
+          <FieldLabel className="text-stamp">Refused</FieldLabel>
+          <p className="mt-1 max-w-[62ch] text-[0.9375rem] text-ink">
+            {agency.name} kept nothing from this donation, so there is no
+            menu to write. Choose a different kitchen on the fit check.
+          </p>
+          <Link
+            href="/fit"
+            className="typed mt-3 inline-block border border-ink bg-stock px-3 py-2 text-[0.6875rem] text-ink no-underline transition-colors hover:bg-ink hover:text-stock"
+          >
+            BACK TO THE FIT CHECK
+          </Link>
+        </div>
+      ) : null}
+
       {/* Loading. The form says which field it is filling. */}
-      {status.kind === "loading" ? (
+      {!keptNothing && status.kind === "loading" ? (
         <div className="mt-6" role="status">
           <EmptyField
             label="Box 8 &middot; Writing the three-day menu"
@@ -176,7 +197,7 @@ export function PlanView({
         </div>
       ) : null}
 
-      {status.kind === "error" ? (
+      {!keptNothing && status.kind === "error" ? (
         <div className="mt-6 border-2 border-stamp bg-stamp/10 p-4" role="alert">
           <FieldLabel className="text-stamp">Refused</FieldLabel>
           <p className="mt-1 max-w-[62ch] text-[0.9375rem] text-ink">
@@ -200,7 +221,7 @@ export function PlanView({
         </div>
       ) : null}
 
-      {status.kind === "ready" ? (
+      {!keptNothing && status.kind === "ready" ? (
         <>
           {status.plan.waste_warning ? (
             <div className="mt-6 border-2 border-stamp bg-stock p-4">
