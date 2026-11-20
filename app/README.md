@@ -43,8 +43,10 @@ Restart the dev server, then prove it works and measure the cost:
 npm run smoke:live
 ```
 
-It calls text intake, photo intake, and the plan route, fails if any of them
-still answers in demo mode, and prints the token cost of each call.
+It calls every route that reaches the model, which is text intake, photo
+intake, the plan route, and the spoilage check. It fails if any of them still
+answers in demo mode, and prints the token cost of each call. The app must
+already be running, on port 3000 or on the address in `RF_BASE`.
 
 To use a different model, set `RESCUEFIT_MODEL=claude-sonnet-5-5`. The default
 is `claude-opus-5-5`.
@@ -59,6 +61,8 @@ is `claude-opus-5-5`.
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run validate:data` | Check `public/data/*.json` against the data contract |
 | `npm run smoke:live` | Prove the live model path works, and print its cost |
+| `npm run shots` | Screenshot every route, desktop and mobile |
+| `npm run shots:first` | Screenshot the landing page first viewport only |
 
 ## How it is put together
 
