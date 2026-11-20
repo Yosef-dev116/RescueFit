@@ -21,6 +21,14 @@ const nextConfig: NextConfig = {
    * calls this app's own routes.
    */
   async headers() {
+    // React uses eval() in development only, for callstack reconstruction
+    // and other debugging features. It never uses eval in production, so
+    // the shipped policy stays strict and only the dev server relaxes.
+    const isDev = process.env.NODE_ENV !== "production";
+    const scriptSrc = isDev
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      : "script-src 'self' 'unsafe-inline'";
+
     return [
       {
         source: "/:path*",
@@ -39,7 +47,7 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               "img-src 'self' data: blob:",
               "style-src 'self' 'unsafe-inline'",
-              "script-src 'self' 'unsafe-inline'",
+              scriptSrc,
               "connect-src 'self'",
               "font-src 'self'",
               "frame-ancestors 'none'",
