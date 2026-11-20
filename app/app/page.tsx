@@ -35,7 +35,10 @@ export default function Home() {
     day: "2-digit",
   });
 
-  const redirectedLines = report.results.filter(
+  // Any line that sends food on, which is a full redirect or the surplus
+  // part of an accept-part. Do not call these "redirected": the stamp
+  // column shows one REDIRECT, so that label reads as a contradiction.
+  const linesRoutedOnward = report.results.filter(
     (result) => result.redirected_kg > 0,
   ).length;
 
@@ -101,8 +104,8 @@ export default function Home() {
               value: `${report.totals.redirected_kg} kg`,
             },
             {
-              label: "Lines redirected",
-              value: `${redirectedLines} of ${report.results.length}`,
+              label: "Lines routed onward",
+              value: `${linesRoutedOnward} of ${report.results.length}`,
             },
           ].map((total) => (
             <div key={total.label} className="bg-stock px-3 py-2">
