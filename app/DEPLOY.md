@@ -22,7 +22,7 @@ What is real in demo mode, and does not need a key:
 - The barcode lookup. It calls Open Food Facts for real.
 - All six pages, on a phone and on a laptop.
 
-What a key adds: a judge can upload their **own** photo and have it read.
+With a key, a judge can upload their **own** photo and have it read.
 Without a key they see the canned reading instead.
 
 ## 1. Sign in
@@ -79,7 +79,7 @@ npx vercel env add RESCUEFIT_MODEL production     # claude-sonnet-5-5
 Sonnet costs about half what Opus does and is accurate enough for reading a
 donation. Opus is the code default, so set this variable to switch.
 
-What it costs: about one to two cents per photo. Reading a photo sends
+One photo costs about one to two cents to read. Reading a photo sends
 roughly 2,000 tokens and gets back about 500. A hundred judge uploads cost
 one or two dollars.
 
@@ -98,7 +98,7 @@ project**. It answers 200 and its page title is "RescueFit", so it looks
 right at a glance. Check the title is "RescueFit: does this donation fit
 your kitchen?" before you paste any vercel.app URL into a document.
 
-## 6. Prove the live path actually works
+## 6. Prove the live path works
 
 Do this once, after you add the key. A deployed app that quietly answers in
 demo mode is the failure this step catches.

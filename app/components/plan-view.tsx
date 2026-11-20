@@ -16,7 +16,7 @@ import { useAgencyId, useConsignment, useHydrated } from "@/lib/store";
 /*
  * The use-first plan.
  *
- * The page decides which items the kitchen actually kept, by running the
+ * The page decides which items the kitchen kept, by running the
  * fit engine first, and asks for a menu over those items only. Planning
  * meals around food that was redirected would be a lie.
  */
@@ -44,7 +44,7 @@ export function PlanView({
   const agencyId = useAgencyId();
   const agency = agencies.find((a) => a.id === agencyId) ?? agencies[0];
 
-  // Which items this kitchen actually keeps. Derived, never stored in
+  // Which items this kitchen keeps. Derived, never stored in
   // state, so there is no effect copying one piece of state into another.
   const kept = useMemo<IntakeItem[]>(() => {
     const items =

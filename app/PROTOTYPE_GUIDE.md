@@ -156,7 +156,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 RESCUEFIT_MODEL=claude-sonnet-5-5
 ```
 
-Restart, then prove the live path actually works:
+Restart, then prove the live path works:
 
 ```bash
 npm run smoke:live
@@ -264,7 +264,7 @@ The 1568 px setting is a cost decision, not a limit. These models accept
 
 ## 9. Screenshots
 
-Captured from a production build at 1440x900 and 390x844.
+The files are in `app/screenshots/`. They were captured from a production build at 1440x900 and 390x844.
 
 | File | Shows |
 |---|---|

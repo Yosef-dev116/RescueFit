@@ -113,8 +113,8 @@ export default function ImpactPage() {
         <p className="typed mt-2 text-[0.75rem] text-ink-soft">
           DATA SOURCE: {scenario.source.toUpperCase()}
           {scenario.source === "fixture"
-            ? " — sample figures. The measured run is not published yet."
-            : " — model/simulate.py, averaged over paired runs."}
+            ? ". Sample figures. The measured run is not published yet."
+            : ". From model/simulate.py, averaged over paired runs."}
         </p>
       </div>
 

@@ -240,7 +240,7 @@ export default function Home() {
               href: "/network",
               index: "05",
               title: "Network",
-              body: "The PEI agencies, and where surplus actually goes.",
+              body: "The PEI agencies, and where surplus goes.",
             },
           ].map((card) => (
             <Link

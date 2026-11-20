@@ -3,7 +3,7 @@ import { chromium } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 
 const BASE = process.env.RF_BASE ?? "http://localhost:3000";
-const OUT = ".impeccable/review";
+const OUT = "screenshots";
 mkdirSync(OUT, { recursive: true });
 
 const ROUTES = [

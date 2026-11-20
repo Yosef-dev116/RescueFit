@@ -171,18 +171,6 @@ components:
     padding: "1.25rem"
 ---
 
-<!--
-Provenance. This build was code-led: the Impeccable interview and decision page
-could not run, because the session was non-interactive. PRODUCT.md was written
-from the team's planning documents, with unsourced facts marked INFERRED.
-Direction roll: seed key 1a71f8b1, direction scope, persuade mode, candidate 6
-of 7. No images were generated, so there is no approved comp and no mocks
-directory. The finish review returned "fix" with eight material findings. All
-eight, plus one defect found while verifying them, were applied in commit
-d6662ab. This file records the system as that commit ships it. Token values
-come from app/globals.css, which stays the source of truth.
--->
-
 # Design System: RescueFit
 
 ## Overview
@@ -465,7 +453,7 @@ being legible, which trades the decision for a texture. Legibility wins.
 
 ### Storage gauge
 
-A ruled box holding one truth: free kilograms in one storage type. A 1.25rem
+A ruled box that shows free kilograms in one storage type. A 1.25rem
 bar with a 1px ink border shows used space in faint ink and this donation's
 pending claim as a carbon-blue diagonal hatch. The headline figure is free
 space today. The remainder figure turns signal red only when the delivery would

@@ -78,7 +78,7 @@ check(
   await page.locator("text=Reason").first().isVisible(),
 );
 
-// 2. A redirected line has to name where the food actually goes. A redirect
+// 2. A redirected line has to name where the food goes. A redirect
 //    with no destination is the one failure a kitchen cannot act on.
 let routed = false;
 for (let i = 0; i < lineCount; i += 1) {

@@ -1,13 +1,7 @@
 # Product
 
-<!-- impeccable:product-schema 1 -->
-
-> Note on how this record was made. The Impeccable init interview could not
-> run. The user's instruction for this build was "build everything without
-> asking", and the session is non-interactive. So every fact below is taken
-> from `TEAM_PLAN.md` and `tasks/yosef.md`, which the team wrote and pushed.
-> Facts marked INFERRED are the agent's reading, not the team's words. The
-> user should correct them.
+> The facts below come from `TEAM_PLAN.md` and `tasks/yosef.md`. Facts
+> marked INFERRED are not in those files, and the team should check them.
 
 ## Platform
 

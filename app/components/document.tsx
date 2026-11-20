@@ -300,7 +300,7 @@ export function StorageGauge({
       {/*
         * The headline above is free space today, so it stays in plain ink:
         * 80 kg free is a fact, not an alarm. The red belongs to the figure
-        * that is actually bad news, which is what the delivery leaves.
+        * that is bad news, which is what the delivery leaves.
         */}
       <p className="typed mt-1.5 text-[0.625rem] text-ink-faint">
         {claimedKg > 0 ? (
