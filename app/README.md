@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RescueFit prototype
 
-## Getting Started
+An AI copilot for charity kitchens that receive donated food. A volunteer
+photographs a delivery. RescueFit names each item, estimates the weight, reads
+the shelf life, and decides **Accept**, **Accept part**, or **Redirect** for
+every line, with the arithmetic shown. Surplus is routed to the nearest PEI
+agency that has room for it.
 
-First, run the development server:
+Entry for IMPAC 2026 at Holland College, Innovation stream.
+
+## Run it
 
 ```bash
+cd app
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The app runs without any API key. Every AI route then answers with canned
+data and tags the reply `mode: "demo"`, and the interface shows a red
+**DEMO DATA** badge. The fit check, the redirect routing, and the arithmetic
+are real in both modes, because none of that is done by the model.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Turn the model on
 
-## Learn More
+Put a key in `app/.env.local`, which `.gitignore` already blocks:
 
-To learn more about Next.js, take a look at the following resources:
+```
+ANTHROPIC_API_KEY=sk-ant-...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Restart the dev server, then prove it works and measure the cost:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run smoke:live
+```
 
-## Deploy on Vercel
+It calls text intake, photo intake, and the plan route, fails if any of them
+still answers in demo mode, and prints the token cost of each call.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To use a different model, set `RESCUEFIT_MODEL=claude-sonnet-5-5`. The default
+is `claude-opus-5-5`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Commands
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm test` | 19 unit tests for the fit engine |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run validate:data` | Check `public/data/*.json` against the data contract |
+| `npm run smoke:live` | Prove the live model path works, and print its cost |
+
+## How it is put together
+
+```
+app/
+  app/                  Routes (Next.js App Router)
+    page.tsx            Landing. Runs the real fit engine on a sample delivery
+    intake/             Photo or donor message in, item list out
+    fit/                The fit check, re-decided in the browser
+    plan/               Three-day use-first menu
+    impact/ network/    Fahd owns these
+    api/intake/         C1 and X4. Photo or text to the shared item shape
+    api/plan/           C4. The use-first menu
+    api/spoilage/       X3. Fresh, Use today, or Compost
+    api/barcode/        X5. Open Food Facts lookup. Needs no API key
+  components/           The document parts: boxes, stamps, gauges, the waybill
+  lib/
+    schemas.ts          The data contract from TEAM_PLAN.md section 6
+    fit.ts              The fit engine. Plain TypeScript, under unit test
+    fit.test.ts         19 tests
+    data.ts             Reads public/data, validates it, falls back to fixtures
+    claude.ts           The Anthropic client, demo mode, and cost logging
+    guard.ts            Input caps and a best-effort rate limit
+    fixtures/           Development data. Not for the report
+  public/data/          Fahd writes the real JSON here
+```
+
+### The one design rule
+
+**The model reads. The code decides.** Claude looks at the photo and nothing
+else. Free space per storage type, what the kitchen can plate before the
+expiry date, diet rules, and the redirect distance are all plain arithmetic in
+`lib/fit.ts`, under unit test. A kitchen manager can check any line by hand.
+
+That is the point. A decision nobody can audit is a decision nobody will
+follow, and a judge can read the rule in one file.
+
+### How a donation is decided
+
+Items are handled soonest-expiry first, and they share the kitchen's space.
+Each line meets three limits:
+
+1. **Space.** Free kilograms in the storage type the item needs.
+2. **Time.** `shelf_life_days x meals_per_day x kg_per_meal`. A kitchen that
+   serves 150 meals a day can plate about 81 kg of a one-day item, and no more.
+3. **Diet.** A halal or vegetarian kitchen cannot use some items at all,
+   whatever space it has.
+
+Whatever does not fit goes to the nearest agency with room for **all** of it,
+and that agency's space is then claimed, so a second line cannot be sent to the
+same shelf.
+
+## Data
+
+`lib/data.ts` reads the JSON in `public/data/`, validates it against the
+contract, and falls back to `lib/fixtures/` with a warning when a file is
+missing or malformed. Every API reply reports which it used, for example
+`"shelf_life_source": "data"`.
+
+If you see `fixture` when your file is in place, the file failed validation.
+Run `npm run validate:data` to see why.
+
+**The fixtures are development data.** Do not quote their numbers in the
+report. The `sources` block in `lib/fixtures/impact_factors.json` says
+`PLACEHOLDER` for that reason.
+
+## For the accuracy test (task X2)
+
+The intake route returns `mode` on every reply. **Reject any response with
+`mode: "demo"`.** A canned answer would make the measured accuracy
+meaningless.
+
+For a batch of about 100 images, turn the rate limit off:
+
+```
+RESCUEFIT_RATE_LIMIT=0
+```
+
+## Credits
+
+- Shelf life: USDA FSIS FoodKeeper.
+- Product lookup: Open Food Facts, under the Open Database Licence. The report
+  must credit it.
+- Map tiles, when the network page ships: OpenStreetMap contributors.
