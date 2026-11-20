@@ -1,0 +1,169 @@
+{
+  "file": "IMPAC_Datasets.xlsx",
+  "sheet": "Register",
+  "entries": 150,
+  "shortlist": [
+    {
+      "row": 4,
+      "source": "Food waste dataset: secondary school in Finland 2024-2025",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://zenodo.org/records/20825233",
+      "use": "Excluded from forecast",
+      "limit": "Finnish school waste and diners are not incoming donation offers."
+    },
+    {
+      "row": 8,
+      "source": "Food Waste Dataset from a University Canteen",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://www.kaggle.com/datasets/rahuljangir78/food-waste-dataset-from-a-university-canteen",
+      "use": "Excluded from forecast",
+      "limit": "Canteen disposal by category describes a different outcome from offered edible weight."
+    },
+    {
+      "row": 19,
+      "source": "Nutrition5k",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://github.com/google-research-datasets/Nutrition5k",
+      "use": "Possible future weight benchmark",
+      "limit": "Weighed meal images do not establish donation weights, storage or eligibility."
+    },
+    {
+      "row": 28,
+      "source": "Fruit and Vegetable Disease (Healthy vs Rotten)",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://www.kaggle.com/datasets/muhammad0subhan/fruit-and-vegetable-disease-healthy-vs-rotten",
+      "use": "Deferred image evaluation",
+      "limit": "A visual quality label cannot establish microbiological safety or storage history."
+    },
+    {
+      "row": 29,
+      "source": "Grocery Store Dataset",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://github.com/marcusklasson/GroceryStoreDataset",
+      "use": "Deferred image evaluation",
+      "limit": "Category-labelled grocery images need a reviewed model and a holdout before scoring."
+    },
+    {
+      "row": 37,
+      "source": "Open Food Facts product database",
+      "register_license": "Open (share-alike)",
+      "register_redistributable": "Yes - share-alike",
+      "url": "https://world.openfoodfacts.org/data",
+      "use": "Optional product reference",
+      "limit": "Product metadata does not establish eligibility. Barcode lookup is separate from intake."
+    },
+    {
+      "row": 39,
+      "source": "USDA FSIS FoodKeeper Data",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://catalog.data.gov/dataset/fsis-foodkeeper-data",
+      "use": "Storage reference",
+      "limit": "The prototype uses operator review. Model windows are explicitly synthetic."
+    },
+    {
+      "row": 43,
+      "source": "StatCan — Monthly average retail prices for selected products (18-10-0245-01)",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810024501",
+      "use": "Pricing reference",
+      "limit": "Matched PEI item, period and units or kitchen invoice required. App CAD uses illustrative inputs."
+    },
+    {
+      "row": 61,
+      "source": "Food Banks Canada HungerCount",
+      "register_license": "Unstated",
+      "register_redistributable": "No - link only",
+      "url": "https://foodbankscanada.ca/hunger-in-canada/hungercount/",
+      "use": "Background only",
+      "limit": "Food-bank visits do not measure the demand or intake capacity at a receiving kitchen."
+    },
+    {
+      "row": 66,
+      "source": "SU-EATABLE LIFE (SEL) database",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://doi.org/10.6084/m9.figshare.13271111",
+      "use": "Not applied",
+      "limit": "Product footprints are not avoided PEI treatment emissions without a defined comparison."
+    },
+    {
+      "row": 68,
+      "source": "ECCC Greenhouse Gas Calculator for Organic Waste Management",
+      "register_license": "Unstated",
+      "register_redistributable": "No - link only",
+      "url": "https://www.canada.ca/en/environment-climate-change/services/managing-reducing-waste/municipal-solid/waste-greenhouse-gases-canada-actions/calculator.html",
+      "use": "Optional factor source",
+      "limit": "Use for a documented treatment scenario. No default coefficient was applied."
+    },
+    {
+      "row": 83,
+      "source": "IWMC 'Sort It Out' waste sorting guide",
+      "register_license": "Unstated",
+      "register_redistributable": "No - link only",
+      "url": "https://iwmc.pe.ca/sort/",
+      "use": "Local disposal context",
+      "limit": "A landfill default can misstate the comparison under PEI's separate compost collection."
+    },
+    {
+      "row": 90,
+      "source": "PEI Food Recovery Network — Final Report",
+      "register_license": "Unstated",
+      "register_redistributable": "No - link only",
+      "url": "https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_10500298/File/Environment%20and%20Sustainability/Food/ES%2023-08%20Attachment%20-%20PEI%20Food%20Recovery%20Network%20Final.pdf",
+      "use": "Implemented in simulations",
+      "limit": "Historical signups size the reference case. Chart 1 sets expected offer mix in a synthetic scenario."
+    },
+    {
+      "row": 91,
+      "source": "FoodRescue.ca + Second Harvest research library",
+      "register_license": "Restricted",
+      "register_redistributable": "No - link only",
+      "url": "https://www.secondharvest.ca/research",
+      "use": "Existing system and background",
+      "limit": "Documented matching tools provide a comparison. No private offer data was imported."
+    },
+    {
+      "row": 92,
+      "source": "PEI Food Banks directory",
+      "register_license": "Unstated",
+      "register_redistributable": "No - link only",
+      "url": "https://www.urhm.org/contact-us/pei-food-banks/",
+      "use": "Partner research only",
+      "limit": "Directory locations do not establish capacity or receiving consent."
+    },
+    {
+      "row": 98,
+      "source": "Canadian Business Counts, with employees, CMAs and census subdivisions (33-10-1097-01)",
+      "register_license": "Open",
+      "register_redistributable": "Yes",
+      "url": "https://open.canada.ca/data/en/dataset/b2606c69-087d-4330-ad1d-122639b0cad0",
+      "use": "Expansion research only",
+      "limit": "Only an eligible and reachable subset would represent potential customers."
+    },
+    {
+      "row": 100,
+      "source": "OpenStreetMap PEI extract",
+      "register_license": "Open (share-alike)",
+      "register_redistributable": "Yes - share-alike",
+      "url": "https://download.geofabrik.de/north-america/canada/prince-edward-island.html",
+      "use": "Reference only",
+      "limit": "The demo uses a schematic, approximate town centres and straight-line distance."
+    },
+    {
+      "row": 105,
+      "source": "RecipeNLG",
+      "register_license": "Non-commercial",
+      "register_redistributable": "Yes - non-commercial",
+      "url": "https://recipenlg.cs.put.poznan.pl/dataset",
+      "use": "Deferred recipe discovery",
+      "limit": "No redistribution or automatic recipe approval. The demo uses five authored meal entries."
+    }
+  ]
+}

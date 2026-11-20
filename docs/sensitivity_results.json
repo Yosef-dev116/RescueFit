@@ -1,0 +1,476 @@
+{
+  "data_status": "synthetic_sensitivity",
+  "seeds": 100,
+  "scenarios": [
+    {
+      "label": "No confirmed alternates",
+      "settings": {
+        "days": 30,
+        "donors": 81,
+        "seeds": 100,
+        "seed_start": 2026,
+        "offer_scale": 1,
+        "use_share": 0.3,
+        "confirmation": 0,
+        "radius_km": 35,
+        "use_uncertainty": 0.3,
+        "mix": "pei",
+        "min_offer_kg": 2,
+        "max_offer_kg": 25,
+        "min_donor_active": 0.08,
+        "max_donor_active": 0.3
+      },
+      "baseline": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4841.0523,
+        "kg_wasted_at_agency": 811.6897,
+        "kg_used": 3480.8754,
+        "kg_unallocated": 1356.5083,
+        "kg_remaining": 548.4872,
+        "kg_redirected": 0.0,
+        "meals": 6395.0139,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "fit_only": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4038.4162,
+        "kg_wasted_at_agency": 67.2463,
+        "kg_used": 3475.9534,
+        "kg_unallocated": 2159.1444,
+        "kg_remaining": 495.2165,
+        "kg_redirected": 0.0,
+        "meals": 6385.9713,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "rescuefit": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4038.4162,
+        "kg_wasted_at_agency": 67.2463,
+        "kg_used": 3475.9534,
+        "kg_unallocated": 2159.1444,
+        "kg_remaining": 495.2165,
+        "kg_redirected": 0.0,
+        "meals": 6385.9713,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "paired_delta": {
+        "kg_wasted_at_agency_reduction": {
+          "mean": 744.4434,
+          "p05": 569.2112,
+          "p95": 970.3038
+        },
+        "kg_used_increase": {
+          "mean": -4.922,
+          "p05": -19.9715,
+          "p95": 11.9729
+        },
+        "kg_used_increase_over_fit_only": {
+          "mean": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        "kg_unallocated_reduction": {
+          "mean": -802.6361,
+          "p05": -1007.6045,
+          "p95": -631.0378
+        },
+        "kg_wasted_plus_unallocated_reduction": {
+          "mean": -58.1927,
+          "p05": -115.3449,
+          "p95": -0.3756
+        }
+      }
+    },
+    {
+      "label": "Reference",
+      "settings": {
+        "days": 30,
+        "donors": 81,
+        "seeds": 100,
+        "seed_start": 2026,
+        "offer_scale": 1,
+        "use_share": 0.3,
+        "confirmation": 0.55,
+        "radius_km": 35,
+        "use_uncertainty": 0.3,
+        "mix": "pei",
+        "min_offer_kg": 2,
+        "max_offer_kg": 25,
+        "min_donor_active": 0.08,
+        "max_donor_active": 0.3
+      },
+      "baseline": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4841.0523,
+        "kg_wasted_at_agency": 811.6897,
+        "kg_used": 3480.8754,
+        "kg_unallocated": 1356.5083,
+        "kg_remaining": 548.4872,
+        "kg_redirected": 0.0,
+        "meals": 6395.0139,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "fit_only": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4038.4162,
+        "kg_wasted_at_agency": 67.2463,
+        "kg_used": 3475.9534,
+        "kg_unallocated": 2159.1444,
+        "kg_remaining": 495.2165,
+        "kg_redirected": 0.0,
+        "meals": 6385.9713,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "rescuefit": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4562.2884,
+        "kg_wasted_at_agency": 90.0934,
+        "kg_used": 3829.9224,
+        "kg_unallocated": 1635.2722,
+        "kg_remaining": 642.2727,
+        "kg_redirected": 883.1161,
+        "meals": 7036.2779,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 136.68,
+        "redirect_kg_km": 10863.6595
+      },
+      "paired_delta": {
+        "kg_wasted_at_agency_reduction": {
+          "mean": 721.5964,
+          "p05": 553.6045,
+          "p95": 939.5163
+        },
+        "kg_used_increase": {
+          "mean": 349.047,
+          "p05": 231.061,
+          "p95": 516.4177
+        },
+        "kg_used_increase_over_fit_only": {
+          "mean": 353.9689,
+          "p05": 230.9107,
+          "p95": 528.0201
+        },
+        "kg_unallocated_reduction": {
+          "mean": -278.7639,
+          "p05": -477.9927,
+          "p95": -39.7034
+        },
+        "kg_wasted_plus_unallocated_reduction": {
+          "mean": 442.8325,
+          "p05": 290.0219,
+          "p95": 620.9024
+        }
+      }
+    },
+    {
+      "label": "All eligible offers confirm",
+      "settings": {
+        "days": 30,
+        "donors": 81,
+        "seeds": 100,
+        "seed_start": 2026,
+        "offer_scale": 1,
+        "use_share": 0.3,
+        "confirmation": 1,
+        "radius_km": 35,
+        "use_uncertainty": 0.3,
+        "mix": "pei",
+        "min_offer_kg": 2,
+        "max_offer_kg": 25,
+        "min_donor_active": 0.08,
+        "max_donor_active": 0.3
+      },
+      "baseline": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4841.0523,
+        "kg_wasted_at_agency": 811.6897,
+        "kg_used": 3480.8754,
+        "kg_unallocated": 1356.5083,
+        "kg_remaining": 548.4872,
+        "kg_redirected": 0.0,
+        "meals": 6395.0139,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "fit_only": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4038.4162,
+        "kg_wasted_at_agency": 67.2463,
+        "kg_used": 3475.9534,
+        "kg_unallocated": 2159.1444,
+        "kg_remaining": 495.2165,
+        "kg_redirected": 0.0,
+        "meals": 6385.9713,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "rescuefit": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4920.5765,
+        "kg_wasted_at_agency": 112.179,
+        "kg_used": 4028.3035,
+        "kg_unallocated": 1276.9841,
+        "kg_remaining": 780.094,
+        "kg_redirected": 1581.9145,
+        "meals": 7400.7409,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 266.96,
+        "redirect_kg_km": 20940.0796
+      },
+      "paired_delta": {
+        "kg_wasted_at_agency_reduction": {
+          "mean": 699.5107,
+          "p05": 531.5966,
+          "p95": 927.059
+        },
+        "kg_used_increase": {
+          "mean": 547.4281,
+          "p05": 376.7142,
+          "p95": 737.146
+        },
+        "kg_used_increase_over_fit_only": {
+          "mean": 552.3501,
+          "p05": 381.0856,
+          "p95": 750.2016
+        },
+        "kg_unallocated_reduction": {
+          "mean": 79.5242,
+          "p05": -164.3303,
+          "p95": 339.4239
+        },
+        "kg_wasted_plus_unallocated_reduction": {
+          "mean": 779.0349,
+          "p05": 585.0561,
+          "p95": 980.5112
+        }
+      }
+    },
+    {
+      "label": "High offers",
+      "settings": {
+        "days": 30,
+        "donors": 81,
+        "seeds": 100,
+        "seed_start": 2026,
+        "offer_scale": 1.55,
+        "use_share": 0.3,
+        "confirmation": 0.55,
+        "radius_km": 35,
+        "use_uncertainty": 0.3,
+        "mix": "pei",
+        "min_offer_kg": 2,
+        "max_offer_kg": 25,
+        "min_donor_active": 0.08,
+        "max_donor_active": 0.3
+      },
+      "baseline": {
+        "kg_offered": 9606.2171,
+        "kg_received": 5757.528,
+        "kg_wasted_at_agency": 1314.2543,
+        "kg_used": 3716.0153,
+        "kg_unallocated": 3848.6891,
+        "kg_remaining": 727.2583,
+        "kg_redirected": 0.0,
+        "meals": 6827.0095,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "fit_only": {
+        "kg_offered": 9606.2171,
+        "kg_received": 4455.5934,
+        "kg_wasted_at_agency": 86.4664,
+        "kg_used": 3719.0447,
+        "kg_unallocated": 5150.6237,
+        "kg_remaining": 650.0823,
+        "kg_redirected": 0.0,
+        "meals": 6832.5751,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "rescuefit": {
+        "kg_offered": 9606.2171,
+        "kg_received": 5188.3282,
+        "kg_wasted_at_agency": 117.1738,
+        "kg_used": 4163.7932,
+        "kg_unallocated": 4417.8889,
+        "kg_remaining": 907.3612,
+        "kg_redirected": 1497.4176,
+        "meals": 7649.6607,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 190.83,
+        "redirect_kg_km": 19745.5709
+      },
+      "paired_delta": {
+        "kg_wasted_at_agency_reduction": {
+          "mean": 1197.0805,
+          "p05": 939.2049,
+          "p95": 1463.7501
+        },
+        "kg_used_increase": {
+          "mean": 447.7779,
+          "p05": 304.8697,
+          "p95": 646.0518
+        },
+        "kg_used_increase_over_fit_only": {
+          "mean": 444.7485,
+          "p05": 302.3441,
+          "p95": 651.5189
+        },
+        "kg_unallocated_reduction": {
+          "mean": -569.1997,
+          "p05": -914.8462,
+          "p95": -199.6256
+        },
+        "kg_wasted_plus_unallocated_reduction": {
+          "mean": 627.8808,
+          "p05": 442.5773,
+          "p95": 858.8612
+        }
+      }
+    },
+    {
+      "label": "Limited prep",
+      "settings": {
+        "days": 30,
+        "donors": 81,
+        "seeds": 100,
+        "seed_start": 2026,
+        "offer_scale": 1,
+        "use_share": 0.18,
+        "confirmation": 0.55,
+        "radius_km": 35,
+        "use_uncertainty": 0.45,
+        "mix": "pei",
+        "min_offer_kg": 2,
+        "max_offer_kg": 25,
+        "min_donor_active": 0.08,
+        "max_donor_active": 0.3
+      },
+      "baseline": {
+        "kg_offered": 6197.5606,
+        "kg_received": 4570.1835,
+        "kg_wasted_at_agency": 1581.704,
+        "kg_used": 2267.0273,
+        "kg_unallocated": 1627.3771,
+        "kg_remaining": 721.4522,
+        "kg_redirected": 0.0,
+        "meals": 4164.9498,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "fit_only": {
+        "kg_offered": 6197.5606,
+        "kg_received": 2942.5906,
+        "kg_wasted_at_agency": 92.5227,
+        "kg_used": 2255.108,
+        "kg_unallocated": 3254.97,
+        "kg_remaining": 594.9599,
+        "kg_redirected": 0.0,
+        "meals": 4143.0517,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 0.0,
+        "redirect_kg_km": 0.0
+      },
+      "rescuefit": {
+        "kg_offered": 6197.5606,
+        "kg_received": 3387.1993,
+        "kg_wasted_at_agency": 126.2375,
+        "kg_used": 2501.7469,
+        "kg_unallocated": 2810.3613,
+        "kg_remaining": 759.2149,
+        "kg_redirected": 864.7558,
+        "meals": 4596.1732,
+        "co2e_kg": 0.0,
+        "cad": 0.0,
+        "kg_with_co2e_factor": 0.0,
+        "kg_with_cad_factor": 0.0,
+        "transfers": 177.48,
+        "redirect_kg_km": 11619.369
+      },
+      "paired_delta": {
+        "kg_wasted_at_agency_reduction": {
+          "mean": 1455.4664,
+          "p05": 1220.1204,
+          "p95": 1723.1067
+        },
+        "kg_used_increase": {
+          "mean": 234.7196,
+          "p05": 149.7555,
+          "p95": 353.8238
+        },
+        "kg_used_increase_over_fit_only": {
+          "mean": 246.6389,
+          "p05": 161.4868,
+          "p95": 356.1499
+        },
+        "kg_unallocated_reduction": {
+          "mean": -1182.9842,
+          "p05": -1468.9044,
+          "p95": -880.5595
+        },
+        "kg_wasted_plus_unallocated_reduction": {
+          "mean": 272.4822,
+          "p05": 127.8439,
+          "p95": 422.453
+        }
+      }
+    }
+  ]
+}

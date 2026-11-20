@@ -21,3 +21,4 @@ model/raw/
 # OS / tools
 .DS_Store
 .context/
+demo/index.html

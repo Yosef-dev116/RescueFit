@@ -69,6 +69,11 @@ const ScenarioTotalsSchema = z.object({
   meals: z.number(),
   co2e_kg: z.number(),
   cad: z.number(),
+  // Fahd's model also reports these. The impact page shows them when they
+  // are present, and the dev fixture leaves them out.
+  kg_used: z.number().optional(),
+  kg_redirected: z.number().optional(),
+  kg_unallocated: z.number().optional(),
 });
 
 export const ScenarioResultsSchema = z.object({

@@ -1,57 +1,85 @@
-import {
-  Box,
-  EmptyField,
-  FieldLabel,
-  ModeBadge,
-} from "@/components/document";
+import { ArrowIcon, Box, FieldLabel, ModeBadge } from "@/components/document";
 import { loadScenarioResults } from "@/lib/data";
 
+import { DailyWasteChart } from "./daily-chart";
+
 /*
- * FAHD OWNS THIS PAGE (features C5 and C6).
+ * Impact (features C5 and C6). The figures come from Fahd's scenario model
+ * in model/simulate.py. Its output is copied to public/data/
+ * scenario_results.json, and loadScenarioResults() checks it against the
+ * contract in TEAM_PLAN section 6.
  *
- * This is a placeholder that Yosef wrote so the nav never leads to a 404.
- * Replace the whole body. Keep nothing here except the layout wrapper if
- * you do not want it.
+ * Fahd's run has no CO2e or dollar factors yet, so it reports 0 for both.
+ * The page shows kilograms and meals instead, and keeps the CO2e and
+ * dollar tiles only for the dev fixture, which has those fields filled.
  *
- * What is already done for you:
- *
- * - loadScenarioResults() reads public/data/scenario_results.json, validates
- *   it against TEAM_PLAN section 6, and falls back to a dev fixture with a
- *   warning. loadImpactFactors() and loadForecast() work the same way.
- * - .value is typed. .source is "data" or "fixture". .warning says why.
- * - recharts is installed. Charts must live in a "use client" component,
- *   because recharts needs the browser.
- * - The form-paper design system is in app/globals.css, and the shared
- *   parts are in components/document.tsx: Box, FieldLabel, FormSection,
- *   EmptyField, Stamp, ModeBadge, StorageGauge.
- * - Put every figure in a <span className="typed"> so the numerals line up
- *   in columns. Reserve text-stamp (the red) for the one number that is a
- *   warning, so it keeps its meaning.
- *
- * The two empty boxes below are waiting for:
- *
- * - Box 10: an area or line chart over scenario.value.daily, baseline
- *   against RescueFit. recharts, in a "use client" component.
- * - Box 11: loadForecast() returns predicted_kg with a low and high band,
- *   which is already the shape a recharts Area with two bounds wants.
- *
- * Keep the instructions here, not in the rendered page. A judge reads the
- * page tonight, and a note addressed to you in the body reads as an
- * unfinished submission.
+ * The full interactive model (policy comparison, replay by seed, export)
+ * is Fahd's static page at public/rescuefit/index.html. This page links
+ * to it rather than framing it, because the CSP sets frame-ancestors
+ * 'none'.
  */
 
 export const metadata = {
-  title: "Impact: kg saved, meals, CO2e, dollars | RescueFit",
+  title: "Impact: food used, waste avoided, meals | RescueFit",
   description:
-    "What RescueFit saves across a 30-day simulation of the PEI food " +
+    "What RescueFit changes across a 30-day simulation of the PEI food " +
     "rescue network, against the same network without it.",
 };
 
+function kg(n: number): string {
+  return `${Math.round(n).toLocaleString("en-CA")} kg`;
+}
+
 export default function ImpactPage() {
   const scenario = loadScenarioResults();
-  const { baseline, rescuefit } = scenario.value;
+  const { baseline, rescuefit, days, donors, agencies, daily, assumptions } =
+    scenario.value;
 
-  const wasteAvoided = baseline.kg_wasted_at_agency - rescuefit.kg_wasted_at_agency;
+  const hasMassBalance =
+    baseline.kg_used !== undefined && rescuefit.kg_used !== undefined;
+
+  const stats = hasMassBalance
+    ? [
+        {
+          label: "Less expired at kitchens",
+          value: kg(baseline.kg_wasted_at_agency - rescuefit.kg_wasted_at_agency),
+        },
+        {
+          label: "More food used",
+          value: kg((rescuefit.kg_used ?? 0) - (baseline.kg_used ?? 0)),
+        },
+        {
+          label: "Extra meals",
+          value: Math.round(rescuefit.meals - baseline.meals).toLocaleString("en-CA"),
+        },
+        {
+          label: "Redirected to other sites",
+          value: kg(rescuefit.kg_redirected ?? 0),
+        },
+      ]
+    : [
+        {
+          label: "Waste avoided",
+          value: kg(baseline.kg_wasted_at_agency - rescuefit.kg_wasted_at_agency),
+        },
+        {
+          label: "Extra meals",
+          value: Math.round(rescuefit.meals - baseline.meals).toLocaleString("en-CA"),
+        },
+        {
+          label: "CO2e avoided",
+          value: kg(baseline.co2e_kg - rescuefit.co2e_kg),
+        },
+        {
+          label: "Value retained",
+          value: `$${Math.round(baseline.cad - rescuefit.cad).toLocaleString("en-CA")}`,
+        },
+      ];
+
+  const moreUnallocated =
+    baseline.kg_unallocated !== undefined && rescuefit.kg_unallocated !== undefined
+      ? rescuefit.kg_unallocated - baseline.kg_unallocated
+      : null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
@@ -62,83 +90,83 @@ export default function ImpactPage() {
             Impact
           </h1>
         </div>
-        {/*
-          * The figures below are a simulation, not a measurement, so the
-          * badge belongs here as much as it does on the model pages. Four
-          * round numbers and a dollar sign read as a result unless the page
-          * says otherwise before the reader reaches them.
-          */}
+        {/* A simulation, not a measurement, so the badge says so first. */}
         <ModeBadge mode="demo" />
       </div>
 
-      {/*
-        * Keep this note addressed to the reader, not to the team. A judge
-        * opens this page tonight, and an internal memo in the body reads as
-        * an unfinished submission rather than an honest status line. The
-        * instructions for whoever finishes the page live in the comment at
-        * the top of this file, where a visitor never sees them.
-        */}
       <div className="form-box mt-4 p-4">
         <FieldLabel>What these figures are</FieldLabel>
         <p className="mt-1 max-w-[70ch] text-[0.9375rem] leading-relaxed text-ink">
-          A thirty-day simulation of the PEI food rescue network, run twice:
-          once as the network works today, and once with RescueFit routing
-          the surplus. The difference is what you see below. These are
-          modelled figures, not a measured result.
+          A {days}-day simulation of a PEI food rescue network with {donors}{" "}
+          donors and {agencies} receiving kitchens, run twice: once as the
+          network works today, and once with RescueFit checking fit and
+          redirecting surplus. The difference is what you see below. These
+          are modelled figures, not a measured result.
         </p>
+        {moreUnallocated !== null && moreUnallocated > 0 ? (
+          <p className="mt-2 max-w-[70ch] text-[0.9375rem] leading-relaxed text-ink">
+            The trade-off: RescueFit leaves{" "}
+            <span className="typed">{kg(moreUnallocated)}</span> more food
+            unallocated, because kitchens decline what they cannot use in time.
+          </p>
+        ) : null}
         <p className="typed mt-2 text-[0.75rem] text-ink-soft">
           DATA SOURCE: {scenario.source.toUpperCase()}
           {scenario.source === "fixture"
-            ? " \u2014 sample figures. The measured run is not published yet."
-            : ""}
+            ? " — sample figures. The measured run is not published yet."
+            : " — model/simulate.py, averaged over paired runs."}
         </p>
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          {
-            label: "Waste avoided",
-            value: `${wasteAvoided.toLocaleString("en-CA")} kg`,
-          },
-          {
-            label: "Extra meals",
-            value: (rescuefit.meals - baseline.meals).toLocaleString("en-CA"),
-          },
-          {
-            label: "CO2e avoided",
-            value: `${(baseline.co2e_kg - rescuefit.co2e_kg).toLocaleString("en-CA")} kg`,
-          },
-          {
-            label: "Value retained",
-            value: `$${(baseline.cad - rescuefit.cad).toLocaleString("en-CA")}`,
-          },
-        ].map((stat) => (
+        {stats.map((stat) => (
           <Box key={stat.label} className="p-4">
             <FieldLabel>{stat.label}</FieldLabel>
             <p className="typed mt-1 text-[1.5rem] leading-none text-ink">
               {stat.value}
             </p>
             <p className="typed mt-1.5 text-[0.625rem] text-ink-faint">
-              simulated over {scenario.value.days} days,{" "}
-              {scenario.value.donors} donors, {scenario.value.agencies}{" "}
-              agencies
+              simulated over {days} days, {donors} donors, {agencies} kitchens
             </p>
           </Box>
         ))}
       </div>
 
-      <div className="mt-6">
-        <EmptyField
-          label="Box 10 &middot; Daily waste chart, baseline against RescueFit"
-          hint="Daily waste for both runs, day by day."
-        />
-      </div>
+      <Box className="mt-6 p-4">
+        <FieldLabel>Food expired at kitchens, day by day</FieldLabel>
+        <div className="mt-3">
+          <DailyWasteChart
+            daily={daily.map((d) => ({
+              day: d.day,
+              baseline_waste_kg: d.baseline_waste_kg,
+              rescuefit_waste_kg: d.rescuefit_waste_kg,
+            }))}
+          />
+        </div>
+      </Box>
 
-      <div className="mt-3">
-        <EmptyField
-          label="Box 11 &middot; Donation forecast, next seven days"
-          hint="Predicted donation weight, with a low and high band."
-        />
+      <div className="mt-6 grid gap-3 lg:grid-cols-[2fr_1fr]">
+        <Box className="p-4">
+          <FieldLabel>Model assumptions</FieldLabel>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-[0.875rem] leading-relaxed text-ink">
+            {assumptions.map((a) => (
+              <li key={a}>{a}</li>
+            ))}
+          </ul>
+        </Box>
+        <a
+          href="/rescuefit/index.html#impact"
+          className="form-box group block p-4 no-underline transition-[box-shadow,transform] hover:-translate-y-px hover:shadow-[2px_4px_8px_-2px_rgba(28,26,22,0.28)]"
+        >
+          <FieldLabel>Impact lab</FieldLabel>
+          <p className="mt-1 text-[0.9375rem] leading-relaxed text-ink">
+            Run the simulation yourself. Compare the policies, replay one run
+            day by day, and export the results.
+          </p>
+          <span className="typed mt-3 inline-flex items-center gap-1 text-[0.75rem] text-stamp">
+            OPEN THE IMPACT LAB <ArrowIcon className="h-3 w-3" />
+          </span>
+        </a>
       </div>
     </div>
   );

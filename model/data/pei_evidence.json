@@ -1,0 +1,26 @@
+{
+  "source": "Second Harvest, PEI Food Recovery Network Final Report",
+  "url": "https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_10500298/File/Environment%20and%20Sustainability/Food/ES%2023-08%20Attachment%20-%20PEI%20Food%20Recovery%20Network%20Final.pdf",
+  "register_row": 90,
+  "kpi_locator": "Table 1, page 1",
+  "mix_locator": "Chart 1, page 3",
+  "mix_start": "2021-11-01",
+  "mix_end": "2023-01-13",
+  "new_donors": 81,
+  "new_nonprofits": 22,
+  "reported_meals_lower_bound": 147000,
+  "mix_basis": "Reported percentage of rescued pounds. Listed shares are rounded. Transferring the supported mix to offered kg is a scenario assumption.",
+  "groups": [
+    {"label":"Bread and grains","percent":41,"categories":["bread","dry_grains"],"within_group_weights":[0.86,0.14]},
+    {"label":"Produce","percent":34,"categories":["root_veg","leafy_veg","fruit","berries","potatoes","tomatoes","broccoli","frozen_veg"],"within_group_weights":[0.18,0.11,0.20,0.07,0.16,0.09,0.10,0.09]},
+    {"label":"Desserts, baked goods and snacks","percent":15,"categories":["bakery"],"within_group_weights":[1]},
+    {"label":"Dairy","percent":3,"categories":["milk","yogurt","cheese"],"within_group_weights":[0.34,0.33,0.33]},
+    {"label":"Meat and protein","percent":3,"categories":["frozen_meat","eggs","canned_beans"],"within_group_weights":[0.55,0.15,0.30]},
+    {"label":"Prepared meals","percent":2,"categories":["prepared"],"within_group_weights":[1]},
+    {"label":"Juice and water","percent":0.97,"categories":[],"within_group_weights":[]},
+    {"label":"Other beverages","percent":0.25,"categories":[],"within_group_weights":[]},
+    {"label":"Condiments","percent":0.61,"categories":[],"within_group_weights":[]},
+    {"label":"Baby formula and meal replacements","percent":0.04,"categories":[],"within_group_weights":[]}
+  ],
+  "caveat": "Counts describe historical signups. They size the synthetic network. The report does not provide recipient capacity, offer timestamps, confirmations, or post-receipt food use."
+}
