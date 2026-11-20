@@ -9,7 +9,7 @@ import {
   FieldLabel,
   ModeBadge,
 } from "@/components/document";
-import { checkFit } from "@/lib/fit";
+import { checkFit, keptItem } from "@/lib/fit";
 import { PlanSchema, type Agency, type IntakeItem, type Mode, type Plan } from "@/lib/schemas";
 import { useAgencyId, useConsignment, useHydrated } from "@/lib/store";
 
@@ -52,7 +52,7 @@ export function PlanView({
     const report = checkFit({ items, agency, others: agencies, kgPerMeal });
     return report.results
       .filter((result) => result.accepted_kg > 0)
-      .map((result) => ({ ...result.item, est_kg: result.accepted_kg }));
+      .map((result) => keptItem(result.item, result.accepted_kg));
   }, [stored, sampleItems, agency, agencies, kgPerMeal]);
 
   const keptNothing = kept.length === 0;

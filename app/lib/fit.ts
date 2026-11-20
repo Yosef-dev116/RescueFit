@@ -11,11 +11,15 @@ import type { Agency, IntakeItem, StorageType } from "./schemas";
  *
  * 1. Space. Free kg in the storage type the item needs.
  * 2. Time. The kitchen can only serve so much before the item expires:
- *    shelf_life_days x meals_per_day x kg_per_meal.
+ *    shelf_life_days x meals_per_day x kg_per_meal. This capacity is
+ *    shared. Food accepted earlier in the run, in any storage type, has
+ *    already claimed part of it, because the same meals plate both.
  * 3. Diet. A halal or vegetarian kitchen cannot use some items at all.
  *
  * Items are handled in expiry order, soonest first, and they share the space.
- * Whatever does not fit goes to the nearest agency that has room for it.
+ * Whatever does not fit goes to the nearest agency that has both the space
+ * and the time to use all of it. Redirected food claims the recipient's
+ * space and use capacity, so two items cannot both count on the same meals.
  */
 
 export type FitDecision = "accept" | "accept-part" | "redirect";
@@ -163,6 +167,42 @@ export function dietConflict(item: IntakeItem, agency: Agency): string | null {
   return null;
 }
 
+/**
+ * How many more kg a kitchen can plate before a deadline.
+ *
+ * Items are handled in expiry order, soonest first. So every kg already
+ * committed to a kitchen expires on or before this item, and all of it must
+ * be plated inside this item's window too. Total capacity over the window
+ * is days x meals per day x kg per meal, and the committed kg comes off it.
+ */
+function plateRoom(
+  days: number,
+  mealsPerDay: number,
+  kgPerMeal: number,
+  committedKg: number,
+): { total: number; room: number } {
+  const total = Math.max(0, days) * mealsPerDay * kgPerMeal;
+  return { total, room: Math.max(0, total - committedKg) };
+}
+
+/**
+ * The item as the kitchen keeps it, for the plan request.
+ *
+ * Part of an offer keeps the same share of the count, so two 4 kg trays
+ * kept at 4 kg become one tray, not "2 tray, 4 kg".
+ */
+export function keptItem(item: IntakeItem, keptKg: number): IntakeItem {
+  if (item.est_kg <= 0 || keptKg >= item.est_kg) {
+    return { ...item, est_kg: kg(keptKg) };
+  }
+  const share = keptKg / item.est_kg;
+  return {
+    ...item,
+    qty: Math.round(item.qty * share * 100) / 100,
+    est_kg: kg(keptKg),
+  };
+}
+
 /** Free kg per storage type, as a plain object we can decrement. */
 function freeKgCopy(agency: Agency): Record<StorageType, number> {
   return {
@@ -182,11 +222,18 @@ export function checkFit(input: FitInput): FitReport {
   // Running free space at the receiving kitchen. Items share it.
   const free = freeKgCopy(agency);
 
-  // Running free space at every other agency, so two redirects cannot both
-  // claim the same shelf.
+  // kg the receiving kitchen has committed to plate so far, across all
+  // storage types. See plateRoom().
+  let committed = 0;
+
+  // Running free space and committed kg at every other agency, so two
+  // redirects cannot both claim the same shelf or the same meals.
   const otherAgencies = (input.others ?? []).filter((a) => a.id !== agency.id);
   const otherFree = new Map<string, Record<StorageType, number>>(
     otherAgencies.map((a) => [a.id, freeKgCopy(a)]),
+  );
+  const otherCommitted = new Map<string, number>(
+    otherAgencies.map((a) => [a.id, 0]),
   );
 
   // Soonest expiry first. That food gets first claim on the space.
@@ -217,12 +264,20 @@ export function checkFit(input: FitInput): FitReport {
 
     // Limit 1: space.
     const spaceLimit = free[storage];
-    // Limit 2: time. How much the kitchen can plate before it expires.
-    const useLimit = item.shelf_life_days * agency.meals_per_day * kgPerMeal;
+    // Limit 2: time. How much more the kitchen can plate before it expires,
+    // after the food it has already accepted.
+    const use = plateRoom(
+      item.shelf_life_days,
+      agency.meals_per_day,
+      kgPerMeal,
+      committed,
+    );
+    const useLimit = use.room;
 
     const accepted = Math.max(0, Math.min(offered, spaceLimit, useLimit));
     const leftover = Math.max(0, offered - accepted);
     free[storage] = kg(free[storage] - accepted);
+    committed = kg(committed + accepted);
 
     if (leftover <= 0.001) {
       results.push({
@@ -235,7 +290,7 @@ export function checkFit(input: FitInput): FitReport {
           `Accept all ${kg(offered)} kg. ` +
           `${kg(free[storage])} kg ${storage} space left. ` +
           `Lasts ${item.shelf_life_days} days, and the kitchen can plate ` +
-          `${kg(useLimit)} kg in that time.`,
+          `${kg(useLimit)} more kg in that time.`,
         });
       continue;
     }
@@ -244,8 +299,12 @@ export function checkFit(input: FitInput): FitReport {
     const binding =
       spaceLimit < useLimit
         ? `only ${kg(spaceLimit)} kg of ${storage} space`
-        : `the kitchen can only plate ${kg(useLimit)} kg in ` +
-          `${item.shelf_life_days} days at ${agency.meals_per_day} meals per day`;
+        : `the kitchen can only plate ${kg(use.total)} kg in ` +
+          `${item.shelf_life_days} days at ${agency.meals_per_day} meals per day` +
+          (use.total - useLimit > 0.001
+            ? `, and ${kg(use.total - useLimit)} kg of that is taken by food ` +
+              `that expires sooner`
+            : "");
 
     results.push({
       item,
@@ -261,8 +320,9 @@ export function checkFit(input: FitInput): FitReport {
   }
 
   /**
-   * Send surplus kg to the nearest other agency with room for all of it.
-   * It claims the space, so a later item cannot be sent to the same shelf.
+   * Send surplus kg to the nearest other agency with the space and the use
+   * capacity for all of it. It claims both, so a later item cannot count on
+   * the same shelf or the same meals.
    */
   function placeSurplus(
     item: IntakeItem,
@@ -275,9 +335,18 @@ export function checkFit(input: FitInput): FitReport {
   } {
     const storage = item.storage;
 
+    const canUse = (other: Agency) =>
+      plateRoom(
+        item.shelf_life_days,
+        other.meals_per_day,
+        kgPerMeal,
+        otherCommitted.get(other.id) ?? 0,
+      ).room;
+
     const candidates = otherAgencies
       .filter((other) => dietConflict(item, other) === null)
       .filter((other) => (otherFree.get(other.id)?.[storage] ?? 0) >= surplusKg)
+      .filter((other) => canUse(other) + 0.001 >= surplusKg)
       .map((other) => ({ other, km: haversineKm(agency, other) }))
       .sort((a, b) => a.km - b.km);
 
@@ -288,7 +357,8 @@ export function checkFit(input: FitInput): FitReport {
         unplaced_kg: kg(surplusKg),
         note:
           `No agency on the list has ${kg(surplusKg)} kg of free ${storage} ` +
-          `space. Freeze it, serve it today, or call the network.`,
+          `space and the meals to use it in ${item.shelf_life_days} days. ` +
+          `Freeze it, serve it today, or call the network.`,
       };
     }
 
@@ -296,6 +366,10 @@ export function checkFit(input: FitInput): FitReport {
     if (targetFree) {
       targetFree[storage] = kg(targetFree[storage] - surplusKg);
     }
+    otherCommitted.set(
+      best.other.id,
+      kg((otherCommitted.get(best.other.id) ?? 0) + surplusKg),
+    );
 
     return {
       redirected_kg: kg(surplusKg),

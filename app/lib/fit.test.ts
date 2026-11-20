@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { checkFit, dietConflict, haversineKm } from "./fit";
+import { checkFit, dietConflict, haversineKm, keptItem } from "./fit";
 import type { Agency, IntakeItem } from "./schemas";
 
 /** A kitchen with lots of time, so space is the only limit by default. */
@@ -354,5 +354,114 @@ describe("dietConflict matches whole words only", () => {
     expect(
       dietConflict(item({ name: "chicken drumsticks", category: "other" }), vegetarian),
     ).toBe("not vegetarian");
+  });
+});
+
+describe("use capacity is shared", () => {
+  // 100 meals a day at 0.54 kg a meal is 54 kg a day.
+  const kitchen = agency({
+    meals_per_day: 100,
+    free_kg: { fridge: 500, freezer: 500, dry: 500 },
+  });
+
+  it("does not accept two 54 kg items that both expire tomorrow", () => {
+    const report = checkFit({
+      items: [
+        item({ name: "soup", category: "prepared-hot", est_kg: 54, storage: "fridge", shelf_life_days: 1 }),
+        item({ name: "bagels", est_kg: 54, storage: "dry", shelf_life_days: 1 }),
+      ],
+      agency: kitchen,
+      kgPerMeal: 0.54,
+    });
+    expect(report.totals.accepted_kg).toBe(54);
+    const second = report.results[1];
+    expect(second.accepted_kg).toBe(0);
+    expect(second.reason).toContain("taken by food that expires sooner");
+  });
+
+  it("lets a later expiry use the days the earlier items leave free", () => {
+    const report = checkFit({
+      items: [
+        item({ name: "soup", est_kg: 54, storage: "fridge", shelf_life_days: 1 }),
+        item({ name: "rice", category: "dry-goods", est_kg: 60, storage: "dry", shelf_life_days: 2 }),
+      ],
+      agency: kitchen,
+      kgPerMeal: 0.54,
+    });
+    // Two days is 108 kg. Soup took 54, so rice gets the other 54.
+    expect(report.results.map((r) => r.accepted_kg)).toEqual([54, 54]);
+  });
+});
+
+describe("redirects respect the recipient's use capacity", () => {
+  const home = agency({ meals_per_day: 0 });
+  const small = agency({
+    id: "small",
+    name: "Small Pantry",
+    lat: 46.25,
+    lon: -63.13,
+    meals_per_day: 10,
+    free_kg: { fridge: 500, freezer: 500, dry: 500 },
+  });
+  const big = agency({
+    id: "big",
+    name: "Big Kitchen",
+    lat: 46.4,
+    lon: -63.8,
+    meals_per_day: 200,
+    free_kg: { fridge: 500, freezer: 500, dry: 500 },
+  });
+
+  it("does not send 100 kg expiring tomorrow to a kitchen that can use 5.4 kg", () => {
+    const report = checkFit({
+      items: [item({ est_kg: 100, storage: "fridge", shelf_life_days: 1 })],
+      agency: home,
+      others: [home, small],
+      kgPerMeal: 0.54,
+    });
+    expect(report.results[0].redirected_kg).toBe(0);
+    expect(report.results[0].unplaced_kg).toBe(100);
+  });
+
+  it("skips the nearer kitchen for one that can use it all", () => {
+    const report = checkFit({
+      items: [item({ est_kg: 100, storage: "fridge", shelf_life_days: 1 })],
+      agency: home,
+      others: [small, big],
+      kgPerMeal: 0.54,
+    });
+    expect(report.results[0].redirect_to?.agency_id).toBe("big");
+  });
+
+  it("reserves the recipient's capacity across routed items", () => {
+    // Big Kitchen plates 108 kg a day. Two 100 kg items for tomorrow
+    // cannot both go there, even across storage types.
+    const report = checkFit({
+      items: [
+        item({ name: "milk", category: "dairy", est_kg: 100, storage: "fridge", shelf_life_days: 1 }),
+        item({ name: "bagels", est_kg: 100, storage: "dry", shelf_life_days: 1 }),
+      ],
+      agency: home,
+      others: [big],
+      kgPerMeal: 0.54,
+    });
+    expect(report.results.map((r) => r.redirected_kg)).toEqual([100, 0]);
+    expect(report.results[1].unplaced_kg).toBe(100);
+  });
+});
+
+describe("keptItem", () => {
+  const trays = item({ name: "lasagna", qty: 2, unit: "tray", est_kg: 8 });
+
+  it("scales the count with the kept weight", () => {
+    expect(keptItem(trays, 4)).toMatchObject({ qty: 1, unit: "tray", est_kg: 4 });
+  });
+
+  it("keeps the count when the whole item is kept", () => {
+    expect(keptItem(trays, 8)).toMatchObject({ qty: 2, est_kg: 8 });
+  });
+
+  it("gives a fractional count for an uneven share", () => {
+    expect(keptItem(trays, 3)).toMatchObject({ qty: 0.75, est_kg: 3 });
   });
 });
