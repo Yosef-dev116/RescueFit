@@ -50,7 +50,7 @@ export default function Home() {
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         <div>
           <FieldLabel>Receiving kitchen</FieldLabel>
-          <h1 className="placard mt-0.5 max-w-[20ch] text-[2.25rem] text-ink sm:text-[3rem]">
+          <h1 className="placard mt-0.5 max-w-[20ch] text-[2rem] text-ink sm:text-[2.5rem]">
             {home.name}
           </h1>
           <p className="typed mt-1.5 text-[0.75rem] text-ink-soft">
@@ -69,18 +69,17 @@ export default function Home() {
       </div>
 
       {/* ------------------------------------------------ the thesis, in one line */}
-      <p className="mt-7 max-w-[34ch] text-[1.375rem] leading-[1.22] font-600 tracking-[-0.02em] text-ink sm:max-w-[42ch] sm:text-[1.75rem]">
+      <p className="mt-5 max-w-[34ch] text-[1.3125rem] leading-[1.2] font-600 tracking-[-0.02em] text-ink sm:max-w-[46ch] sm:text-[1.625rem]">
         Food rescue finds the food. Nobody tells the kitchen whether it fits.
-        <span className="mt-2 block max-w-[62ch] text-[0.9375rem] leading-relaxed font-400 tracking-normal text-ink-soft sm:text-[1rem]">
-          Snap the delivery. RescueFit names every item, weighs it, counts the
-          days it has left, and stamps each line Accept, Accept part, or
-          Redirect, with the arithmetic shown. Surplus is routed to the
-          nearest PEI agency that has room for it.
+        <span className="mt-1.5 block max-w-[68ch] text-[0.9375rem] leading-[1.5] font-400 tracking-normal text-ink-soft">
+          Snap the delivery. RescueFit weighs every item, counts the days it
+          has left, and stamps the line, with the arithmetic shown. Surplus
+          is routed to the nearest PEI agency that has room.
         </span>
       </p>
 
       {/* --------------------------------------------------- box 5: the waybill */}
-      <div className="mt-8">
+      <div className="mt-5">
         <div className="mb-2 flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
           <FieldLabel>
             Box 5 &middot; Consignment lines, as read and decided
@@ -117,7 +116,7 @@ export default function Home() {
       </div>
 
       {/* ------------------------------------------- box 6: the primary action */}
-      <div className="mt-8">
+      <div className="mt-6">
         <IntakeControl />
       </div>
 

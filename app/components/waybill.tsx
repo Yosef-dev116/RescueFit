@@ -79,7 +79,7 @@ export function Waybill({
                 type="button"
                 aria-expanded={open}
                 onClick={() => setOpenIndex(open ? null : index)}
-                className="w-full cursor-pointer px-3 py-2.5 text-left transition-colors hover:bg-stock-shade"
+                className="w-full cursor-pointer px-3 py-2 text-left transition-colors hover:bg-stock-shade"
               >
                 <div className="grid grid-cols-[1.75rem_minmax(0,1fr)_7.5rem] items-center gap-2 md:grid-cols-[1.75rem_minmax(0,2.4fr)_4.5rem_4.5rem_4.5rem_5rem_7.5rem]">
                   <span
