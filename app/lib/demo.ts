@@ -8,8 +8,62 @@ import type { LlmItem } from "./schemas";
  * tagged mode "demo". Fahd's accuracy script (task F6) must reject that tag.
  */
 
-/** A plausible restaurant pickup. It exercises all three storage types. */
+/**
+ * A plausible catered-event pickup.
+ *
+ * This donation is chosen to exercise every rule the fit engine has, so
+ * the landing page demonstrates the product instead of describing it. At
+ * the Upper Room, which keeps halal and has 80 kg of fridge and 40 kg of
+ * freezer free, it produces a diet redirect, two space-limited partial
+ * accepts, a cascade onto a second agency when the first one fills, and
+ * plain accepts. A donation that simply fits would prove nothing.
+ */
 export const DEMO_PHOTO_ITEMS: LlmItem[] = [
+  {
+    name: "ham and cheese sandwiches",
+    category: "prepared-hot",
+    qty: 120,
+    unit: "each",
+    est_kg: 24,
+    storage: "fridge",
+    confidence: 0.89,
+  },
+  {
+    name: "lasagna trays",
+    category: "prepared-hot",
+    qty: 12,
+    unit: "tray",
+    est_kg: 48,
+    storage: "fridge",
+    confidence: 0.84,
+  },
+  {
+    name: "mixed salad greens",
+    category: "produce-leafy",
+    qty: 20,
+    unit: "bag",
+    est_kg: 6,
+    storage: "fridge",
+    confidence: 0.77,
+  },
+  {
+    name: "whole milk",
+    category: "dairy",
+    qty: 40,
+    unit: "L",
+    est_kg: 41,
+    storage: "fridge",
+    confidence: 0.88,
+  },
+  {
+    name: "frozen chicken breast",
+    category: "meat-fresh",
+    qty: 55,
+    unit: "kg",
+    est_kg: 55,
+    storage: "freezer",
+    confidence: 0.82,
+  },
   {
     name: "bagels",
     category: "bread",
@@ -18,42 +72,6 @@ export const DEMO_PHOTO_ITEMS: LlmItem[] = [
     est_kg: 3.6,
     storage: "dry",
     confidence: 0.91,
-  },
-  {
-    name: "lasagna trays",
-    category: "prepared-hot",
-    qty: 4,
-    unit: "tray",
-    est_kg: 16,
-    storage: "fridge",
-    confidence: 0.84,
-  },
-  {
-    name: "mixed salad greens",
-    category: "produce-leafy",
-    qty: 8,
-    unit: "bag",
-    est_kg: 2.4,
-    storage: "fridge",
-    confidence: 0.77,
-  },
-  {
-    name: "whole milk",
-    category: "dairy",
-    qty: 18,
-    unit: "L",
-    est_kg: 18.5,
-    storage: "fridge",
-    confidence: 0.88,
-  },
-  {
-    name: "frozen chicken breast",
-    category: "meat-fresh",
-    qty: 10,
-    unit: "kg",
-    est_kg: 10,
-    storage: "freezer",
-    confidence: 0.82,
   },
 ];
 
