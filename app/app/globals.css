@@ -8,7 +8,8 @@
  * data, hairline rules, carbon black ink, one signal red for the stamp and
  * for the item that expires first, and a faded carbon blue as second ink.
  *
- * See .impeccable/surfaces/app-page-tsx.md for the direction contract.
+ * DESIGN.md at the root of this app records the tokens, the type roles,
+ * and the rules for extending any of it.
  */
 
 @theme {

@@ -8,14 +8,16 @@ import { CaretIcon, Stamp, type StampTone } from "./document";
 /*
  * The waybill: the ruled table of lines that is the centre of the document.
  *
- * Two raises from the roll live here.
+ * Two rules of this design hold here, and both are easy to break by
+ * accident. DESIGN.md states them in full.
  *
- * From the window-box toy shelf: a line is both the summary and the detail.
- * It tears open in place to show its reason and its redirect, so a volunteer
- * never navigates away from the list to find out why.
+ * One object carries summary and detail. A line tears open where it sits to
+ * show its reason and its redirect, so a volunteer never navigates away
+ * from the list to find out why. Do not move the reason to another page.
  *
- * From hand-processed film: wear is bound to the event. The red ink appears
- * only on the line with the lowest day count, never as a page-wide mood.
+ * Wear is bound to the event. The red ink and the worn stamp belong to the
+ * one line with the lowest day count, never to the page as a mood. Two red
+ * lines halve the only signal the document has.
  */
 
 const DECISION: Record<

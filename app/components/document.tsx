@@ -231,11 +231,11 @@ export function ModeBadge({ mode }: { mode: Mode }) {
 /**
  * A storage gauge.
  *
- * Donated by the night-flight six-pack: a fixed constellation where each
- * panel owns one truth, and a deviation reads as a trend before it reads as
- * an alarm. So the bar always shows the pending claim next to the used
- * amount, and the kitchen can see where the space is going before it
- * commits.
+ * One panel owns one truth, and a problem reads as a trend before it reads
+ * as an alarm. The bar always shows the pending claim beside the amount
+ * already used, so a kitchen sees where the space is going before it
+ * commits to the delivery, rather than being told afterwards that it does
+ * not fit.
  */
 export function StorageGauge({
   label,
