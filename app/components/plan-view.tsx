@@ -158,7 +158,7 @@ export function PlanView({
                   </span>
                   <span
                     className={`typed w-[5.5rem] text-right text-[0.8125rem] ${
-                      index === 0 ? "font-700 text-stamp" : "text-ink"
+                      index === 0 ? "font-bold text-stamp" : "text-ink"
                     }`}
                   >
                     {item.shelf_life_days} day
@@ -249,7 +249,7 @@ export function PlanView({
                   {day.meals.map((meal, index) => (
                     <li key={`${meal.name}-${index}`} className="px-3 py-3">
                       <div className="flex items-baseline justify-between gap-2">
-                        <p className="text-[0.9375rem] font-600 text-ink">
+                        <p className="text-[0.9375rem] font-semibold text-ink">
                           {meal.name}
                         </p>
                         <p className="typed shrink-0 text-[0.75rem] text-ink-soft">

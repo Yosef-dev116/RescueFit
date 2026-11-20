@@ -42,7 +42,7 @@ export function SiteHeader() {
                   <span className="typed text-[0.625rem] text-carbon-soft">
                     {section.index}
                   </span>
-                  <span className="text-[0.8125rem] font-600 tracking-tight">
+                  <span className="text-[0.8125rem] font-semibold tracking-tight">
                     {section.label}
                   </span>
                 </Link>

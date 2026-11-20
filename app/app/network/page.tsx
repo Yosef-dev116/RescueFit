@@ -78,13 +78,13 @@ export default function NetworkPage() {
           <table className="w-full min-w-[40rem] border-collapse text-left">
             <thead>
               <tr className="typed border-b border-ink bg-stock-shade text-[0.625rem] tracking-[0.1em] uppercase">
-                <th className="px-3 py-1.5 font-400">Agency</th>
-                <th className="px-3 py-1.5 font-400">Town</th>
-                <th className="px-3 py-1.5 text-right font-400">Fridge</th>
-                <th className="px-3 py-1.5 text-right font-400">Freezer</th>
-                <th className="px-3 py-1.5 text-right font-400">Dry</th>
-                <th className="px-3 py-1.5 text-right font-400">Meals/day</th>
-                <th className="px-3 py-1.5 text-right font-400">Distance</th>
+                <th className="px-3 py-1.5 font-normal">Agency</th>
+                <th className="px-3 py-1.5 font-normal">Town</th>
+                <th className="px-3 py-1.5 text-right font-normal">Fridge</th>
+                <th className="px-3 py-1.5 text-right font-normal">Freezer</th>
+                <th className="px-3 py-1.5 text-right font-normal">Dry</th>
+                <th className="px-3 py-1.5 text-right font-normal">Meals/day</th>
+                <th className="px-3 py-1.5 text-right font-normal">Distance</th>
               </tr>
             </thead>
             <tbody>
@@ -93,7 +93,7 @@ export default function NetworkPage() {
                   key={agency.id}
                   className="border-b border-ink-faint last:border-b-0"
                 >
-                  <td className="px-3 py-2 text-[0.875rem] font-600 text-ink">
+                  <td className="px-3 py-2 text-[0.875rem] font-semibold text-ink">
                     {agency.name}
                     {agency.diet_flags.length > 0 ? (
                       <span className="typed mt-0.5 block text-[0.625rem] text-stamp">

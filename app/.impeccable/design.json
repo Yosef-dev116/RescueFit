@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T16:25:44Z",
+  "title": "Design System: RescueFit",
+  "extensions": {
+    "colorMeta": {
+      "manila": {
+        "role": "neutral",
+        "displayName": "Manila Kraft",
+        "canonical": "oklch(85.0% 0.041 88.2)",
+        "tonalRamp": [
+          "oklch(15% 0.041 88.2)",
+          "oklch(26% 0.041 88.2)",
+          "oklch(37% 0.041 88.2)",
+          "oklch(48% 0.041 88.2)",
+          "oklch(59% 0.041 88.2)",
+          "oklch(70% 0.041 88.2)",
+          "oklch(82% 0.041 88.2)",
+          "oklch(93% 0.041 88.2)"
+        ]
+      },
+      "manila-dark": {
+        "role": "neutral",
+        "displayName": "Kraft Shade",
+        "canonical": "oklch(77.7% 0.047 85.8)",
+        "tonalRamp": [
+          "oklch(15% 0.047 85.8)",
+          "oklch(26% 0.047 85.8)",
+          "oklch(37% 0.047 85.8)",
+          "oklch(48% 0.047 85.8)",
+          "oklch(59% 0.047 85.8)",
+          "oklch(70% 0.047 85.8)",
+          "oklch(82% 0.047 85.8)",
+          "oklch(93% 0.047 85.8)"
+        ]
+      },
+      "manila-deep": {
+        "role": "neutral",
+        "displayName": "Kraft Deep",
+        "canonical": "oklch(68.4% 0.053 86.8)",
+        "tonalRamp": [
+          "oklch(15% 0.053 86.8)",
+          "oklch(26% 0.053 86.8)",
+          "oklch(37% 0.053 86.8)",
+          "oklch(48% 0.053 86.8)",
+          "oklch(59% 0.053 86.8)",
+          "oklch(70% 0.053 86.8)",
+          "oklch(82% 0.053 86.8)",
+          "oklch(93% 0.053 86.8)"
+        ]
+      },
+      "stock": {
+        "role": "neutral",
+        "displayName": "Form Stock",
+        "canonical": "oklch(96.4% 0.012 91.5)",
+        "tonalRamp": [
+          "oklch(15% 0.012 91.5)",
+          "oklch(26% 0.012 91.5)",
+          "oklch(37% 0.012 91.5)",
+          "oklch(48% 0.012 91.5)",
+          "oklch(59% 0.012 91.5)",
+          "oklch(70% 0.012 91.5)",
+          "oklch(82% 0.012 91.5)",
+          "oklch(93% 0.012 91.5)"
+        ]
+      },
+      "stock-shade": {
+        "role": "neutral",
+        "displayName": "Stock Shade",
+        "canonical": "oklch(91.9% 0.019 90.5)",
+        "tonalRamp": [
+          "oklch(15% 0.019 90.5)",
+          "oklch(26% 0.019 90.5)",
+          "oklch(37% 0.019 90.5)",
+          "oklch(48% 0.019 90.5)",
+          "oklch(59% 0.019 90.5)",
+          "oklch(70% 0.019 90.5)",
+          "oklch(82% 0.019 90.5)",
+          "oklch(93% 0.019 90.5)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Carbon Ink",
+        "canonical": "oklch(21.9% 0.008 84.6)",
+        "tonalRamp": [
+          "oklch(15% 0.008 84.6)",
+          "oklch(26% 0.008 84.6)",
+          "oklch(37% 0.008 84.6)",
+          "oklch(48% 0.008 84.6)",
+          "oklch(59% 0.008 84.6)",
+          "oklch(70% 0.008 84.6)",
+          "oklch(82% 0.008 84.6)",
+          "oklch(93% 0.008 84.6)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "oklch(39.5% 0.017 88.8)",
+        "tonalRamp": [
+          "oklch(15% 0.017 88.8)",
+          "oklch(26% 0.017 88.8)",
+          "oklch(37% 0.017 88.8)",
+          "oklch(48% 0.017 88.8)",
+          "oklch(59% 0.017 88.8)",
+          "oklch(70% 0.017 88.8)",
+          "oklch(82% 0.017 88.8)",
+          "oklch(93% 0.017 88.8)"
+        ]
+      },
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "Faint Ink",
+        "canonical": "oklch(56.7% 0.024 88.8)",
+        "tonalRamp": [
+          "oklch(15% 0.024 88.8)",
+          "oklch(26% 0.024 88.8)",
+          "oklch(37% 0.024 88.8)",
+          "oklch(48% 0.024 88.8)",
+          "oklch(59% 0.024 88.8)",
+          "oklch(70% 0.024 88.8)",
+          "oklch(82% 0.024 88.8)",
+          "oklch(93% 0.024 88.8)"
+        ]
+      },
+      "carbon": {
+        "role": "secondary",
+        "displayName": "Carbon Blue",
+        "canonical": "oklch(40.7% 0.068 254.6)",
+        "tonalRamp": [
+          "oklch(15% 0.068 254.6)",
+          "oklch(26% 0.068 254.6)",
+          "oklch(37% 0.068 254.6)",
+          "oklch(48% 0.068 254.6)",
+          "oklch(59% 0.068 254.6)",
+          "oklch(70% 0.068 254.6)",
+          "oklch(82% 0.068 254.6)",
+          "oklch(93% 0.068 254.6)"
+        ]
+      },
+      "carbon-soft": {
+        "role": "secondary",
+        "displayName": "Faded Carbon",
+        "canonical": "oklch(55.6% 0.057 251.5)",
+        "tonalRamp": [
+          "oklch(15% 0.057 251.5)",
+          "oklch(26% 0.057 251.5)",
+          "oklch(37% 0.057 251.5)",
+          "oklch(48% 0.057 251.5)",
+          "oklch(59% 0.057 251.5)",
+          "oklch(70% 0.057 251.5)",
+          "oklch(82% 0.057 251.5)",
+          "oklch(93% 0.057 251.5)"
+        ]
+      },
+      "stamp": {
+        "role": "primary",
+        "displayName": "Signal Red",
+        "canonical": "oklch(50.2% 0.175 29.1)",
+        "tonalRamp": [
+          "oklch(15% 0.175 29.1)",
+          "oklch(26% 0.175 29.1)",
+          "oklch(37% 0.175 29.1)",
+          "oklch(48% 0.175 29.1)",
+          "oklch(59% 0.175 29.1)",
+          "oklch(70% 0.175 29.1)",
+          "oklch(82% 0.175 29.1)",
+          "oklch(93% 0.175 29.1)"
+        ]
+      },
+      "filed": {
+        "role": "tertiary",
+        "displayName": "Filed Green",
+        "canonical": "oklch(43.7% 0.067 157.3)",
+        "tonalRamp": [
+          "oklch(15% 0.067 157.3)",
+          "oklch(26% 0.067 157.3)",
+          "oklch(37% 0.067 157.3)",
+          "oklch(48% 0.067 157.3)",
+          "oklch(59% 0.067 157.3)",
+          "oklch(70% 0.067 157.3)",
+          "oklch(82% 0.067 157.3)",
+          "oklch(93% 0.067 157.3)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Placard",
+        "purpose": "Page titles and the masthead. Stamped caps, never prose."
+      },
+      "headline": {
+        "displayName": "Section Placard",
+        "purpose": "Numbered form section titles, beside a typed red index."
+      },
+      "title": {
+        "displayName": "Box Placard",
+        "purpose": "Card titles, day-plan titles, the photo button."
+      },
+      "lead": {
+        "displayName": "Thesis Line",
+        "purpose": "The single lead sentence on the home surface."
+      },
+      "body": {
+        "displayName": "Clerk Prose",
+        "purpose": "Explanatory prose between the boxes, 40-78ch."
+      },
+      "figure": {
+        "displayName": "Typed Figure",
+        "purpose": "Every quantity, kg, day count, percent, distance, date and code path. Tabular numerals."
+      },
+      "label": {
+        "displayName": "Field Label",
+        "purpose": "Names a box or the value under it. Carbon blue, or manila on a dark band."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sheet",
+        "value": "1px 2px 4px -1px rgba(28,26,22,0.2)",
+        "purpose": "The ruled box at rest. Paper sitting slightly down and right of the ground."
+      },
+      {
+        "name": "sheet-lifted",
+        "value": "2px 4px 8px -2px rgba(28,26,22,0.28)",
+        "purpose": "Hover on the three link cards at the foot of the home page. The only hover lift in the build."
+      }
+    ],
+    "motion": [
+      {
+        "name": "press",
+        "value": "440ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The stamp press on the home waybill. Lands from above, over-presses, then settles."
+      },
+      {
+        "name": "press-worn",
+        "value": "animation-duration: 0.42s",
+        "purpose": "The worn impression presses slightly faster, under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "bar-fill",
+        "value": "width 500ms ease-out",
+        "purpose": "The storage gauge bar when the receiving kitchen changes."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; transition-duration: 1ms !important",
+        "purpose": "Under prefers-reduced-motion: reduce, the press is removed and all transitions collapse."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ],
+    "textures": [
+      {
+        "name": "kraft-ground",
+        "value": "radial-gradient(circle at 1px 1px, rgba(28,26,22,0.055) 1px, transparent 0) 7px 7px, radial-gradient(circle at 1px 1px, rgba(168,152,116,0.5) 1px, transparent 0) 3px 3px",
+        "purpose": "Two low-contrast dot fields on the manila body, so the ground reads as stock and not as a flat fill."
+      },
+      {
+        "name": "ruled-empty",
+        "value": "repeating-linear-gradient(-45deg, transparent 0 7px, rgba(124,118,103,0.3) 7px 8px)",
+        "purpose": "Diagonal ruling in an empty field."
+      },
+      {
+        "name": "claim-hatch",
+        "value": "repeating-linear-gradient(-45deg, rgba(47,75,110,0.95) 0 4px, rgba(246,243,234,0.85) 4px 8px)",
+        "purpose": "The pending claim band in a storage gauge."
+      },
+      {
+        "name": "perforation",
+        "value": "repeating-linear-gradient(to right, var(--color-ink-faint) 0 6px, transparent 6px 12px)",
+        "purpose": "The 1px tear line that closes a stretch of the form."
+      },
+      {
+        "name": "stamp-grain",
+        "value": "feTurbulence fractalNoise baseFrequency 0.16, numOctaves 2, feColorMatrix alpha row '-0.32 1.06', mask-size 90px 34px",
+        "purpose": "The wear mask on the one worn stamp. Past about -0.6 on the first number the stamp stops being legible."
+      }
+    ],
+    "focus": {
+      "name": "stamped-focus",
+      "value": "outline: 2px solid var(--color-stamp); outline-offset: 2px",
+      "purpose": "The only focus treatment on the surface."
+    }
+  },
+  "components": [
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "A numbered box on the masthead filing strip, one per form section.",
+      "html": "<a class=\"ds-nav-link\" href=\"#\"><span class=\"ds-nav-index\">02</span><span class=\"ds-nav-label\">Fit check</span></a>",
+      "css": ".ds-nav-link { display: inline-flex; align-items: baseline; gap: 0.375rem; border: 1px solid var(--color-ink, #1c1a16); background: var(--color-stock, #f6f3ea); color: var(--color-ink, #1c1a16); padding: 0.375rem 0.625rem; border-radius: 0; text-decoration: none; font-family: Barlow, system-ui, sans-serif; transition: background-color 0.15s, color 0.15s; } .ds-nav-index { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.625rem; color: var(--color-carbon-soft, #5b7694); } .ds-nav-label { font-size: 0.8125rem; letter-spacing: -0.01em; } .ds-nav-link:hover, .ds-nav-link:focus-visible { background: var(--color-ink, #1c1a16); color: var(--color-stock, #f6f3ea); } .ds-nav-link:focus-visible { outline: 2px solid var(--color-stamp, #b2291f); outline-offset: 2px; }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action per surface: log this donation.",
+      "html": "<button class=\"ds-btn-primary\">Log this donation</button>",
+      "css": ".ds-btn-primary { font-family: 'Archivo Black', 'Arial Black', sans-serif; text-transform: uppercase; letter-spacing: -0.015em; font-size: 0.8125rem; border: 2px solid var(--color-ink, #1c1a16); background: var(--color-stamp, #b2291f); color: var(--color-stock, #f6f3ea); padding: 0.5rem 0.875rem; border-radius: 0; cursor: pointer; transition: transform 0.12s, background-color 0.15s; } .ds-btn-primary:hover { background: var(--color-ink, #1c1a16); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-stamp, #b2291f); outline-offset: 2px; } .ds-btn-primary:disabled { background: var(--color-stock-shade, #e9e4d6); border-color: var(--color-ink-faint, #7c7667); color: var(--color-ink-faint, #7c7667); cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A quiet typed action beside the primary one.",
+      "html": "<button class=\"ds-btn-secondary\">USE A SAMPLE MESSAGE</button>",
+      "css": ".ds-btn-secondary { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.6875rem; border: 1px solid var(--color-ink-faint, #7c7667); background: var(--color-stock, #f6f3ea); color: var(--color-carbon, #2f4b6e); padding: 0.5rem 0.75rem; border-radius: 0; cursor: pointer; transition: border-color 0.15s, color 0.15s; } .ds-btn-secondary:hover { border-color: var(--color-ink, #1c1a16); color: var(--color-ink, #1c1a16); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-stamp, #b2291f); outline-offset: 2px; }"
+    },
+    {
+      "name": "Field With Label",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "A typed input well under its carbon-blue field label.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">6b &middot; Or paste the donor's message</span><textarea class=\"ds-input\" rows=\"2\" placeholder=\"40 sandwiches, 2 trays of lasagna\"></textarea></label>",
+      "css": ".ds-field { display: block; } .ds-field-label { display: block; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-carbon, #2f4b6e); margin-bottom: 0.375rem; } .ds-input { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.8125rem; width: 100%; resize: vertical; border: 1px solid var(--color-ink, #1c1a16); background: var(--color-stock-shade, #e9e4d6); color: var(--color-ink, #1c1a16); padding: 0.5rem; border-radius: 0; } .ds-input::placeholder { color: var(--color-ink-faint, #7c7667); } .ds-input:focus { background: var(--color-stock, #f6f3ea); outline: none; } .ds-input:focus-visible { outline: 2px solid var(--color-stamp, #b2291f); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ruled Box With Header Band",
+      "kind": "card",
+      "refersTo": "form-box",
+      "description": "The container the whole surface is built from, titled by its box number.",
+      "html": "<div class=\"ds-box\"><p class=\"ds-box-band\">Box 13 &middot; Agencies, with free space</p><div class=\"ds-box-body\"><p class=\"ds-box-text\">Every agency RescueFit can route surplus to, with the space each one has free.</p></div></div>",
+      "css": ".ds-box { background: var(--color-stock, #f6f3ea); border: 1px solid var(--color-ink, #1c1a16); border-radius: 0; box-shadow: 1px 2px 4px -1px rgba(28,26,22,0.2); overflow: hidden; } .ds-box-band { margin: 0; background: var(--color-ink, #1c1a16); color: var(--color-manila, #d9cdb0); font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.375rem 0.75rem; } .ds-box-body { padding: 1rem; } .ds-box-text { margin: 0; font-family: Barlow, system-ui, sans-serif; font-size: 0.9375rem; line-height: 1.6; color: var(--color-ink, #1c1a16); max-width: 70ch; }"
+    },
+    {
+      "name": "Stamp",
+      "kind": "custom",
+      "refersTo": "stamp-redirect",
+      "description": "The rubber stamp impression that carries every decision, in three tones.",
+      "html": "<span class=\"ds-stamp ds-stamp-accept\">Accept</span> <span class=\"ds-stamp ds-stamp-part\">Accept part</span> <span class=\"ds-stamp ds-stamp-redirect\">Redirect</span>",
+      "css": ".ds-stamp { display: inline-block; font-family: 'Archivo Black', 'Arial Black', sans-serif; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.6875rem; border: 2.5px solid currentColor; padding: 0.18em 0.5em 0.14em; border-radius: 2px; opacity: 0.88; mix-blend-mode: multiply; transform: rotate(-2.2deg); } .ds-stamp-accept { color: var(--color-filed, #2f5d43); } .ds-stamp-part { color: var(--color-carbon, #2f4b6e); } .ds-stamp-redirect { color: var(--color-stamp, #b2291f); }"
+    },
+    {
+      "name": "Worn Stamp",
+      "kind": "custom",
+      "refersTo": "stamp-redirect",
+      "description": "The one impression per surface that wears: the line with the lowest day count.",
+      "html": "<span class=\"ds-stamp ds-stamp-redirect ds-stamp-worn\">Redirect</span>",
+      "css": ".ds-stamp-worn { --ds-stamp-grain: url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.16' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.32 1.06'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E\"); -webkit-mask-image: var(--ds-stamp-grain); mask-image: var(--ds-stamp-grain); -webkit-mask-size: 90px 34px; mask-size: 90px 34px; filter: drop-shadow(0 0 0.5px currentColor); opacity: 1; transform: rotate(-3.4deg); }"
+    },
+    {
+      "name": "Waybill Line",
+      "kind": "custom",
+      "refersTo": "waybill-line",
+      "description": "One consignment line. It tears open in place to show its reason, and the soonest-expiring line carries the red.",
+      "html": "<ul class=\"ds-waybill\"><li class=\"ds-wb-row\"><button class=\"ds-wb-line\" type=\"button\"><span class=\"ds-wb-num\">01</span><span class=\"ds-wb-item\">ham and cheese sandwiches<span class=\"ds-wb-cat\">prepared-hot</span></span><span class=\"ds-wb-days\">3<span class=\"ds-wb-unit\">days</span></span><span class=\"ds-stamp ds-stamp-redirect\">Redirect</span></button></li><li class=\"ds-wb-row ds-wb-row-soonest\"><button class=\"ds-wb-line\" type=\"button\"><span class=\"ds-wb-num ds-wb-red\">02</span><span class=\"ds-wb-item\">lasagna trays<span class=\"ds-wb-cat\">prepared-hot</span></span><span class=\"ds-wb-days ds-wb-red\">3<span class=\"ds-wb-unit\">first to go</span></span><span class=\"ds-stamp ds-stamp-accept\">Accept</span></button></li></ul>",
+      "css": ".ds-waybill { list-style: none; margin: 0; padding: 0; border: 1px solid var(--color-ink, #1c1a16); background: var(--color-stock, #f6f3ea); box-shadow: 1px 2px 4px -1px rgba(28,26,22,0.2); } .ds-wb-row { border-top: 1px solid var(--color-ink-faint, #7c7667); } .ds-wb-row:first-child { border-top: 0; } .ds-wb-row-soonest { background: rgba(178,41,31,0.07); } .ds-wb-line { display: grid; grid-template-columns: 1.75rem minmax(0,2.4fr) 5rem 7.5rem; align-items: center; gap: 0.5rem; width: 100%; text-align: left; background: none; border: 0; padding: 0.375rem 0.75rem; cursor: pointer; font-family: Barlow, system-ui, sans-serif; transition: background-color 0.15s; } .ds-wb-line:hover { background: var(--color-stock-shade, #e9e4d6); } .ds-wb-line:focus-visible { outline: 2px solid var(--color-stamp, #b2291f); outline-offset: -2px; } .ds-wb-num { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.75rem; color: var(--color-ink-faint, #7c7667); } .ds-wb-item { display: block; font-size: 0.9375rem; color: var(--color-ink, #1c1a16); } .ds-wb-cat { display: block; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.6875rem; color: var(--color-carbon, #2f4b6e); } .ds-wb-days { font-family: 'Courier Prime', 'Courier New', monospace; font-variant-numeric: tabular-nums; font-size: 1.0625rem; line-height: 1; text-align: right; color: var(--color-ink, #1c1a16); } .ds-wb-unit { display: block; font-size: 0.5625rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-faint, #7c7667); } .ds-wb-red { color: var(--color-stamp, #b2291f); }"
+    },
+    {
+      "name": "Mode Badge",
+      "kind": "chip",
+      "refersTo": "mode-badge-demo",
+      "description": "The honesty marker. A canned answer must never read as a measured one.",
+      "html": "<span class=\"ds-badge ds-badge-demo\"><svg viewBox=\"0 0 8 8\" width=\"7\" height=\"7\" aria-hidden=\"true\"><circle cx=\"4\" cy=\"4\" r=\"3\" fill=\"currentColor\"/></svg> DEMO DATA, NOT A REAL READING</span> <span class=\"ds-badge ds-badge-live\"><svg viewBox=\"0 0 8 8\" width=\"7\" height=\"7\" aria-hidden=\"true\"><circle cx=\"4\" cy=\"4\" r=\"3\" fill=\"currentColor\"/></svg> LIVE MODEL READING</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 0.375rem; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.6875rem; padding: 0.25rem 0.5rem; border-radius: 0; border: 1px solid transparent; } .ds-badge-demo { background: var(--color-stamp, #b2291f); border-color: var(--color-stamp, #b2291f); color: var(--color-stock, #f6f3ea); } .ds-badge-live { background: var(--color-stock, #f6f3ea); border-color: var(--color-filed, #2f5d43); color: var(--color-filed, #2f5d43); }"
+    },
+    {
+      "name": "Empty Field",
+      "kind": "custom",
+      "refersTo": "empty-field",
+      "description": "An empty state shows the ruling, so the reader sees a field that is waiting.",
+      "html": "<div class=\"ds-empty\"><div class=\"ds-empty-panel\"><p class=\"ds-field-label\">Loading the PEI map</p><p class=\"ds-empty-hint\">The agency map draws in the browser, so it arrives a moment after the page.</p></div></div>",
+      "css": ".ds-empty { background: var(--color-stock, #f6f3ea); border: 1px solid var(--color-ink, #1c1a16); box-shadow: 1px 2px 4px -1px rgba(28,26,22,0.2); border-radius: 0; padding: 1.25rem; background-image: repeating-linear-gradient(-45deg, transparent 0 7px, rgba(124,118,103,0.3) 7px 8px); } .ds-empty-panel { background: rgba(246,243,234,0.95); padding: 1rem; } .ds-empty-hint { margin: 0.25rem 0 0; font-family: Barlow, system-ui, sans-serif; font-size: 0.875rem; color: var(--color-ink-soft, #4a463c); max-width: 52ch; }"
+    },
+    {
+      "name": "Storage Gauge",
+      "kind": "custom",
+      "refersTo": "form-box",
+      "description": "One ruled box owns one truth: free kilograms in one storage type, with the pending claim hatched.",
+      "html": "<div class=\"ds-gauge\"><div class=\"ds-gauge-head\"><span class=\"ds-field-label\">Fridge</span><span class=\"ds-gauge-fig\">80.0<span class=\"ds-gauge-cap\"> / 300 kg</span></span></div><div class=\"ds-gauge-bar\"><div class=\"ds-gauge-used\"></div><div class=\"ds-gauge-claim\"></div></div><p class=\"ds-gauge-note\">free now &middot; this donation claims 71.0 kg</p></div>",
+      "css": ".ds-gauge { background: var(--color-stock, #f6f3ea); border: 1px solid var(--color-ink, #1c1a16); box-shadow: 1px 2px 4px -1px rgba(28,26,22,0.2); padding: 0.75rem; border-radius: 0; } .ds-gauge-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; } .ds-field-label { font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-carbon, #2f4b6e); margin: 0; } .ds-gauge-fig { font-family: 'Courier Prime', 'Courier New', monospace; font-variant-numeric: tabular-nums; font-size: 0.8125rem; color: var(--color-ink, #1c1a16); } .ds-gauge-cap { color: var(--color-ink-faint, #7c7667); } .ds-gauge-bar { display: flex; height: 1.25rem; width: 100%; margin-top: 0.5rem; border: 1px solid var(--color-ink, #1c1a16); background: var(--color-stock-shade, #e9e4d6); } .ds-gauge-used { width: 73%; background: var(--color-ink-faint, #7c7667); transition: width 500ms ease-out; } .ds-gauge-claim { width: 24%; background-image: repeating-linear-gradient(-45deg, rgba(47,75,110,0.95) 0 4px, rgba(246,243,234,0.85) 4px 8px); transition: width 500ms ease-out; } .ds-gauge-note { margin: 0.375rem 0 0; font-family: 'Courier Prime', 'Courier New', monospace; font-size: 0.625rem; color: var(--color-ink-faint, #7c7667); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Consignment Document",
+    "overview": "Every page renders as one sheet of a multi-part form. Manila kraft carries the ground. Readings sit on near-white stock inside bordered boxes, each titled by a box number in a carbon-ink band. Decisions print as rotated rubber stamps in the right-hand column of a ruled table. The reader should feel they hold the receiving copy of a form, not a charity website.\n\nThe system is dense and administrative. Figures are typed and line up in columns. Prose is short and sits between boxes, never in a hero. No dark mode ships, on purpose: the user stands at a back door in daylight, and paper in daylight is light.\n\nThe North Star name above was derived from the build, not confirmed with the user. The palette is also provisional in one place: a teammate may supply brand colours later, and the signal red (`stamp`) and the carbon blue (`carbon`) are the first tokens to re-map if she does.",
+    "keyCharacteristics": [
+      "Manila kraft ground with two low-contrast dot fields, at 7px and 3px.",
+      "Every reading sits in a ruled box. An empty box still shows its ruling.",
+      "Three faces with fixed roles: stamped caps, prose, typed figures.",
+      "Zero corner radius everywhere except the 2px stamp.",
+      "Decisions read as a word first and a colour second."
+    ],
+    "rules": [
+      {
+        "name": "The Small-Area Red Rule",
+        "body": "The signal red never fills a large area and never tints the ground. It ships as an outline, a figure, a hairline border, a 7-12% wash, or a badge-sized fill. On the waybill, exactly one line carries it, even when two items share the lowest day count.",
+        "section": "colors"
+      },
+      {
+        "name": "The Word-Not-Colour Rule",
+        "body": "Every decision states its word inside the stamp. The colour repeats the word, it never replaces it, so the surface still reads in greyscale and for a colour-blind reader.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ground-Carries-Everything Rule",
+        "body": "Manila is the page, not an accent on white. No surface opts out of it, and there is no dark theme.",
+        "section": "colors"
+      },
+      {
+        "name": "The Typed Figure Rule",
+        "body": "Every figure on this surface is typed. Set it in Courier Prime with tabular-nums and tnum, so columns of numbers line up. A figure in Barlow is a bug.",
+        "section": "typography"
+      },
+      {
+        "name": "The Placard-Names-Things Rule",
+        "body": "Archivo Black names things: the product, the page, the section, the card, the stamped word. It never sets running prose and never sets a figure.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hairline Seam Rule",
+        "body": "Adjacent cells in a strip are separated by a 1px seam, made with gap-px over a faint-ink background, never by a margin. The strip reads as one printed block divided by rules.",
+        "section": "layout"
+      },
+      {
+        "name": "The Tear-Line Rule",
+        "body": "A perforated 1px dashed line closes a stretch of the form. Use it where the document would physically tear, not as a decorative divider between every block.",
+        "section": "layout"
+      },
+      {
+        "name": "The Paper-On-Paper Rule",
+        "body": "The offset stays, because the sheet sits off the ground, but the blur is what makes it a shadow. A zero-blur hard offset block is a poster device, and this world is a document.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One Worn Stamp Rule",
+        "body": "Wear belongs to the event, never to the page. Exactly one stamp on a surface may wear, and it is the line with the lowest day count. The wear is a coarse fractal-noise mask plus a 0.5px ink spread, with the alpha row of the colour matrix at -0.32 1.06, so the thinnest part of the mark still prints at about three quarters strength. Past about -0.6 the stamp stops being legible, which trades the decision for a texture. Legibility wins.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do put every reading in a ruled box, and show the diagonal ruling when the box is empty.",
+      "Do set every figure in Courier Prime with tabular numerals.",
+      "Do title a dense box with the carbon-ink header band and its box number.",
+      "Do keep corners square (0 radius), with the single 2px stamp exception.",
+      "Do separate cells in a strip with a 1px hairline seam.",
+      "Do say the decision in a word inside the stamp, and let colour repeat it.",
+      "Do keep prose measures between 34ch and 78ch.",
+      "Do name a field with a typed carbon-blue label directly above it."
+    ],
+    "donts": [
+      "Don't use a zero-blur hard offset shadow. The one shadow in this system is blurred, because this is a document and not a poster.",
+      "Don't flood an area with the signal red. It ships as an outline, a figure, a hairline, a 7-12% wash, or a badge-sized fill.",
+      "Don't paint two waybill lines red, and don't wear two stamps on one surface. Both halve the only signal the document has.",
+      "Don't add corner radius above 2px, and don't add a shadow value beyond the two in the vocabulary.",
+      "Don't set prose in Archivo Black, or a figure in Barlow.",
+      "Don't put a typed label above a page title where it names nothing. A field label names a box or the value under it. Above an h1 it is a kicker, and the build already carries five of those (\"Section 01\" through \"Section 05\").",
+      "Don't use a glyph or an icon-font character as an icon. Icons are drawn SVG at stroke-width: 1.75 with round caps.",
+      "Don't use numeric font-weight utilities (font-400, font-600, font-700). Tailwind v4.3.3 compiles them to nothing, so the weight is silently dropped and the text renders at 400. The build carried sixteen of them until they were found and replaced with font-normal, font-semibold and font-bold. Verify a weight in the built CSS before trusting it.",
+      "Don't add a dark theme. The user reads this in daylight, and paper in daylight is light."
+    ]
+  }
+}

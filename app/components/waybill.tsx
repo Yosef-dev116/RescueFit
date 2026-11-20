@@ -108,7 +108,7 @@ export function Waybill({
                   </span>
 
                   <span className="min-w-0">
-                    <span className="block text-[0.9375rem] font-600 text-ink md:truncate">
+                    <span className="block text-[0.9375rem] font-semibold text-ink md:truncate">
                       {result.item.name}
                     </span>
                     <span className="typed block text-[0.6875rem] text-carbon">
@@ -144,11 +144,11 @@ export function Waybill({
                    */}
                   <span
                     className={`typed hidden text-right text-[1.0625rem] leading-none md:block ${
-                      dying ? "font-700 text-stamp" : "text-ink"
+                      dying ? "font-bold text-stamp" : "text-ink"
                     }`}
                   >
                     {result.item.shelf_life_days}
-                    <span className="block text-[0.5625rem] font-400 tracking-[0.08em] text-ink-faint uppercase">
+                    <span className="block text-[0.5625rem] font-normal tracking-[0.08em] text-ink-faint uppercase">
                       {dying ? "first to go" : "days"}
                     </span>
                   </span>

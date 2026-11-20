@@ -78,9 +78,9 @@ export default function Home() {
         * the footer of the same screen, so prose here is paid for out of
         * that budget. The longer telling of it lives under the tear line.
         */}
-      <p className="mt-2 max-w-[34ch] text-[1.25rem] leading-[1.2] font-600 tracking-[-0.02em] text-ink sm:max-w-[74ch] sm:text-[1.5rem]">
+      <p className="mt-2 max-w-[34ch] text-[1.25rem] leading-[1.2] font-semibold tracking-[-0.02em] text-ink sm:max-w-[74ch] sm:text-[1.5rem]">
         Food rescue finds the food. Nobody tells the kitchen whether it fits.
-        <span className="mt-1 block max-w-[78ch] text-[0.9375rem] leading-[1.45] font-400 tracking-normal text-ink-soft">
+        <span className="mt-1 block max-w-[78ch] text-[0.9375rem] leading-[1.45] font-normal tracking-normal text-ink-soft">
           Snap the delivery. Every line is stamped, with the arithmetic shown.
         </span>
       </p>
