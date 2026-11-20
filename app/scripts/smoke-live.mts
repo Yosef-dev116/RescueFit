@@ -68,7 +68,30 @@ function report(label: string, result: { ok: boolean; status: number; data: Reco
   return true;
 }
 
+/**
+ * Fail with an instruction, not a stack trace.
+ *
+ * Without this, a server that is not running throws ECONNREFUSED out of the
+ * first fetch and node prints its own stack. The operator then has to read a
+ * stack to learn that they forgot to start the dev server.
+ */
+async function requireServer(): Promise<void> {
+  try {
+    await fetch(BASE, { method: "GET" });
+  } catch {
+    console.error(
+      `Nothing is listening on ${BASE}.\n\n` +
+        "Start the app in another terminal first:\n" +
+        "  cd app && npm run dev\n\n" +
+        "Then run this again. Set RF_BASE to test a different address.",
+    );
+    process.exit(1);
+  }
+}
+
 console.log(`Smoke testing the live model path against ${BASE}\n`);
+
+await requireServer();
 
 // 1. Text intake (feature X4).
 const text = await post("/api/intake", {
@@ -125,6 +148,19 @@ const plan = await post("/api/plan", {
 if (report("menu plan  ", plan)) {
   const days = ((plan.data.plan as { days?: unknown[] })?.days ?? []).length;
   console.log(`      wrote ${days} days`);
+}
+
+// 4. The spoilage check (feature X3). This route also calls the model, so a
+//    gate that skipped it would report "live" while one AI path stayed
+//    unproven. The 1x1 JPEG holds no produce, so any of the three verdicts
+//    is a pass here. We are testing the path, not the judgement.
+const spoilage = await post("/api/spoilage", {
+  image: TINY_JPEG,
+  media_type: "image/jpeg",
+});
+if (report("spoilage   ", spoilage)) {
+  const verdict = (spoilage.data.result as { verdict?: string })?.verdict;
+  console.log(`      verdict "${String(verdict)}"`);
 }
 
 // The number Yosef owes Rama for the report.
