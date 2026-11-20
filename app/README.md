@@ -61,6 +61,7 @@ is `claude-opus-5-5`.
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run validate:data` | Check `public/data/*.json` against the data contract |
 | `npm run smoke:live` | Prove the live model path works, and print its cost |
+| `npm run smoke:ui` | Prove the waybill opens in place and intake posts |
 | `npm run shots` | Screenshot every route, desktop and mobile |
 | `npm run shots:first` | Screenshot the landing page first viewport only |
 

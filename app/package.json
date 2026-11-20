@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "validate:data": "tsx scripts/validate-data.ts",
     "smoke:live": "tsx scripts/smoke-live.mts",
+    "smoke:ui": "node scripts/smoke-ui.mjs",
     "shots": "node scripts/shots.mjs",
     "shots:first": "node scripts/firstview.mjs"
   },
