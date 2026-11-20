@@ -45,7 +45,14 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "img-src 'self' data: blob:",
+              // data: and blob: carry the photo preview in the intake
+              // control, which never leaves the browser. The OpenStreetMap
+              // hosts are for Fahd's PEI agency map (feature C3): Leaflet
+              // loads its tiles as images from a.tile, b.tile, and c.tile,
+              // so 'self' alone would show him an empty grey map with no
+              // error in the console but a row of blocked requests.
+              "img-src 'self' data: blob: https://*.tile.openstreetmap.org " +
+                "https://tile.openstreetmap.org",
               "style-src 'self' 'unsafe-inline'",
               scriptSrc,
               "connect-src 'self'",
