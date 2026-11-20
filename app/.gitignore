@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI tooling notes. next dev writes AGENTS.md on every run, so it cannot be
+# deleted, only kept out of the repository. It is a local aid and not part
+# of the submission.
+AGENTS.md
