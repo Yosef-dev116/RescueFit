@@ -986,7 +986,9 @@ input[type=range], input[type=checkbox], progress { accent-color: #2f4b6e; }
   const P = window.RescuePlots;
   const main = document.getElementById("main");
   const nav = document.getElementById("navigation");
-  const saveKey = "rescuefit-pei-v2-intake";
+  // v3: the lab hides the intake, fit, redirect and plan views, so visitors cannot
+  // change saved lots. A new key makes every browser start from the example.
+  const saveKey = "rescuefit-pei-v3-lab";
   const STEPS = [
     ["intake","Intake","↳"],["fit","Kitchen fit","▤"],["network","Redirect map","⟷"],
     ["plan","Use-first plan","◷"],["impact","Impact lab","▥"],["evidence","Data sources","◉"],
@@ -1425,7 +1427,7 @@ input[type=range], input[type=checkbox], progress { accent-color: #2f4b6e; }
     const factor=climate.factor!=="" && Number.isFinite(Number(climate.factor)) && climate.path.trim();
     const conversions=card("Impact conversions",rowList([["Additional meal equivalents",signed(delta.mean/latest.kg_per_meal)],
         ["Planning ledger value",money(total("net"))]])+
-      '<p class="subheading">Meal equivalents use the 1.2 lb convention. CAD uses the draft or saved local shopping adjustment and entered handling costs.</p>'+
+      '<p class="subheading">Meal equivalents use the 1.2 lb convention. CAD uses the shopping prices and handling costs of the example kitchen.</p>'+
       '<details class="timeline" data-panel="climate"'+(openPanels.has("climate")?" open":"")+'><summary>Try a treatment emissions factor</summary><div class="field-grid">'+
       input("Factor in kg CO₂e per kg",climate.factor,'data-setting="co2" min="-10" max="10" step=".01"')+
       input("Pathway and factor source",climate.path,'data-setting="co2-path" maxlength="120"',"text")+
