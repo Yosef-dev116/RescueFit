@@ -1,6 +1,5 @@
 # RescueFit prototype guide
 
-Source for `Innovation_RescueFit_2_PrototypeGuide.pdf`.
 IMPAC 2026, Holland College, Innovation stream. Team RescueFit.
 
 ---
@@ -11,17 +10,10 @@ IMPAC 2026, Holland College, Innovation stream. Team RescueFit.
 |---|---|
 | Live app | <https://rescuefit-pei.vercel.app> |
 | Source code | <https://github.com/Yosef-dev116/RescueFit> |
-| Demo video | _paste the unlisted video link here_ |
+| Demo video (2 minutes) | <https://drive.google.com/file/d/15QTu9c3VkDBvlpAtYPbLZvCOZLNpjHa8/view> |
 
-The live app is deployed and public. It needs no login and no API key: it
-runs in demo mode, which is labelled on every page that uses it.
-
-Two notes before this guide is sent:
-
-- The source repository is **private** as of this writing. A judge opening
-  that link gets a 404 until it is made public.
-- The demo video has not been recorded, so that link is the one field
-  still to fill.
+The live app is deployed and public. It needs no login and no API key. It
+runs in demo mode, and every page that uses demo data says so.
 
 ---
 
@@ -53,7 +45,7 @@ paper.
 ## 3. The decision is arithmetic, not a guess
 
 **The accept and redirect decisions contain no AI at all.** They are a
-plain TypeScript function, `lib/fit.ts`, with 19 unit tests of its own. The
+plain TypeScript function, `lib/fit.ts`, with 35 unit tests of its own. The
 model never decides whether food fits.
 
 Every line is tested against three limits:
@@ -90,7 +82,7 @@ The numbers on the page add up by hand, on purpose.
 |---|---|---|
 | Read a photo of a delivery | Yes | Vision. Returns the item list. |
 | Read a donor's text message | Yes | Same route, text input. |
-| Decide accept / part / redirect | **No** | `lib/fit.ts`, pure TypeScript, 19 tests |
+| Decide accept / part / redirect | **No** | `lib/fit.ts`, pure TypeScript, 35 tests |
 | Choose the agency for surplus | **No** | Distance plus free space |
 | Three-day menu | Yes | The order is fixed by code, the model writes the menu |
 | Spoilage check from a photo | Yes | Returns Fresh, Use today, or Compost |
@@ -169,11 +161,11 @@ in demo mode.
 
 | Command | What it proves |
 |---|---|
-| `npm test` | 26 tests: 19 on the fit engine, 3 on the warning rules, 4 on this guide's own worked example |
+| `npm test` | 69 tests: 35 on the fit engine, 23 on the verdict rules, 4 on the diet rules, 4 on this guide's own worked example, 3 on data loading |
 | `npm run smoke:ui` | The waybill opens in place and the intake posts |
 | `npm run smoke:live` | All four model routes answer live, and what they cost |
 | `npm run validate:data` | The shared JSON matches the agreed contract |
-| `npm run build` | Production build, 11 routes |
+| `npm run build` | The production build compiles |
 
 `DEPLOY.md` covers deploying, including the one setting that fails for
 everybody.
@@ -205,7 +197,7 @@ everybody.
    +----------------------------------------------+
    |  lib/fit.ts   THE DECISION. NO AI.            |
    |  space limit, time limit, diet limit          |
-   |  19 unit tests                                |
+   |  35 unit tests                                |
    +----------------------------------------------+
                  |                        |
       accept / accept part                | surplus
@@ -277,6 +269,18 @@ The files are in `app/screenshots/`. They were captured from a production build 
 | `network.png` | The PEI agency table and map |
 
 Each has a `-mobile` version at phone width.
+
+![The landing page](screenshots/home.png)
+
+![Intake](screenshots/intake.png)
+
+![The fit check](screenshots/fit.png)
+
+![The use-first plan](screenshots/plan.png)
+
+![Impact](screenshots/impact.png)
+
+![Network](screenshots/network.png)
 
 ---
 
