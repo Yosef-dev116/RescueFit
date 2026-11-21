@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="RescueFit PEI receiving kitchen and food recovery scenario demonstration.">
-  <title>RescueFit · Receiving workspace</title>
+  <title>RescueFit · Impact lab</title>
   <style>:root {
   color-scheme: light;
   --paper: #f3f5ed;
@@ -232,20 +232,138 @@ details > summary { color: var(--green); font-size: .88rem; font-weight: 730; cu
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/*
+ * App theme. These rules come last so they win over the rules above. They
+ * give the lab the look of the RescueFit app: manila ground, ruled stock
+ * boxes with ink borders, typed labels, placard headings and stamp red
+ * actions. The values match app/app/globals.css. The fonts are the app's own
+ * files, served from /rescuefit/fonts so no font host is called.
+ */
+@font-face { font-family: "Archivo Black"; font-weight: 400; font-display: swap; src: url(fonts/archivo-black-400.woff2) format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 400; font-display: swap; src: url(fonts/barlow-400.woff2) format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 500; font-display: swap; src: url(fonts/barlow-500.woff2) format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 600; font-display: swap; src: url(fonts/barlow-600.woff2) format("woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 700; font-display: swap; src: url(fonts/barlow-700.woff2) format("woff2"); }
+@font-face { font-family: "Courier Prime"; font-weight: 400; font-display: swap; src: url(fonts/courier-prime-400.woff2) format("woff2"); }
+@font-face { font-family: "Courier Prime"; font-weight: 700; font-display: swap; src: url(fonts/courier-prime-700.woff2) format("woff2"); }
+
+:root {
+  --paper: #d9cdb0;
+  --white: #f6f3ea;
+  --ink: #1c1a16;
+  --muted: #4a463c;
+  --line: #d8d0bd;
+  --rail: #1c1a16;
+  --green: #2f5d43;
+  --mint: #e9e4d6;
+  --lime: #d9cdb0;
+  --amber: #b2291f;
+  --sand: #f3dcd6;
+  --blue: #2f4b6e;
+  --sky: #e1e6ec;
+  --shadow: 1px 2px 4px -1px rgba(28, 26, 22, .2);
+  --placard: "Archivo Black", "Arial Black", sans-serif;
+  --typed: "Courier Prime", "Courier New", monospace;
+  font-family: "Barlow", system-ui, sans-serif;
+  accent-color: #2f4b6e;
+}
+* { border-radius: 0 !important; }
+.rail-dot, .status-tag i { border-radius: 50% !important; }
+body {
+  background-color: var(--paper);
+  background-image: radial-gradient(circle at 1px 1px, rgba(28, 26, 22, .055) 1px, transparent 0),
+    radial-gradient(circle at 1px 1px, rgba(168, 152, 116, .5) 1px, transparent 0);
+  background-size: 7px 7px, 3px 3px;
+}
+a { color: #b2291f; }
+h1, h2, h3 { font-family: var(--placard); font-weight: 400; text-transform: uppercase; letter-spacing: -.015em; line-height: .95; }
+h2 { font-size: 1.2rem; }
+h3 { font-size: .98rem; }
+button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible,
+summary:focus-visible, a:focus-visible { outline-color: #2f4b6e; }
+input, select, textarea { border-color: #7c7667; background: #f6f3ea; }
+input[type=range], input[type=checkbox], progress { accent-color: #2f4b6e; }
+
+.rail { background: var(--ink); color: #f6f3ea; }
+.brand-box { display: none; }
+.brand strong { font-family: var(--placard); text-transform: uppercase; font-size: 1.45rem; letter-spacing: -.015em; font-weight: 400; }
+.brand div > span, .rail-bottom span:last-child { color: #c4b595; font-family: var(--typed); text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; }
+.back-link { color: #d9cdb0; font-family: var(--typed); font-size: .74rem; text-decoration: underline; text-underline-offset: 3px; padding: 0 4px; }
+.back-link:hover { color: #f6f3ea; }
+.nav-btn { color: #e9e4d6; }
+.nav-btn:hover { background: #3a362e; }
+.nav-btn[aria-current=page] { color: var(--ink); background: #d9cdb0; box-shadow: none; }
+.nav-glyph { background: #ffffff14; }
+.rail-bottom { border-top-color: #4a463c; }
+.rail-dot { background: #b2291f; }
+
+.topbar { background: transparent; border-bottom: 2px solid var(--ink); }
+.top-label, .eyebrow, thead th, .lot-ticket > small, .stat-list small, .metric small {
+  font-family: var(--typed); text-transform: uppercase; letter-spacing: .14em; color: #2f4b6e; font-weight: 400;
+}
+.topbar strong { font-family: var(--placard); text-transform: uppercase; font-weight: 400; font-size: 1.05rem; }
+.status-tag { background: #b2291f; border: 0; color: #f6f3ea; font-family: var(--typed); text-transform: uppercase; letter-spacing: .08em; font-weight: 400; padding: 6px 10px; }
+.status-tag i { background: #f6f3ea; }
+
+.mast { background: #f6f3ea; color: var(--ink); border: 1px solid var(--ink); box-shadow: var(--shadow); }
+.mast::after { display: none; }
+.mast .eyebrow { color: #2f4b6e; }
+.mast p { color: #4a463c; }
+.lot-ticket { background: #e9e4d6; color: var(--ink); border: 1px solid var(--ink); box-shadow: none; transform: none; }
+.lot-ticket strong { font-family: var(--typed); letter-spacing: -.02em; }
+.lot-ticket .ticket-bars { background: repeating-linear-gradient(90deg, #1c1a16 0 2px, transparent 2px 4px, #1c1a16 4px 7px, transparent 7px 10px, #1c1a16 10px 11px, transparent 11px 14px); }
+
+.card, .metric { background: #f6f3ea; border: 1px solid var(--ink); box-shadow: var(--shadow); }
+.metric.primary { background: #e9e4d6; border-color: var(--ink); }
+.metric strong, .stat-list strong, .source-bar > strong, .number { font-family: var(--typed); letter-spacing: -.01em; }
+.metric .detail { color: #4a463c; }
+.stat-list div, .day-panel, .timeline, .intake-row, .step, .service-line { background: #e9e4d6; border-color: var(--line); }
+
+.btn { background: #b2291f; border-color: #b2291f; color: #f6f3ea; font-family: var(--placard); font-weight: 400; text-transform: uppercase; letter-spacing: .01em; }
+.btn:hover:not(:disabled) { background: #8e2018; }
+.btn.quiet { background: #f6f3ea; border-color: var(--ink); color: var(--ink); font-family: var(--typed); font-weight: 700; }
+.btn.quiet:hover:not(:disabled) { background: #e9e4d6; }
+.btn.amber { background: #f3dcd6; border-color: #b2291f; color: #7a1d16; }
+.segmented button { border-color: var(--ink); color: var(--ink); background: #f6f3ea; font-family: var(--typed); }
+.segmented button[aria-pressed=true] { background: var(--ink); color: #f6f3ea; border-color: var(--ink); }
+
+.chip { background: #e9e4d6; color: var(--ink); }
+.chip.amber { background: #f3dcd6; color: #b2291f; }
+.chip.blue { background: #e1e6ec; color: #2f4b6e; }
+.inline-alert { border-color: #b2291f; background: #f8e6e2; color: #7a1d16; }
+.inline-good { border-color: #2f5d43; background: #e5ece4; color: #2f5d43; }
+.formula, details > summary { color: #b2291f; }
+
+.lot-ledger { background: var(--ink); color: #f6f3ea; }
+.lot-ledger .subheading, .balance { color: #e9e4d6; }
+.bar { background: #e2dccd; }
+.seg-kitchen, .seg-remain { background: #7d9a83; }
+.seg-used, .lot-ledger .seg-used { background: #2f5d43; }
+.seg-transferred { background: #5b7694; }
+.seg-pending { background: repeating-linear-gradient(135deg, #c4b595 0 5px, #2f4b6e 5px 10px); }
+.seg-discarded, .seg-waste { background: #b2291f; }
+.seg-unplaced, .seg-unallocated { background: #a89874; }
+.map-frame { background: #e9e4d6; border-color: var(--ink); }
+
+.footer { font-family: var(--typed); color: #4a463c; border-top: 1px dashed #7c7667; }
+.notice:not(:empty) { background: var(--ink); color: #f6f3ea; }
+.field > span, .checkbox, thead th, .chart-legend { color: var(--ink); }
 </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to workspace</a>
+  <a class="skip-link" href="#main">Skip to the impact lab</a>
   <div class="shell">
     <aside class="rail">
-      <div class="brand"><span class="brand-box" aria-hidden="true"><i></i><i></i><i></i></span><div><strong>RescueFit</strong><span>PEI receiving workspace</span></div></div>
+      <div class="brand"><span class="brand-box" aria-hidden="true"><i></i><i></i><i></i></span><div><strong>RescueFit</strong><span>Impact lab</span></div></div>
+      <a class="back-link" href="/impact">&larr; Back to the RescueFit app</a>
       <nav id="navigation" aria-label="Workspace"></nav>
       <div class="rail-bottom"><span class="rail-dot"></span><div><strong>IMPAC 2026</strong><span>Innovation Stream</span></div></div>
     </aside>
     <div class="main-column">
       <header class="topbar">
-        <div><span class="top-label">Receiving kitchen</span><strong id="facility">Harbour Community Kitchen</strong></div>
-        <div class="top-actions"><span class="status-tag"><i></i>Demo data</span><button class="btn quiet" data-action="reset" type="button">Reset example</button></div>
+        <div><span class="top-label">Form RF-1 · Scenario model</span><strong id="facility">Impact lab</strong></div>
+        <div class="top-actions"><span class="status-tag"><i></i>Simulated data</span></div>
       </header>
       <main id="main" tabindex="-1"></main>
       <footer class="footer"><span>RescueFit · IMPAC Innovation Stream</span><span>Scenario data and decisions are simulated.</span></footer>
@@ -722,7 +840,7 @@ details > summary { color: var(--green); font-size: .88rem; font-weight: 730; cu
   <script>(function initializePlots(root) {
   "use strict";
 
-  const COLORS = {baseline:"#95512f",fit_only:"#366b94",rescuefit:"#246847"};
+  const COLORS = {baseline:"#b2291f",fit_only:"#2f4b6e",rescuefit:"#2f5d43"};
   const TITLE = {baseline:"Storage only",fit_only:"Kitchen fit",rescuefit:"Fit + redirect"};
 
   function setup(canvas) {
@@ -825,9 +943,9 @@ details > summary { color: var(--green); font-size: .88rem; font-weight: 730; cu
     const axisMax = Math.max(1, Math.ceil(rawMax / 4) * 4);
     const x = (day) => xStart + (day-1)/Math.max(1,totalDays-1)*(xEnd-xStart);
     const y = (value) => yBottom-value/axisMax*(yBottom-yTop);
-    ctx.font = "11px system-ui";
-    ctx.fillStyle = "#4b6557";
-    ctx.strokeStyle = "#dce7dc";
+    ctx.font = "11px \"Courier Prime\", \"Courier New\", monospace";
+    ctx.fillStyle = "#4a463c";
+    ctx.strokeStyle = "#e2dccd";
     ctx.lineWidth = 1;
     for (let i=0;i<=4;i++) {
       const value=axisMax*i/4;
@@ -924,7 +1042,11 @@ details > summary { color: var(--green); font-size: .88rem; font-weight: 730; cu
         cells.map((value)=>'<td>'+esc(value)+"</td>").join("")+"</tr>").join("")+"</tbody></table></div>";
   }
   const stepIndex = Object.fromEntries(STEPS.map(([id],i)=>[id,i]));
-  const fromHash = () => Object.hasOwn(stepIndex,location.hash.slice(1)) ? location.hash.slice(1) : "intake";
+  // The RescueFit app at / already covers intake, fit, redirect and plan, so the lab
+  // shows only its own two steps. The other views stay in the code because the
+  // page tests drive the decision engine through them.
+  const SHOWN = ["impact","evidence"];
+  const fromHash = () => SHOWN.includes(location.hash.slice(1)) ? location.hash.slice(1) : "impact";
 
   function freshState() {
     return {version:2,kitchen:structuredClone(fixtures.kitchen),lots:[structuredClone(fixtures.kitchen.sample)],
@@ -1366,12 +1488,12 @@ details > summary { color: var(--green); font-size: .88rem; font-weight: 730; cu
     const labels=["service","space","stock","buy","prep"];
     const fieldAttribute=labels.find((name)=>active?.dataset?.[name]!==undefined);
     recompute();
-    nav.innerHTML=STEPS.map(([id,label,glyph],i)=>(i===4?'<hr class="nav-rule">':"")+
+    nav.innerHTML=STEPS.filter(([id])=>SHOWN.includes(id)).map(([id,label,glyph])=>
       '<button type="button" class="nav-btn" data-action="go" data-arg="'+id+'"'+(page===id?' aria-current="page"':"")+
       '><span class="nav-glyph" aria-hidden="true">'+glyph+'</span>'+label+'</button>').join("");
     main.innerHTML=views[page]();
     document.title="RescueFit · "+STEPS[stepIndex[page]][1];
-    document.getElementById("facility").textContent=state.kitchen.name;
+    document.getElementById("facility").textContent=STEPS[stepIndex[page]][1];
     save();
     draw();
     if (active?.tagName==="INPUT" || active?.tagName==="SELECT" || active?.tagName==="TEXTAREA") {

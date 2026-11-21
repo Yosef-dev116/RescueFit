@@ -63,7 +63,11 @@
         cells.map((value)=>'<td>'+esc(value)+"</td>").join("")+"</tr>").join("")+"</tbody></table></div>";
   }
   const stepIndex = Object.fromEntries(STEPS.map(([id],i)=>[id,i]));
-  const fromHash = () => Object.hasOwn(stepIndex,location.hash.slice(1)) ? location.hash.slice(1) : "intake";
+  // The RescueFit app at / already covers intake, fit, redirect and plan, so the lab
+  // shows only its own two steps. The other views stay in the code because the
+  // page tests drive the decision engine through them.
+  const SHOWN = ["impact","evidence"];
+  const fromHash = () => SHOWN.includes(location.hash.slice(1)) ? location.hash.slice(1) : "impact";
 
   function freshState() {
     return {version:2,kitchen:structuredClone(fixtures.kitchen),lots:[structuredClone(fixtures.kitchen.sample)],
@@ -505,12 +509,12 @@
     const labels=["service","space","stock","buy","prep"];
     const fieldAttribute=labels.find((name)=>active?.dataset?.[name]!==undefined);
     recompute();
-    nav.innerHTML=STEPS.map(([id,label,glyph],i)=>(i===4?'<hr class="nav-rule">':"")+
+    nav.innerHTML=STEPS.filter(([id])=>SHOWN.includes(id)).map(([id,label,glyph])=>
       '<button type="button" class="nav-btn" data-action="go" data-arg="'+id+'"'+(page===id?' aria-current="page"':"")+
       '><span class="nav-glyph" aria-hidden="true">'+glyph+'</span>'+label+'</button>').join("");
     main.innerHTML=views[page]();
     document.title="RescueFit · "+STEPS[stepIndex[page]][1];
-    document.getElementById("facility").textContent=state.kitchen.name;
+    document.getElementById("facility").textContent=STEPS[stepIndex[page]][1];
     save();
     draw();
     if (active?.tagName==="INPUT" || active?.tagName==="SELECT" || active?.tagName==="TEXTAREA") {

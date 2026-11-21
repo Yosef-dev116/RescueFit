@@ -163,6 +163,10 @@ test("generated workspace starts and completes the sample path without an extern
   vm.createContext(sandbox);
   for (const [,attrs,code] of scripts) if (!attrs.includes('application/json')) vm.runInContext(code,sandbox);
   const click=(action,arg)=>listeners.click({target:{closest:()=>({dataset:{action,arg},disabled:false})}});
+  assert.match(nodes.navigation.innerHTML,/Impact lab/);
+  assert.match(nodes.navigation.innerHTML,/Data sources/);
+  assert.doesNotMatch(nodes.navigation.innerHTML,/Kitchen fit|Redirect map|Use-first plan|>Intake</);
+  assert.match(nodes.main.innerHTML,/<h1>[^<]+<\/h1>/);
   for (const tab of tabs) {
     click("go",tab);
     assert.match(nodes.main.innerHTML,/<h1>[^<]+<\/h1>/);
