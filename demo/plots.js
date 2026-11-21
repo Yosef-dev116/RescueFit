@@ -1,7 +1,7 @@
 (function initializePlots(root) {
   "use strict";
 
-  const COLORS = {baseline:"#95512f",fit_only:"#366b94",rescuefit:"#246847"};
+  const COLORS = {baseline:"#b2291f",fit_only:"#2f4b6e",rescuefit:"#2f5d43"};
   const TITLE = {baseline:"Storage only",fit_only:"Kitchen fit",rescuefit:"Fit + redirect"};
 
   function setup(canvas) {
@@ -104,9 +104,9 @@
     const axisMax = Math.max(1, Math.ceil(rawMax / 4) * 4);
     const x = (day) => xStart + (day-1)/Math.max(1,totalDays-1)*(xEnd-xStart);
     const y = (value) => yBottom-value/axisMax*(yBottom-yTop);
-    ctx.font = "11px system-ui";
-    ctx.fillStyle = "#4b6557";
-    ctx.strokeStyle = "#dce7dc";
+    ctx.font = "11px \"Courier Prime\", \"Courier New\", monospace";
+    ctx.fillStyle = "#4a463c";
+    ctx.strokeStyle = "#e2dccd";
     ctx.lineWidth = 1;
     for (let i=0;i<=4;i++) {
       const value=axisMax*i/4;
